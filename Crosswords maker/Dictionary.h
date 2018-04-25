@@ -12,7 +12,7 @@ public:
 	Dictionary(std::string dictionaryName);
 
 	void ProcessDictionary();
-	void showWordList();
+	void showWordList(); //To check if word list is well implemented
 
 	bool isWordInWordList(std::string word);
 

@@ -13,7 +13,6 @@ int main()
 	string dictName = askForDictionaryName();
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
-	dictionary.showWordList();
 
 	return 0;
 }
