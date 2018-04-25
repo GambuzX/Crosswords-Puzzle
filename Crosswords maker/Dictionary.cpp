@@ -34,7 +34,7 @@ void Dictionary::ProcessDictionary()
 	while (getline(dict, line))
 	{
 		size_t endPos = line.find_first_of(':');
-		string word = line.substr(0, endPos);
+		string word = toUpper( line.substr(0, endPos));
 		line.erase(0, endPos + 2);
 
 		vector<string> synonyms;
@@ -43,23 +43,36 @@ void Dictionary::ProcessDictionary()
 		{
 			endPos = line.find_first_of(',');
 			synonym = line.substr(0, endPos);
-			if (isValid(synonym))
-				synonyms.push_back(synonym);
+			synonyms.push_back(synonym); //Assume all synonyms are valid
 			line.erase(0, endPos + 2);
 		}
 		synonym = line; //at this point only the last word remains
-		if (isValid(synonym))
-			synonyms.push_back(synonym);
-		wordList.insert(pair<string, vector<string>>(word, synonyms));
+		synonyms.push_back(synonym);
+		if (isValid(word))
+			wordList.insert(pair<string, vector<string>>(word, synonyms));
 	}
 }
 
 //=================================================================================================================================
 
-//TODO Implement method
 bool Dictionary::isValid(string word)
 {
+	for (int i = 0; i < word.length(); i++)
+	{
+		if (word.at(i) < 'A' || word.at(i) > 'Z')
+			return false;
+	}
 	return true;
+}
+
+//=================================================================================================================================
+
+string Dictionary::toUpper(const string &word)
+{
+	string upperWord = word;
+	for (int i = 0; i < upperWord.length(); i++)
+		upperWord.at(i) = toupper(upperWord.at(i));
+	return upperWord;
 }
 
 //=================================================================================================================================

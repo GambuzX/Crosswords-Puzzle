@@ -24,6 +24,7 @@ private:
 	std::string dictionaryName;
 
 	bool isValid(std::string);
+	std::string toUpper(const std::string &word);
 };
 
 #endif
