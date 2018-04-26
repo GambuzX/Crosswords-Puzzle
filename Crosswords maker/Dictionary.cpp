@@ -48,7 +48,7 @@ void Dictionary::ProcessDictionary()
 		}
 		synonym = line; //at this point only the last word remains
 		synonyms.push_back(synonym);
-		if (isValidHeadline(word))
+		if (isValid(word))
 			wordList.insert(pair<string, vector<string>>(word, synonyms));
 	}
 }
@@ -56,7 +56,7 @@ void Dictionary::ProcessDictionary()
 //=================================================================================================================================
 // Verifies the given headline is valid
 
-bool Dictionary::isValidHeadline(string word)
+bool Dictionary::isValid(string word)
 {
 	for (size_t i = 0; i < word.length(); i++)
 	{
@@ -96,7 +96,7 @@ void Dictionary::showWordList()
 //=================================================================================================================================
 // Checks if a given word is in the word list
 
-bool Dictionary::isValid(string word)
+bool Dictionary::isInWordList(string word)
 {
 	map<string, vector<string>>::iterator it;
 	it = wordList.find(word);

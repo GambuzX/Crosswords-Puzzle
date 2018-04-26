@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Dictionary.h"
 #include <iostream>
 #include <vector>
 #include <map>
@@ -21,6 +22,30 @@ Board::Board(int horizontalSize, int verticalSize)
 
 //=================================================================================================================================
 
+Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
+{
+	this->horizontalSize = horizontalSize;
+	this->verticalSize = verticalSize;
+
+	board.resize(verticalSize);
+	for (size_t i = 0; i < board.size(); i++)
+		board.at(i).resize(horizontalSize);
+
+	for (size_t i = 0; i < board.size(); i++)
+		for (size_t j = 0; j < board.at(i).size(); j++)
+			board.at(i).at(j) = '.';
+	dictionary = &dict;
+}
+
+//=================================================================================================================================
+
+void Board::setDictionary(Dictionary& dict)
+{
+	dictionary = &dict;
+}
+
+//=================================================================================================================================
+
 void Board::showBoard()
 {
 	for (size_t i = 0; i < board.size(); i++)
@@ -29,6 +54,14 @@ void Board::showBoard()
 			cout << board.at(i).at(j);
 		cout << '\n';
 	}
+}
+
+//=================================================================================================================================
+
+void Board::insertWord(pair<int, int> insertionPos, char direction)
+{
+	// verify 
+
 }
 
 //=================================================================================================================================
