@@ -48,14 +48,15 @@ void Dictionary::ProcessDictionary()
 		}
 		synonym = line; //at this point only the last word remains
 		synonyms.push_back(synonym);
-		if (isValid(word))
+		if (isValidHeadline(word))
 			wordList.insert(pair<string, vector<string>>(word, synonyms));
 	}
 }
 
 //=================================================================================================================================
+// Verifies the given headline is valid
 
-bool Dictionary::isValid(string word)
+bool Dictionary::isValidHeadline(string word)
 {
 	for (int i = 0; i < word.length(); i++)
 	{
@@ -66,6 +67,7 @@ bool Dictionary::isValid(string word)
 }
 
 //=================================================================================================================================
+// Converts given string to uppercase
 
 string Dictionary::toUpper(const string &word)
 {
@@ -89,4 +91,14 @@ void Dictionary::showWordList()
 			cout << vec.at(i) << "; ";
 		cout << endl;
 	}
+}
+
+//=================================================================================================================================
+// Checks if a given word is in the word list
+
+bool Dictionary::isValid(string word)
+{
+	map<string, vector<string>>::iterator it;
+	it = wordList.find(word);
+	return it != wordList.end();
 }

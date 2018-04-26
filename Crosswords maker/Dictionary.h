@@ -14,7 +14,7 @@ public:
 	void ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented
 
-	bool isWordInWordList(std::string word);
+	bool isValid(std::string word); // checks if word exists in word list
 
 	std::string GetWordSynonym(std::string word);
 
@@ -23,7 +23,7 @@ private:
 	std::map<std::string, std::vector<std::string>> wordList; // Key = word ; Value = vector of all synonyms
 	std::string dictionaryName;
 
-	bool isValid(std::string);
+	bool isValidHeadline(std::string);
 	std::string toUpper(const std::string &word);
 };
 

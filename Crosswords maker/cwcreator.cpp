@@ -14,6 +14,8 @@ int main()
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
 
+	cout << dictionary.isValid("ABOVE") << dictionary.isValid("POTATO") << dictionary.isValid("GAMBUZINO") << endl;
+
 	return 0;
 }
 
