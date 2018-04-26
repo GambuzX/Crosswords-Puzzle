@@ -9,12 +9,12 @@ class Board
 {
 public:
 	//Constructors
-	Board(int horizontalSize, int verticalSize);
+	//Board(int horizontalSize, int verticalSize);
 	Board(int horizontalSize, int verticalSize, Dictionary& dict);
 
 	void setDictionary(Dictionary& dict);
 	void showBoard();
-	void insertWord(std::pair<int, int> insertionPos, char direction);
+	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
 
 	std::pair<int, int> calculateInsertionCoordinates (std::string coordinates);
 
@@ -26,8 +26,10 @@ private:
 	Dictionary *dictionary; //pointer to the dictionary in use
 
 	int mapCharToNumber(char letter);
+	bool isValid(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::pair<int, int> insertionPos, char direction);
+	bool matchesCurrentBoard(std::string word, std::pair<int, int> insertionPos, char direction);
 };
 
 #endif

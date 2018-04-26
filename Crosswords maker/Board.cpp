@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Board::Board(int horizontalSize, int verticalSize)
+/*Board::Board(int horizontalSize, int verticalSize)
 {
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
@@ -18,7 +18,7 @@ Board::Board(int horizontalSize, int verticalSize)
 	for (size_t i = 0; i < board.size(); i++)
 		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
-}
+}*/
 
 //=================================================================================================================================
 
@@ -58,10 +58,33 @@ void Board::showBoard()
 
 //=================================================================================================================================
 
-void Board::insertWord(pair<int, int> insertionPos, char direction)
+void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 {
-	// verify 
-
+	// word matches with already placed letters
+	if (!isValid(word)) // verify word is valid
+	{
+		cout << "Word is not valid!";
+	}
+	else if (!dictionary->isInWordList(word)) // verify word belongs to the dictionary
+	{
+		cout << "Word does not belong to the dictionary!";
+	}
+	else if (!wordFitsSpace(word, insertionPos, direction)) // verify it fits the space
+	{
+		cout << "Word does not fit specified space!";
+	}
+	else if (isWordUsed(word))	// verify if word was already used
+	{
+		cout << "Word is already in use!";
+	}
+	else if (!matchesCurrentBoard(word, insertionPos, direction))
+	{
+		cout << "Word does not match previous inserted words!";
+	}
+	else
+	{
+		//Insert word
+	}
 }
 
 //=================================================================================================================================
@@ -80,4 +103,17 @@ int Board::mapCharToNumber(char letter)
 {
 	char upper = toupper(letter);
 	return ((int) upper - (int) 'A');
+}
+
+//=================================================================================================================================
+// Verifies the given headline is valid
+
+bool Board::isValid(string word)
+{
+	for (size_t i = 0; i < word.length(); i++)
+	{
+		if (word.at(i) < 'A' || word.at(i) > 'Z')
+			return false;
+	}
+	return true;
 }
