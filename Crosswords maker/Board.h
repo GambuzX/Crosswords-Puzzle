@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <vector>
+#include <map>
 
 class Board
 {
@@ -11,11 +12,14 @@ public:
 
 	void showBoard();
 
+	std::pair<int, int> calculateInsertionCoordinates (std::string coordinates);
+
 private:
 	std::vector<std::vector<char>> board;
 
 	int horizontalSize = 0, verticalSize = 0;
 
+	int mapCharToNumber(char letter);
 };
 
 #endif

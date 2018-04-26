@@ -29,7 +29,7 @@ int main()
 string askDictionaryName()
 {
 	string dictName;
-	cout << "Dictionary name? ";
+	cout << "Dictionary file name? ";
 	cin >> dictName;
 	return dictName;
 }

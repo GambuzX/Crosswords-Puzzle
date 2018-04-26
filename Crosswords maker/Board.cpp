@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -28,4 +29,22 @@ void Board::showBoard()
 			cout << board.at(i).at(j);
 		cout << '\n';
 	}
+}
+
+//=================================================================================================================================
+
+pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
+{
+	pair<int, int> position;
+	position.first = mapCharToNumber(coordinates.at(0));
+	position.second = mapCharToNumber(coordinates.at(1));
+	return position;
+}
+
+//=================================================================================================================================
+
+int Board::mapCharToNumber(char letter)
+{
+	char upper = toupper(letter);
+	return ((int) upper - (int) 'A');
 }
