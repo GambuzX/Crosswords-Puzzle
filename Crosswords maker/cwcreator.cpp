@@ -6,11 +6,11 @@
 
 using namespace std;
 
-string askForDictionaryName();
+string askDictionaryName();
 
 int main()
 {
-	string dictName = askForDictionaryName();
+	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
 
@@ -21,10 +21,26 @@ int main()
 
 //=================================================================================================================================
 
-string askForDictionaryName()
+string askDictionaryName()
 {
 	string dictName;
 	cout << "Dictionary name? ";
 	cin >> dictName;
 	return dictName;
+}
+
+int askBoardSize()
+{
+	int boardSize;
+	cout << "Board size? ";
+	
+	cin >> boardSize;
+	while (!cin)
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Board size? ";
+		cin >> boardSize;
+	}
+	return boardSize;
 }
