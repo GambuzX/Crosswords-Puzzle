@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <map>
 
 #include "Dictionary.h"
 #include "Board.h"
@@ -7,14 +8,17 @@
 using namespace std;
 
 string askDictionaryName();
+pair<int, int> askBoardSize();
 
 int main()
 {
-	string dictName = askDictionaryName();
-	Dictionary dictionary(dictName);
-	dictionary.ProcessDictionary();
+	//string dictName = askDictionaryName();
+	//Dictionary dictionary(dictName);
+	//dictionary.ProcessDictionary();
 
-	cout << dictionary.isValid("ABOVE") << dictionary.isValid("POTATO") << dictionary.isValid("GAMBUZINO") << endl;
+	pair<int, int> board = askBoardSize();
+
+	cout << board.first << "   " << board.second << endl;
 
 	return 0;
 }
@@ -29,18 +33,28 @@ string askDictionaryName()
 	return dictName;
 }
 
-int askBoardSize()
+pair<int,int> askBoardSize()
 {
-	int boardSize;
-	cout << "Board size? ";
-	
-	cin >> boardSize;
+	pair<int, int> boardSize;
+
+	cout << "Horizontal board size? ";	
+	cin >> boardSize.first;
 	while (!cin)
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
-		cout << "Board size? ";
-		cin >> boardSize;
+		cout << "Horizontal board size? ";
+		cin >> boardSize.first;
+	}
+
+	cout << "Vertical board size? ";
+	cin >> boardSize.second;
+	while (!cin)
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Vertical board size? ";
+		cin >> boardSize.second;
 	}
 	return boardSize;
 }

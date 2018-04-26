@@ -58,7 +58,7 @@ void Dictionary::ProcessDictionary()
 
 bool Dictionary::isValidHeadline(string word)
 {
-	for (int i = 0; i < word.length(); i++)
+	for (size_t i = 0; i < word.length(); i++)
 	{
 		if (word.at(i) < 'A' || word.at(i) > 'Z')
 			return false;
@@ -72,7 +72,7 @@ bool Dictionary::isValidHeadline(string word)
 string Dictionary::toUpper(const string &word)
 {
 	string upperWord = word;
-	for (int i = 0; i < upperWord.length(); i++)
+	for (size_t i = 0; i < upperWord.length(); i++)
 		upperWord.at(i) = toupper(upperWord.at(i));
 	return upperWord;
 }
