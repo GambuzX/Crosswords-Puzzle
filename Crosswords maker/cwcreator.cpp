@@ -16,9 +16,10 @@ int main()
 	//Dictionary dictionary(dictName);
 	//dictionary.ProcessDictionary();
 
-	pair<int, int> board = askBoardSize();
+	pair<int, int> boardSize = askBoardSize();
 
-	cout << board.first << "   " << board.second << endl;
+	Board board(boardSize.first, boardSize.second);
+	board.showBoard();
 
 	return 0;
 }
