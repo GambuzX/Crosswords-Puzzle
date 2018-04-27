@@ -4,6 +4,7 @@
 #include "Dictionary.h"
 #include <vector>
 #include <map>
+#include <set>
 
 class Board
 {
@@ -20,7 +21,7 @@ public:
 
 private:
 	std::vector<std::vector<char>> board;
-	std::vector<std::string> usedWords; // used to keep track of words in the board
+	std::set<std::string> usedWords; // used to keep track of words in the board
 
 	int horizontalSize = 0, verticalSize = 0;
 	Dictionary *dictionary; //pointer to the dictionary in use

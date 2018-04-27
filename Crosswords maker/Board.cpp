@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ using namespace std;
 }*/
 
 //=================================================================================================================================
+// Constructor with sizes and dictionary to be used
 
 Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
 {
@@ -38,6 +40,7 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
 }
 
 //=================================================================================================================================
+// Changes current dictionary
 
 void Board::setDictionary(Dictionary& dict)
 {
@@ -45,6 +48,7 @@ void Board::setDictionary(Dictionary& dict)
 }
 
 //=================================================================================================================================
+// Shows current board
 
 void Board::showBoard()
 {
@@ -57,6 +61,7 @@ void Board::showBoard()
 }
 
 //=================================================================================================================================
+// Inserts a word on the board. If an invalid operation, detects and outputs what the problem was.
 
 void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 {
@@ -83,11 +88,14 @@ void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 	}
 	else
 	{
+		usedWords.insert(word);
 		//Insert word
+		
 	}
 }
 
 //=================================================================================================================================
+// Determines line and column indexes given text input
 
 pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
 {
@@ -98,6 +106,7 @@ pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
 }
 
 //=================================================================================================================================
+// Converts line / columns letter to respective index
 
 int Board::mapCharToNumber(char letter)
 {
@@ -116,4 +125,16 @@ bool Board::isValid(string word)
 			return false;
 	}
 	return true;
+}
+
+//=================================================================================================================================
+// Checks if the given word is already on the board or not
+
+bool Board::isWordUsed(string word)
+{
+	set<string>::iterator it;
+	for (it = usedWords.begin(); it != usedWords.end(); it++)
+		if (*it == word)
+			return true;
+	return false;
 }
