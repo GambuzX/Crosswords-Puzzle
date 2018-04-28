@@ -12,17 +12,29 @@ pair<int, int> askBoardSize();
 
 int main()
 {
-	//string dictName = askDictionaryName();
-	//Dictionary dictionary(dictName);
-	//dictionary.ProcessDictionary();
+	string dictName = askDictionaryName();
+	Dictionary dictionary(dictName);
+	dictionary.ProcessDictionary();
 
 	pair<int, int> boardSize = askBoardSize();
 
-	Board board(boardSize.first, boardSize.second);
+	Board board(boardSize.first, boardSize.second, dictionary);
 	board.showBoard();
+	cout << endl << endl;
+
+	board.insertWord("PUZZLE", pair<int, int>(1, 1), 'H');
+	board.showBoard();
+	cout << endl << endl;
+
+	board.insertWord("PRODIGY", pair<int, int>(1, 2), 'V');
+	board.showBoard();
+	cout << endl << endl;
 
 	return 0;
 }
+
+// TODO Assure uppercase words
+// TODO Deal with duplicate entries in the dictionary
 
 //=================================================================================================================================
 

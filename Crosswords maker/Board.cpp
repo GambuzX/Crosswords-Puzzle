@@ -89,9 +89,25 @@ void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 	}
 	else
 	{
-		usedWords.insert(word);
+		usedWords.insert(word); //add word to the set
+
 		//Insert word
-		
+		char dir = toupper(direction);
+		int line = insertionPos.first;
+		int column = insertionPos.second;
+		switch (dir)
+		{
+		case 'H':
+			for (int i = 0; i < word.length(); i++)
+				board.at(line).at(column + i) = word.at(i);
+			break;
+		case 'V':
+			for (int i = 0; i < word.length(); i++)
+				board.at(line+i).at(column) = word.at(i);
+			break;
+		default:
+			cerr << "Invalid input!";
+		}		
 	}
 }
 
