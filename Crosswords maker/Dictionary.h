@@ -9,7 +9,7 @@ class Dictionary
 {
 public:
 	//Constructors
-	Dictionary(std::string dictionaryName);
+	Dictionary(std::string dictName) : dictionaryName(dictName) {};
 
 	void ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented

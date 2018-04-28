@@ -43,7 +43,7 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
 //=================================================================================================================================
 // Changes current dictionary
 
-void Board::setDictionary(Dictionary& dict)
+inline void Board::setDictionary(Dictionary& dict)
 {
 	dictionary = &dict;
 }

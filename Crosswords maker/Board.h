@@ -11,9 +11,9 @@ class Board
 public:
 	//Constructors
 	//Board(int horizontalSize, int verticalSize);
-	Board(int horizontalSize, int verticalSize, Dictionary& dict);
+	Board(int horiSize, int vertSize, Dictionary& dict);
 
-	void setDictionary(Dictionary& dict);
+	inline void setDictionary(Dictionary& dict);
 	void showBoard();
 	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
 	void helpUser(std::pair<int, int> insertionPos, char direction);
