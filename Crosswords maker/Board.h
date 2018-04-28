@@ -16,6 +16,8 @@ public:
 	inline void setDictionary(Dictionary& dict);
 	void showBoard();
 	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
+	void removeWord(std::pair<int, int> insertionPos, char direction);
+	// TODO Method to automatically insert hashes in places where no more words fit
 	void helpUser(std::pair<int, int> insertionPos, char direction);
 	bool validPositionInput(std::string); // TODO check if 3 valid letters only
 
