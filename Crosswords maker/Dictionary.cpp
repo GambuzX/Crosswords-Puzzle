@@ -49,7 +49,19 @@ void Dictionary::ProcessDictionary()
 		synonym = line; //at this point only the last word remains
 		synonyms.push_back(synonym);
 		if (isValid(word))
-			wordList.insert(pair<string, vector<string>>(word, synonyms));
+		{
+			pair<map<string, vector<string>>::iterator, bool> ret; //return type variable of map::insert
+			ret = wordList.insert(pair<string, vector<string>>(word, synonyms));
+			if (ret.second == false) //if insertion failed, i.e., it is a duplicate entry
+			{
+				// Since the entry is repeated, only adds new synonyms to the previous entry
+				for (int i = 0; i < synonyms.size(); i++)
+				{
+					if (!isInVector(synonyms.at(i), wordList[word]))
+						wordList[word].push_back(synonyms.at(i));
+				}
+			}
+		}
 	}
 }
 
@@ -101,4 +113,15 @@ bool Dictionary::isInWordList(string word)
 	map<string, vector<string>>::iterator it;
 	it = wordList.find(word);
 	return it != wordList.end();
+}
+
+//=================================================================================================================================
+// Checks if a given word is in a vector of words
+
+bool Dictionary::isInVector(string word, vector<string> words)
+{
+	for (int i = 0; i < words.size(); i++)
+		if (words.at(i) == word)
+			return true;
+	return false;
 }
