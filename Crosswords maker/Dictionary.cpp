@@ -7,10 +7,10 @@
 
 using namespace std;
 
-Dictionary::Dictionary(std::string dictionaryName)
+/*Dictionary::Dictionary(std::string dictionaryName)
 {
 	this->dictionaryName = dictionaryName;
-}
+}*/
 
 //=================================================================================================================================
 
