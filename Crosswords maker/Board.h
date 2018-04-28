@@ -33,6 +33,7 @@ private:
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::pair<int, int> insertionPos, char direction);
 	bool matchesCurrentBoard(std::string word, std::pair<int, int> insertionPos, char direction);
+	bool wildcardMatch(const char *str, const char *strWild);
 };
 
 #endif

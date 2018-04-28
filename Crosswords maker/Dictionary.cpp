@@ -66,30 +66,6 @@ void Dictionary::ProcessDictionary()
 }
 
 //=================================================================================================================================
-// Verifies the given headline is valid
-
-bool Dictionary::isValid(string word)
-{
-	for (size_t i = 0; i < word.length(); i++)
-	{
-		if (word.at(i) < 'A' || word.at(i) > 'Z')
-			return false;
-	}
-	return true;
-}
-
-//=================================================================================================================================
-// Converts given string to uppercase
-
-string Dictionary::toUpper(const string &word)
-{
-	string upperWord = word;
-	for (size_t i = 0; i < upperWord.length(); i++)
-		upperWord.at(i) = toupper(upperWord.at(i));
-	return upperWord;
-}
-
-//=================================================================================================================================
 
 void Dictionary::showWordList()
 {
@@ -116,6 +92,30 @@ bool Dictionary::isInWordList(string word)
 }
 
 //=================================================================================================================================
+vector<string> Dictionary::fittingWords(int availableSpace)
+{
+	vector<string> validWords;
+	map<string, vector<string>>::iterator it;
+	for (it = wordList.begin(); it != wordList.end(); it++)
+		if (it->first.length() <= availableSpace)
+			validWords.push_back(it->first);
+	return validWords;
+}
+
+//=================================================================================================================================
+// Verifies the given headline is valid
+
+bool Dictionary::isValid(string word)
+{
+	for (size_t i = 0; i < word.length(); i++)
+	{
+		if (word.at(i) < 'A' || word.at(i) > 'Z')
+			return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
 // Checks if a given word is in a vector of words
 
 bool Dictionary::isInVector(string word, vector<string> words)
@@ -124,4 +124,15 @@ bool Dictionary::isInVector(string word, vector<string> words)
 		if (words.at(i) == word)
 			return true;
 	return false;
+}
+
+//=================================================================================================================================
+// Converts given string to uppercase
+
+string Dictionary::toUpper(const string &word)
+{
+	string upperWord = word;
+	for (size_t i = 0; i < upperWord.length(); i++)
+		upperWord.at(i) = toupper(upperWord.at(i));
+	return upperWord;
 }

@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Dictionary.h"
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <map>
 #include <set>
@@ -98,16 +99,55 @@ void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 		switch (dir)
 		{
 		case 'H':
-			for (int i = 0; i < word.length(); i++)
+			for (size_t i = 0; i < word.length(); i++)
 				board.at(line).at(column + i) = word.at(i);
 			break;
 		case 'V':
-			for (int i = 0; i < word.length(); i++)
+			for (size_t i = 0; i < word.length(); i++)
 				board.at(line+i).at(column) = word.at(i);
 			break;
 		default:
 			cerr << "Invalid input!";
 		}		
+	}
+}
+
+//=================================================================================================================================
+// Shows the user what words he can put in the specified location
+
+void Board::helpUser(pair<int, int> insertionPos, char direction)
+{
+	// insertionPos = (line, column)
+	direction = toupper(direction);
+	int availableSpace;
+	switch (direction)
+	{
+	case 'H':
+		availableSpace = horizontalSize - insertionPos.second;
+		break;
+	case 'V':
+		availableSpace = verticalSize - insertionPos.first;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+
+	cout << "Words you can fit there:\n";
+	cout << "________________________\n";
+
+	vector<string> fittingWords = dictionary->fittingWords(availableSpace);
+	int counter = 0;
+	const int WORDS_PER_LINE = 6;
+	const int WORDS_WIDTH = 18;
+	for (size_t i = 0; i < fittingWords.size(); i++)
+	{
+		string currentWord = fittingWords.at(i);
+		if (!isWordUsed(currentWord) && matchesCurrentBoard(currentWord, insertionPos, direction))
+		{
+			if (counter % WORDS_PER_LINE == 0) cout << endl;
+			cout << setw(WORDS_WIDTH) << currentWord;
+			counter++;
+		}
 	}
 }
 
@@ -131,7 +171,7 @@ bool Board::validPositionInput(string input)
 	if (column < 'A' || column > maxHorizontal)
 		return false;
 
-	if (direction != 'H' & direction != 'V')
+	if (direction != 'H' && direction != 'V')
 		return false;
 
 	return true;
@@ -218,12 +258,12 @@ bool Board::matchesCurrentBoard(string word, pair<int, int> insertionPos, char d
 	switch (dir)
 	{
 	case 'H':
-		for (int i = 0; i < word.length(); i++)
+		for (size_t i = 0; i < word.length(); i++)
 			if (board.at(line).at(column + i) != word.at(i) && board.at(line).at(column + i) != '.') // must either correspond to the word letter or to '.'
 				return false;
 		break;
 	case 'V':
-		for (int i = 0; i < word.length(); i++)
+		for (size_t i = 0; i < word.length(); i++)
 			if (board.at(line + i).at(column) != word.at(i) && board.at(line + i).at(column) != '.')
 				return false;
 		break;
@@ -231,4 +271,64 @@ bool Board::matchesCurrentBoard(string word, pair<int, int> insertionPos, char d
 		cerr << "Invalid input!";
 	}
 	return true;
+}
+
+//=================================================================================================================================
+// WildcardMatch
+// str - Input string to match
+// strWild - Match mask that may contain wildcards like ? and *
+//
+// A ? sign matches any character, except an empty string.
+// A * sign matches any string inclusive an empty string.
+// Characters are compared caseless.
+//
+// ADAPTED FROM:
+// https://www.codeproject.com/Articles/188256/A-Simple-Wildcard-Matching-Function
+bool Board::wildcardMatch(const char *str, const char *strWild)
+{
+	// We have a special case where string is empty ("") and the mask is "*".
+	// We need to handle this too. So we can't test on !*str here.
+	// The loop breaks when the match string is exhausted.
+	while (*strWild)
+	{
+		// Single wildcard character
+		if (*strWild == '?')
+		{
+			// Matches any character except empty string
+			if (!*str)
+				return false;
+			// OK next
+			++str;
+			++strWild;
+		}
+		else if (*strWild == '*')
+		{
+			// Need to do some tricks.
+			// 1. The wildcard * is ignored.
+			// So just an empty string matches. This is done by recursion.
+			// Because we eat one character from the match string,
+			// the recursion will stop.
+			if (wildcardMatch(str, strWild + 1))
+				// we have a match and the * replaces no other character
+				return true;
+			// 2. Chance we eat the next character and try it again,
+			// with a wildcard * match. This is done by recursion.
+			// Because we eat one character from the string,
+			// the recursion will stop.
+			if (*str && wildcardMatch(str + 1, strWild))
+				return true;
+			// Nothing worked with this wildcard.
+			return false;
+		}
+		else
+		{
+			// Standard compare of 2 chars. Note that *str might be 0 here,
+			// but then we never get a match on *strWild
+			// that has always a value while inside this loop.
+			if (toupper(*str++) != toupper(*strWild++))
+				return false;
+		}
+	}
+	// Have a match? Only if both are at the end...
+	return !*str && !*strWild;
 }

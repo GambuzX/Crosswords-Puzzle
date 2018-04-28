@@ -26,8 +26,14 @@ int main()
 	board.showBoard();
 	cout << endl << endl;
 
-	board.insertWord("PRODIGY", pair<int, int>(1, 2), 'V');
+	board.insertWord("PRODIGY", pair<int, int>(2, 1), 'V');
 	board.showBoard();
+	cout << endl << endl;
+
+	board.helpUser(pair<int, int>(1, 1), 'H');
+	cout << endl << endl;
+
+	board.helpUser(pair<int, int>(2, 1), 'H');
 	cout << endl << endl;
 
 	return 0;

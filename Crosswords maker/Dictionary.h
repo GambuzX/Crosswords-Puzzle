@@ -16,6 +16,7 @@ public:
 
 	bool isInWordList(std::string word); // checks if word exists in word list
 
+	std::vector<std::string> fittingWords(int availableSpace);
 	std::string GetWordSynonym(std::string word);
 
 
