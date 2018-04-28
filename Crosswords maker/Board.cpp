@@ -162,3 +162,31 @@ bool Board::wordFitsSpace(string word, pair<int, int> insertionPos, char directi
 	}
 	return availableSpace >= wordSize;
 }
+
+//=================================================================================================================================
+// Checks if the word matches the current board, i.e. the words already placed
+// Assumes all other conditios are met: valid, not used and fits space
+
+bool Board::matchesCurrentBoard(string word, pair<int, int> insertionPos, char direction)
+{
+	// insertionPos = (line, column)
+	char dir = toupper(direction);
+	int line = insertionPos.first;
+	int column = insertionPos.second;
+	switch (dir)
+	{
+	case 'H':
+		for (int i = 0; i < word.length(); i++)
+			if (board.at(line).at(column + i) != word.at(i) && board.at(line).at(column + i) != '.') // must either correspond to the word letter or to '.'
+				return false;
+		break;
+	case 'V':
+		for (int i = 0; i < word.length(); i++)
+			if (board.at(line + i).at(column) != word.at(i) && board.at(line + i).at(column) != '.')
+				return false;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+	return true;
+}
