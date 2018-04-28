@@ -26,7 +26,7 @@ int main()
 	board.showBoard();
 	cout << endl << endl;
 
-	board.insertWord("PRODIGY", pair<int, int>(2, 1), 'V');
+	board.insertWord("PRODIGY", pair<int, int>(1, 1), 'V');
 	board.showBoard();
 	cout << endl << endl;
 
@@ -40,6 +40,7 @@ int main()
 }
 
 // TODO Assure uppercase words
+// TODO Make sure max size is 26 (because of letters)
 
 //=================================================================================================================================
 

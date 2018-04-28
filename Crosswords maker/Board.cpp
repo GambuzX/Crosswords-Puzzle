@@ -53,10 +53,18 @@ inline void Board::setDictionary(Dictionary& dict)
 
 void Board::showBoard()
 {
+	const int WIDTH = 2;
+
+	cout << setw(WIDTH) << " ";
+	for (size_t i = 0; i < board.size(); i++)
+		cout << setw(WIDTH) << (char) ('a' + i);
+	cout << endl;
+
 	for (size_t i = 0; i < board.size(); i++)
 	{
+		cout << setw(WIDTH) << (char)('A' + i);
 		for (size_t j = 0; j < board.at(i).size(); j++)
-			cout << board.at(i).at(j);
+			cout << setw(WIDTH) << board.at(i).at(j);
 		cout << '\n';
 	}
 }
