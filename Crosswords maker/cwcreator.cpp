@@ -34,7 +34,6 @@ int main()
 }
 
 // TODO Assure uppercase words
-// TODO Deal with duplicate entries in the dictionary
 
 //=================================================================================================================================
 

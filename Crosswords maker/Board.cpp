@@ -112,6 +112,32 @@ void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 }
 
 //=================================================================================================================================
+// Verifies the user position input is valid
+
+bool Board::validPositionInput(string input)
+{
+	if (input.length() != 3)
+		return false;
+	
+	char line = toupper(input.at(0));
+	char column = toupper(input.at(1));
+	char direction = toupper(input.at(2));
+	char maxHorizontal = 'A' + horizontalSize - 1;
+	char maxVertical = 'A' + verticalSize - 1;
+	
+	if (line < 'A' || line > maxVertical)
+		return false;
+
+	if (column < 'A' || column > maxHorizontal)
+		return false;
+
+	if (direction != 'H' & direction != 'V')
+		return false;
+
+	return true;
+}
+
+//=================================================================================================================================
 // Determines line and column indexes given text input
 
 pair<int, int> Board::calculateInsertionCoordinates(string coordinates)

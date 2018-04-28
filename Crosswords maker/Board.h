@@ -16,7 +16,8 @@ public:
 	void setDictionary(Dictionary& dict);
 	void showBoard();
 	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
-	bool validInput(std::string); // TODO check if 3 valid letters only
+	void helpUser(std::pair<int, int> insertionPos, char direction);
+	bool validPositionInput(std::string); // TODO check if 3 valid letters only
 
 	std::pair<int, int> calculateInsertionCoordinates (std::string coordinates);
 
