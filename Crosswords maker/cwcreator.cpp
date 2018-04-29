@@ -7,8 +7,12 @@
 
 using namespace std;
 
+void Introduction();
+void Instructions();
+void Options();
 string askDictionaryName();
 pair<int, int> askBoardSize();
+void CreatePuzzle();
 
 int main()
 {
@@ -126,6 +130,7 @@ void CreatePuzzle()
 	cout << "           CREATE PUZZLE             \n";
 	cout << " ------------------------------------\n";
 
+	// TODO return to menu if invalid input
 	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
@@ -133,7 +138,9 @@ void CreatePuzzle()
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second, dictionary);
 
+	cout << endl;
 	board.showBoard();
+	cout << endl;
 
 	bool stopCreating = false;
 	while (!stopCreating)
@@ -154,7 +161,7 @@ void CreatePuzzle()
 				}
 			}
 
-			cout << "Position (\"LCD / CTRL-Z = stop) ?";
+			cout << "Position (\"LCD / CTRL-Z = stop) ? ";
 			cin >> positionInput;
 
 			//Convert to uppercase
@@ -179,7 +186,7 @@ void CreatePuzzle()
 				cin.ignore(10000, '\n');
 			}
 
-			cout << "Word ( - = remove / ? = help) .. ?";
+			cout << "Word ( - = remove / ? = help) .. ? ";
 			cin >> word;
 
 			//Convert to uppercase
@@ -190,6 +197,15 @@ void CreatePuzzle()
 			if (board.canBeInserted(word, insertionPosition, direction))
 				validWord = true;
 
+			// TODO add options for help and deletion
+			// TODO add option to go back to position input
+
 		} while (!validWord); //loop until valid input
+
+		board.insertWord(word, insertionPosition, direction);
+
+		cout << endl;
+		board.showBoard();
+		cout << endl;
 	}
 }

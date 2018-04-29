@@ -78,27 +78,27 @@ bool Board::canBeInserted(string word, pair<int, int> insertionPos, char directi
 
 	if (!isValidHeadline(word)) // verify word is valid
 	{
-		cout << "Word is not valid! Please only use characters from 'A' to 'Z'";
+		cout << "Word is not valid! Please only use characters from 'A' to 'Z'\n\n";
 		return false;
 	}
 	else if (!dictionary->isInWordList(word)) // verify word belongs to the dictionary
 	{
-		cout << "Word does not belong to the dictionary!";
+		cout << "Word is not present in the dictionary!\n\n";
 		return false;
 	}
 	else if (!wordFitsSpace(word, insertionPos, direction)) // verify it fits the space
 	{
-		cout << "Word does not fit the specified space!";
+		cout << "Word does not fit the specified space!\n\n";
 		return false;
 	}
 	else if (isWordUsed(word))	// verify if word was already used
 	{
-		cout << "Word is already in use!";
+		cout << "Word is already in use!\n\n";
 		return false;
 	}
 	else if (!matchesCurrentBoard(word, insertionPos, direction))
 	{
-		cout << "Word does not match previous inserted words!";
+		cout << "Word does not match previous inserted words!\n\n";
 		return false;
 	}
 	return true;
@@ -176,25 +176,35 @@ void Board::helpUser(pair<int, int> insertionPos, char direction)
 
 bool Board::validPositionInput(string input)
 {
+	bool valid = true;
+
 	if (input.length() != 3)
-		return false;
-	
-	char line = toupper(input.at(0));
-	char column = toupper(input.at(1));
-	char direction = toupper(input.at(2));
-	char maxHorizontal = 'A' + horizontalSize - 1;
-	char maxVertical = 'A' + verticalSize - 1;
-	
-	if (line < 'A' || line > maxVertical)
-		return false;
+		valid = false;
+	else
+	{
+		char line = toupper(input.at(0));
+		char column = toupper(input.at(1));
+		char direction = toupper(input.at(2));
+		char maxHorizontal = 'A' + horizontalSize - 1;
+		char maxVertical = 'A' + verticalSize - 1;
 
-	if (column < 'A' || column > maxHorizontal)
-		return false;
+		if (line < 'A' || line > maxVertical)
+			valid = false;
 
-	if (direction != 'H' && direction != 'V')
-		return false;
+		if (column < 'A' || column > maxHorizontal)
+			valid = false;
 
-	return true;
+		if (direction != 'H' && direction != 'V')
+			valid = false;
+	}
+
+	if (!valid)
+	{
+		cout << "Invalid input!\n\n";
+		return false;
+	}
+	else
+		return true;
 }
 
 //=================================================================================================================================
