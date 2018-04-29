@@ -138,7 +138,7 @@ void CreatePuzzle()
 	bool stopCreating = false;
 	while (!stopCreating)
 	{
-		string position, word;
+		string positionInput, word;
 
 		bool validPositionInput = false;
 		do
@@ -155,15 +155,22 @@ void CreatePuzzle()
 			}
 
 			cout << "Position (\"LCD / CTRL-Z = stop) ?";
-			cin >> position;
-			if (board.validPositionInput(position))
-				validPositionInput = true;
-		} while (!validPositionInput);
-		
-		//Convert to uppercase
-		for (size_t i = 0; i < position.length(); i++) 
-			position.at(i) = toupper(position.at(i));
+			cin >> positionInput;
 
+			//Convert to uppercase
+			for (size_t i = 0; i < positionInput.length(); i++)
+				positionInput.at(i) = toupper(positionInput.at(i));
+
+			//Check validity
+			if (board.validPositionInput(positionInput))
+				validPositionInput = true;
+
+		} while (!validPositionInput); //loop until valid input
+
+		pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+		char direction = positionInput.at(2);
+
+		bool validWord = false;
 		do
 		{
 			if (cin.fail())
@@ -174,11 +181,15 @@ void CreatePuzzle()
 
 			cout << "Word ( - = remove / ? = help) .. ?";
 			cin >> word;
-		} while (!cin);
 
-		//Convert to uppercase
-		for (size_t i = 0; i < word.length(); i++)
-			word.at(i) = toupper(word.at(i));
+			//Convert to uppercase
+			for (size_t i = 0; i < word.length(); i++)
+				word.at(i) = toupper(word.at(i));
 
+			//Check validity
+			if (board.canBeInserted(word, insertionPosition, direction))
+				validWord = true;
+
+		} while (!validWord); //loop until valid input
 	}
 }

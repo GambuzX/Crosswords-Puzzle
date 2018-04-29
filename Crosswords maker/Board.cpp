@@ -70,54 +70,66 @@ void Board::showBoard()
 }
 
 //=================================================================================================================================
-// Inserts a word on the board. If an invalid operation, detects and outputs what the problem was.
+// Verifies if a word can be inserted in a determined location, informing why not if false
 
-void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
+bool Board::canBeInserted(string word, pair<int, int> insertionPos, char direction)
 {
 	// insertionPos = (line, column)
 
-	if (!isValid(word)) // verify word is valid
+	if (!isValidHeadline(word)) // verify word is valid
 	{
-		cout << "Word is not valid!";
+		cout << "Word is not valid! Please only use characters from 'A' to 'Z'";
+		return false;
 	}
 	else if (!dictionary->isInWordList(word)) // verify word belongs to the dictionary
 	{
 		cout << "Word does not belong to the dictionary!";
+		return false;
 	}
 	else if (!wordFitsSpace(word, insertionPos, direction)) // verify it fits the space
 	{
-		cout << "Word does not fit specified space!";
+		cout << "Word does not fit the specified space!";
+		return false;
 	}
 	else if (isWordUsed(word))	// verify if word was already used
 	{
 		cout << "Word is already in use!";
+		return false;
 	}
 	else if (!matchesCurrentBoard(word, insertionPos, direction))
 	{
 		cout << "Word does not match previous inserted words!";
+		return false;
 	}
-	else
-	{
-		usedWords.insert(word); //add word to the set
+	return true;
+}
 
-		//Insert word
-		char dir = toupper(direction);
-		int line = insertionPos.first;
-		int column = insertionPos.second;
-		switch (dir)
-		{
-		case 'H':
-			for (size_t i = 0; i < word.length(); i++)
-				board.at(line).at(column + i) = word.at(i);
-			break;
-		case 'V':
-			for (size_t i = 0; i < word.length(); i++)
-				board.at(line+i).at(column) = word.at(i);
-			break;
-		default:
-			cerr << "Invalid input!";
-		}		
-	}
+
+//=================================================================================================================================
+// Inserts a word on the board. Assumes it is a valid insertion.
+
+void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
+{
+	// insertionPos = (line, column)
+	usedWords.insert(word); //add word to the set
+
+	//Insert word
+	char dir = toupper(direction);
+	int line = insertionPos.first;
+	int column = insertionPos.second;
+	switch (dir)
+	{
+	case 'H':
+		for (size_t i = 0; i < word.length(); i++)
+			board.at(line).at(column + i) = word.at(i);
+		break;
+	case 'V':
+		for (size_t i = 0; i < word.length(); i++)
+			board.at(line+i).at(column) = word.at(i);
+		break;
+	default:
+		cerr << "Invalid input!";
+	}		
 }
 
 //=================================================================================================================================
@@ -208,7 +220,7 @@ int Board::mapCharToNumber(char letter)
 //=================================================================================================================================
 // Verifies the given headline is valid
 
-bool Board::isValid(string word)
+bool Board::isValidHeadline(string word)
 {
 	for (size_t i = 0; i < word.length(); i++)
 	{

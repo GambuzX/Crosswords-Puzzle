@@ -15,6 +15,7 @@ public:
 
 	inline void setDictionary(Dictionary& dict);
 	void showBoard();
+	bool canBeInserted(std::string word, std::pair<int, int> insertionPos, char direction);
 	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
 	void removeWord(std::pair<int, int> insertionPos, char direction);
 	// TODO Method to automatically insert hashes in places where no more words fit
@@ -33,7 +34,7 @@ private:
 	Dictionary *dictionary; //pointer to the dictionary in use
 
 	int mapCharToNumber(char letter);
-	bool isValid(std::string);
+	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::pair<int, int> insertionPos, char direction);
 	bool matchesCurrentBoard(std::string word, std::pair<int, int> insertionPos, char direction);
