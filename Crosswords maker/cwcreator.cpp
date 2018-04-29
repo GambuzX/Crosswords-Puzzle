@@ -38,7 +38,7 @@ int main()
 			exit(0);
 			break;
 		case 1:
-			//Create puzzle
+			CreatePuzzle();
 			break;
 		case 2:
 			//Resume puzzle
@@ -122,10 +122,63 @@ pair<int,int> askBoardSize()
 
 void CreatePuzzle()
 {
+	cout << " ------------------------------------\n";
+	cout << "           CREATE PUZZLE             \n";
+	cout << " ------------------------------------\n";
+
 	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
 
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second, dictionary);
+
+	board.showBoard();
+
+	bool stopCreating = false;
+	while (!stopCreating)
+	{
+		string position, word;
+
+		bool validPositionInput = false;
+		do
+		{
+			if (cin.fail())
+			{
+				if (cin.eof())
+					stopCreating = true;
+				else
+				{
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+			}
+
+			cout << "Position (\"LCD / CTRL-Z = stop) ?";
+			cin >> position;
+			if (board.validPositionInput(position))
+				validPositionInput = true;
+		} while (!validPositionInput);
+		
+		//Convert to uppercase
+		for (size_t i = 0; i < position.length(); i++) 
+			position.at(i) = toupper(position.at(i));
+
+		do
+		{
+			if (cin.fail())
+			{
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+
+			cout << "Word ( - = remove / ? = help) .. ?";
+			cin >> word;
+		} while (!cin);
+
+		//Convert to uppercase
+		for (size_t i = 0; i < word.length(); i++)
+			word.at(i) = toupper(word.at(i));
+
+	}
 }

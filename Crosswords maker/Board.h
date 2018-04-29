@@ -20,6 +20,8 @@ public:
 	// TODO Method to automatically insert hashes in places where no more words fit
 	void helpUser(std::pair<int, int> insertionPos, char direction);
 	bool validPositionInput(std::string); // TODO check if 3 valid letters only
+	// TODO Method to save puzzle
+	// TODO Method to load puzzle
 
 	std::pair<int, int> calculateInsertionCoordinates (std::string coordinates);
 
