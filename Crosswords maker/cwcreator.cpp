@@ -130,7 +130,7 @@ void CreatePuzzle()
 	cout << "           CREATE PUZZLE             \n";
 	cout << " ------------------------------------\n";
 
-	// TODO return to menu if invalid input
+	// TODO return to menu if invalid dictionary name
 	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
@@ -150,29 +150,36 @@ void CreatePuzzle()
 		bool validPositionInput = false;
 		do
 		{
+			cout << "Position (\"LCD / CTRL-Z = stop) ? ";
+			cin >> positionInput;
+
 			if (cin.fail())
 			{
-				if (cin.eof())
+				if (cin.eof()) //TODO does not exit immeadiatelly
+				{
 					stopCreating = true;
+					break; //exits this loop
+				}
 				else
 				{
 					cin.clear();
 					cin.ignore(10000, '\n');
 				}
 			}
+			else //if good input
+			{
+				//Convert to uppercase
+				for (size_t i = 0; i < positionInput.length(); i++)
+					positionInput.at(i) = toupper(positionInput.at(i));
 
-			cout << "Position (\"LCD / CTRL-Z = stop) ? ";
-			cin >> positionInput;
-
-			//Convert to uppercase
-			for (size_t i = 0; i < positionInput.length(); i++)
-				positionInput.at(i) = toupper(positionInput.at(i));
-
-			//Check validity
-			if (board.validPositionInput(positionInput))
-				validPositionInput = true;
-
+				//Check validity
+				if (board.validPositionInput(positionInput))
+					validPositionInput = true;
+			}
 		} while (!validPositionInput); //loop until valid input
+
+		if (stopCreating) //exit loop if CTRL-Z
+			break;
 
 		pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
 		char direction = positionInput.at(2);
