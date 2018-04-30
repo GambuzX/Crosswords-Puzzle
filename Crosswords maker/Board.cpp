@@ -139,6 +139,14 @@ void Board::insertWord(string word, string positionInput)
 }
 
 //=================================================================================================================================
+// Removes an already placed word
+
+void Board::removeWord(string positionInput)
+{
+
+}
+
+//=================================================================================================================================
 // Shows the user what words he can put in the specified location
 
 void Board::helpUser(string positionInput)

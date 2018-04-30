@@ -183,6 +183,7 @@ void CreatePuzzle()
 			break;
 
 		bool validWord = false;
+		bool skip = false;
 		do
 		{
 			if (cin.fail())
@@ -191,21 +192,40 @@ void CreatePuzzle()
 				cin.ignore(10000, '\n');
 			}
 
-			cout << "Word ( - = remove / ? = help) .. ? ";
+			cout << "Word (< = return / - = remove / ? = help) .. ? ";
 			cin >> word;
 
 			//Convert to uppercase
 			for (size_t i = 0; i < word.length(); i++)
 				word.at(i) = toupper(word.at(i));
 
-			//Check validity
-			if (board.canBeInserted(word, positionInput))
-				validWord = true;
+			if (word == "<") // Skip loop
+			{
+				skip = true;
+				cout << endl;
+				break;
+			}
+			else if (word == "-") // Remove word
+			{
+				board.removeWord(positionInput);
+				cout << endl;
+			}
+			else if (word == "?") // Ask for help
+			{
+				board.helpUser(positionInput);
+				cout << endl;
+			}
+			else // default
+				if (board.canBeInserted(word, positionInput)) 	//Check validity			
+					validWord = true;
 
 			// TODO add options for help and deletion
 			// TODO add option to go back to position input
 
 		} while (!validWord); //loop until valid input
+
+		if (skip)
+			continue; //restart loop
 
 		board.insertWord(word, positionInput);
 
