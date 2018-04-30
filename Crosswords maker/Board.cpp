@@ -72,9 +72,11 @@ void Board::showBoard()
 //=================================================================================================================================
 // Verifies if a word can be inserted in a determined location, informing why not if false
 
-bool Board::canBeInserted(string word, pair<int, int> insertionPos, char direction)
+bool Board::canBeInserted(string word, string positionInput)
 {
 	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
 
 	if (!isValidHeadline(word)) // verify word is valid
 	{
@@ -86,7 +88,7 @@ bool Board::canBeInserted(string word, pair<int, int> insertionPos, char directi
 		cout << "Word is not present in the dictionary!\n\n";
 		return false;
 	}
-	else if (!wordFitsSpace(word, insertionPos, direction)) // verify it fits the space
+	else if (!wordFitsSpace(word, positionInput)) // verify it fits the space
 	{
 		cout << "Word does not fit the specified space!\n\n";
 		return false;
@@ -96,11 +98,13 @@ bool Board::canBeInserted(string word, pair<int, int> insertionPos, char directi
 		cout << "Word is already in use!\n\n";
 		return false;
 	}
-	else if (!matchesCurrentBoard(word, insertionPos, direction))
+	else if (!matchesCurrentBoard(word, positionInput))
 	{
 		cout << "Word does not match previous inserted words!\n\n";
 		return false;
 	}
+
+	// TODO Prevent words on top of each other
 	return true;
 }
 
@@ -108,15 +112,17 @@ bool Board::canBeInserted(string word, pair<int, int> insertionPos, char directi
 //=================================================================================================================================
 // Inserts a word on the board. Assumes it is a valid insertion.
 
-void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
+void Board::insertWord(string word, string positionInput)
 {
 	// insertionPos = (line, column)
-	usedWords.insert(word); //add word to the set
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+	usedWords.push_back(pair<string,string>(positionInput, word)); //add word to the vector
 
 	//Insert word
 	char dir = toupper(direction);
-	int line = insertionPos.first;
-	int column = insertionPos.second;
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
 	switch (dir)
 	{
 	case 'H':
@@ -135,18 +141,19 @@ void Board::insertWord(string word, pair<int, int> insertionPos, char direction)
 //=================================================================================================================================
 // Shows the user what words he can put in the specified location
 
-void Board::helpUser(pair<int, int> insertionPos, char direction)
+void Board::helpUser(string positionInput)
 {
 	// insertionPos = (line, column)
-	direction = toupper(direction);
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
 	int availableSpace;
 	switch (direction)
 	{
 	case 'H':
-		availableSpace = horizontalSize - insertionPos.second;
+		availableSpace = horizontalSize - insertionPosition.second;
 		break;
 	case 'V':
-		availableSpace = verticalSize - insertionPos.first;
+		availableSpace = verticalSize - insertionPosition.first;
 		break;
 	default:
 		cerr << "Invalid input!";
@@ -162,7 +169,7 @@ void Board::helpUser(pair<int, int> insertionPos, char direction)
 	for (size_t i = 0; i < fittingWords.size(); i++)
 	{
 		string currentWord = fittingWords.at(i);
-		if (!isWordUsed(currentWord) && matchesCurrentBoard(currentWord, insertionPos, direction))
+		if (!isWordUsed(currentWord) && matchesCurrentBoard(currentWord, positionInput))
 		{
 			if (counter % WORDS_PER_LINE == 0) cout << endl;
 			cout << setw(WORDS_WIDTH) << currentWord;
@@ -245,9 +252,9 @@ bool Board::isValidHeadline(string word)
 
 bool Board::isWordUsed(string word)
 {
-	set<string>::iterator it;
+	vector<pair<string,string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
-		if (*it == word)
+		if (it->second == word)
 			return true;
 	return false;
 }
@@ -255,19 +262,21 @@ bool Board::isWordUsed(string word)
 //=================================================================================================================================
 // Checks if the word fits in the specified space
 
-bool Board::wordFitsSpace(string word, pair<int, int> insertionPos, char direction)
+bool Board::wordFitsSpace(string word, string positionInput)
 {
 	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
 
 	char dir = toupper(direction);
 	size_t wordSize = word.length();
 	int availableSpace;
 	switch (dir){
 	case 'H':
-		availableSpace = horizontalSize - insertionPos.second;
+		availableSpace = horizontalSize - insertionPosition.second;
 		break;
 	case 'V':
-		availableSpace = verticalSize - insertionPos.first;
+		availableSpace = verticalSize - insertionPosition.first;
 		break;
 	default:
 		cerr << "Invalid input!";
@@ -279,13 +288,14 @@ bool Board::wordFitsSpace(string word, pair<int, int> insertionPos, char directi
 // Checks if the word matches the current board, i.e. the words already placed
 // Assumes all other conditios are met: valid, not used and fits space
 
-bool Board::matchesCurrentBoard(string word, pair<int, int> insertionPos, char direction)
+bool Board::matchesCurrentBoard(string word, string positionInput)
 {
 	// insertionPos = (line, column)
-	char dir = toupper(direction);
-	int line = insertionPos.first;
-	int column = insertionPos.second;
-	switch (dir)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	switch (direction)
 	{
 	case 'H':
 		for (size_t i = 0; i < word.length(); i++)

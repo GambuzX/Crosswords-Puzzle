@@ -182,9 +182,6 @@ void CreatePuzzle()
 		if (stopCreating) //exit loop if CTRL-Z
 			break;
 
-		pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
-		char direction = positionInput.at(2);
-
 		bool validWord = false;
 		do
 		{
@@ -202,7 +199,7 @@ void CreatePuzzle()
 				word.at(i) = toupper(word.at(i));
 
 			//Check validity
-			if (board.canBeInserted(word, insertionPosition, direction))
+			if (board.canBeInserted(word, positionInput))
 				validWord = true;
 
 			// TODO add options for help and deletion
@@ -210,7 +207,7 @@ void CreatePuzzle()
 
 		} while (!validWord); //loop until valid input
 
-		board.insertWord(word, insertionPosition, direction);
+		board.insertWord(word, positionInput);
 
 		cout << endl;
 		board.showBoard();

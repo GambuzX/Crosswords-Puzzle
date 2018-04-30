@@ -15,29 +15,29 @@ public:
 
 	inline void setDictionary(Dictionary& dict);
 	void showBoard();
-	bool canBeInserted(std::string word, std::pair<int, int> insertionPos, char direction);
-	void insertWord(std::string word, std::pair<int, int> insertionPos, char direction);
-	void removeWord(std::pair<int, int> insertionPos, char direction);
+	bool canBeInserted(std::string word, std::string position);
+	void insertWord(std::string word, std::string position);
+	void removeWord(std::string position);
 	// TODO Method to automatically insert hashes in places where no more words fit
-	void helpUser(std::pair<int, int> insertionPos, char direction);
+	void helpUser(std::string position);
 	bool validPositionInput(std::string); // TODO check if 3 valid letters only
 	// TODO Method to save puzzle
 	// TODO Method to load puzzle
 
-	std::pair<int, int> calculateInsertionCoordinates (std::string coordinates);
-
 private:
 	std::vector<std::vector<char>> board;
-	std::set<std::string> usedWords; // used to keep track of words in the board
+	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
 
 	int horizontalSize = 0, verticalSize = 0;
 	Dictionary *dictionary; //pointer to the dictionary in use
 
+
+	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
 	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
-	bool wordFitsSpace(std::string word, std::pair<int, int> insertionPos, char direction);
-	bool matchesCurrentBoard(std::string word, std::pair<int, int> insertionPos, char direction);
+	bool wordFitsSpace(std::string word, std::string position);
+	bool matchesCurrentBoard(std::string word, std::string position);
 	bool wildcardMatch(const char *str, const char *strWild);
 };
 
