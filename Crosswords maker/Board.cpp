@@ -23,7 +23,7 @@ using namespace std;
 }*/
 
 //=================================================================================================================================
-// Constructor with sizes and dictionary to be used
+// Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
 Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
 {
@@ -56,7 +56,7 @@ void Board::showBoard()
 	const int WIDTH = 2;
 
 	cout << setw(WIDTH) << " ";
-	for (size_t i = 0; i < board.size(); i++)
+	for (size_t i = 0; i < board.at(0).size(); i++)
 		cout << setw(WIDTH) << (char) ('a' + i);
 	cout << endl;
 

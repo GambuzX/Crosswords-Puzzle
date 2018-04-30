@@ -32,6 +32,7 @@ int main()
 				cin.clear();
 				cin.ignore(10000, '\n');
 			}
+			cout << endl;
 			Options();
 			cin >> answer;
 		} while (cin.fail() || answer < 0 || answer > 2);
@@ -99,26 +100,29 @@ string askDictionaryName()
 pair<int,int> askBoardSize()
 {
 	pair<int, int> boardSize;
+	cout << "Max size for each direction is 26.\n";
 
-	cout << "Horizontal board size? ";	
-	cin >> boardSize.first;
-	while (!cin)
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
-		cout << "Horizontal board size? ";
+	do {
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(1000, '\n');
+		}
+		cout << "Horizontal board size? ";	
 		cin >> boardSize.first;
-	}
+	} while (!cin || boardSize.first <= 0 || boardSize.first > 26);
 
-	cout << "Vertical board size? ";
-	cin >> boardSize.second;
-	while (!cin)
+	do
 	{
-		cin.clear();
-		cin.ignore(1000, '\n');
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(1000, '\n');
+		}
 		cout << "Vertical board size? ";
 		cin >> boardSize.second;
-	}
+	} while (!cin || boardSize.second <= 0 || boardSize.second > 26);
+
 	return boardSize;
 }
 
@@ -135,6 +139,7 @@ void CreatePuzzle()
 	Dictionary dictionary(dictName);
 	dictionary.ProcessDictionary();
 
+	cout << endl;
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second, dictionary);
 
