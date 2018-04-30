@@ -20,7 +20,7 @@ int main()
 	cout << endl << endl;
 
 	Instructions();
-	cout << endl << endl;
+	cout << endl;
 
 	while (true) //Program only ends by user input
 	{
@@ -155,7 +155,7 @@ void CreatePuzzle()
 		bool validPositionInput = false;
 		do
 		{
-			cout << "Position (\"LCD / CTRL-Z = stop) ? ";
+			cout << "Position (\"LCD\" / CTRL-Z = stop) ? ";
 			cin >> positionInput;
 
 			if (cin.fail())
