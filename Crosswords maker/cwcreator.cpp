@@ -155,9 +155,10 @@ void CreatePuzzle()
 
 			if (cin.fail())
 			{
-				if (cin.eof()) //TODO does not exit immeadiatelly
+				if (cin.eof())
 				{
 					stopCreating = true;
+					cin.clear(); // Clears cin so as to enable next inputs
 					break; //exits this loop
 				}
 				else
