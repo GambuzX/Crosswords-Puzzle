@@ -152,6 +152,7 @@ void Board::removeWord(string positionInput)
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
 		cout << "\nThere is no word in that location!\n";
+
 		return;
 	}
 

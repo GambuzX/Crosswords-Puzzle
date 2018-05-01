@@ -11,9 +11,8 @@ public:
 	//Constructors
 	Dictionary(std::string dictName) : dictionaryName(dictName) {};
 
-	void ProcessDictionary();
+	bool ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented
-
 	bool isInWordList(std::string word); // checks if word exists in word list
 
 	std::vector<std::string> fittingWords(int availableSpace);

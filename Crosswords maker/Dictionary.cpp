@@ -13,21 +13,15 @@ using namespace std;
 }*/
 
 //=================================================================================================================================
+// Verifies if dictionary exists and processes it, storing all word entries
 
-void Dictionary::ProcessDictionary()
+bool Dictionary::ProcessDictionary()
 {
-	if (dictionaryName == "")
-	{
-		cout << "Dictionary name? ";
-		cin >> dictionaryName;
-	}
-
 	ifstream dict(dictionaryName);
 
 	if (!dict.is_open())
 	{
-		cout << "File with that name does not exist.\n";
-		exit(1);
+		return false;
 	}
 
 	string line;
@@ -63,6 +57,7 @@ void Dictionary::ProcessDictionary()
 			}
 		}
 	}
+	return true;
 }
 
 //=================================================================================================================================

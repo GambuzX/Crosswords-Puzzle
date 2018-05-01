@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <conio.h>
 
 #include "Dictionary.h"
 #include "Board.h"
@@ -56,7 +57,7 @@ int main()
 }
 
 // TODO Assure uppercase words
-// TODO Make sure max size is 26 (because of letters)
+// TODO Use _getch() where needed
 
 //=================================================================================================================================
 //TODO Ascii art with colors
@@ -137,7 +138,13 @@ void CreatePuzzle()
 	// TODO return to menu if invalid dictionary name
 	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
-	dictionary.ProcessDictionary();
+	bool dictionaryOpened = dictionary.ProcessDictionary(); // FINISH THIS!!!! DASDASDASASDADASDASDASDSA
+	if (!dictionaryOpened)
+	{
+		cout << "\nCould not locate file with that name.\n";
+		//_getch();
+		return;
+	}
 
 	cout << endl;
 	pair<int, int> boardSize = askBoardSize();
@@ -147,11 +154,15 @@ void CreatePuzzle()
 	board.showBoard();
 	cout << endl;
 
+	// Input loop
 	bool stopCreating = false;
 	while (!stopCreating)
 	{
 		string positionInput, word;
 
+		////////////////////////////////
+		//      ASK FOR POSITION      //
+		////////////////////////////////
 		bool validPositionInput = false;
 		do
 		{
@@ -186,6 +197,10 @@ void CreatePuzzle()
 
 		if (stopCreating) //exit loop if CTRL-Z
 			break;
+
+		////////////////////////////////
+		//        ASK FOR WORD        //
+		////////////////////////////////
 
 		bool validInput = false;
 		bool skipInsertion = false;
