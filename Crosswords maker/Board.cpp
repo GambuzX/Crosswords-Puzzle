@@ -143,7 +143,28 @@ void Board::insertWord(string word, string positionInput)
 
 void Board::removeWord(string positionInput)
 {
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	char direction = positionInput.at(2);
 
+	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
+	{
+		cout << "\nThere is no word in that location!\n";
+		return;
+	}
+
+	vector<pair<string, string>>::iterator it;
+	for (it = usedWords.begin(); it != usedWords.end(); it++)
+	{
+		string position = it->first;
+		string word = it->second;
+		pair<int, int> wordPos = calculateInsertionCoordinates(position);
+
+	}
+
+	//TODO When removing, be careful with adjacent words so as not to break them too
 }
 
 //=================================================================================================================================
@@ -317,6 +338,42 @@ bool Board::matchesCurrentBoard(string word, string positionInput)
 		break;
 	default:
 		cerr << "Invalid input!";
+	}
+	return true;
+
+	//TODO Check it matches from all sides, not just positions I want to place
+}
+
+//=================================================================================================================================
+// Checks if a word in the board intercepts determined coordinates in the board
+
+bool Board::wordInterceptsPosition(string targetPosition, string word, string wordPosition)
+{
+	// position = (line, column)
+	pair<int, int> targetCoords = calculateInsertionCoordinates(targetPosition);
+	pair<int, int> wordCoords = calculateInsertionCoordinates(wordPosition);
+	char targetDir = targetPosition.at(2);
+	char wordDir = wordPosition.at(2);
+
+	if (targetDir != wordDir) //must be on the same direction
+		return false;
+
+	switch (targetDir)
+	{
+	case 'H':
+		if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
+			return false;
+		if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + word.length())) //if out of the range occupied by the word
+			return false;
+		break;
+	case 'V':
+		if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
+			return false;
+		if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + word.length())) //if out of the range occupied by the word
+			return false;
+		break;
+	default:
+		cerr << "Invalid direction!";
 	}
 	return true;
 }
