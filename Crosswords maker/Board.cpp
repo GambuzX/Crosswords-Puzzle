@@ -155,6 +155,7 @@ void Board::removeWord(string positionInput)
 		return;
 	}
 
+	bool foundWord = false;
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
@@ -188,10 +189,12 @@ void Board::removeWord(string positionInput)
 			default:
 				cerr << "Invalid direction!";
 			}
+			foundWord = true;
 			break; //can only remove one word, stops after it
 		}
 	}
-	//TODO When removing, be careful with adjacent words so as not to break them too
+	if (!foundWord)
+		cout << "\nThere is no word in the specified direction!\n";
 }
 
 //=================================================================================================================================
