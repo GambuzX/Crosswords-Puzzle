@@ -21,8 +21,8 @@ public:
 	// TODO Method to automatically insert hashes in places where no more words fit
 	void helpUser(std::string position);
 	bool validPositionInput(std::string);
-	// TODO Method to save puzzle
-	// TODO Method to load puzzle
+	void savePuzzle();
+	void loadPuzzle();
 
 private:
 	std::vector<std::vector<char>> board;
