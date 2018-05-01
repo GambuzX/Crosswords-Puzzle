@@ -278,7 +278,8 @@ bool Board::validPositionInput(string input)
 
 void Board::savePuzzle(string fileName)
 {
-
+	//TODO implement when certain that no other attributes will be added
+	// Organize it well
 }
 
 //=================================================================================================================================
