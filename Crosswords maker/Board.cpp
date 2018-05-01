@@ -275,6 +275,20 @@ bool Board::validPositionInput(string input)
 }
 
 //=================================================================================================================================
+
+void Board::savePuzzle(string fileName)
+{
+
+}
+
+//=================================================================================================================================
+
+void Board::loadPuzzle(string fileName)
+{
+
+}
+
+//=================================================================================================================================
 // Determines line and column indexes given text input
 
 pair<int, int> Board::calculateInsertionCoordinates(string coordinates)

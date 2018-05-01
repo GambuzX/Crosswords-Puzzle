@@ -129,6 +129,37 @@ pair<int,int> askBoardSize()
 
 //=================================================================================================================================
 
+void askToSaveBoard(Board board)
+{
+	bool validAnswer = false;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		char answer;
+		cout << "Do you wish to save the current board (Y/N) ? ";
+		cin >> answer;
+		answer = toupper(answer);
+
+		if (answer == 'Y')
+		{
+			string fileName;
+			cout << "File name? ";
+			getline(cin, fileName);
+			board.savePuzzle(fileName);
+			validAnswer = true;
+		}
+		else if (answer == 'N')
+			validAnswer = true;
+
+	} while (!validAnswer);
+}
+
+//=================================================================================================================================
+
 void CreatePuzzle()
 {
 	cout << " ------------------------------------\n";
@@ -196,7 +227,10 @@ void CreatePuzzle()
 		} while (!validPositionInput); //loop until valid input
 
 		if (stopCreating) //exit loop if CTRL-Z
+		{
+			askToSaveBoard(board);
 			break;
+		}
 
 		////////////////////////////////
 		//        ASK FOR WORD        //
