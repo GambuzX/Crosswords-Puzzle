@@ -39,6 +39,7 @@ private:
 	bool wordFitsSpace(std::string word, std::string position);
 	bool matchesCurrentBoard(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
+	bool adjacentSpacesEmpty(std::pair<int,int> coordinates, char direction);
 	bool wildcardMatch(const char *str, const char *strWild);
 };
 

@@ -160,10 +160,37 @@ void Board::removeWord(string positionInput)
 	{
 		string position = it->first;
 		string word = it->second;
-		pair<int, int> wordPos = calculateInsertionCoordinates(position);
+		if (wordInterceptsPosition(positionInput, word, position))
+		{
+			pair<int, int> wordPos = calculateInsertionCoordinates(position);
+			int startLine = wordPos.first;
+			int startColumn = wordPos.second;
+			char dir = position.at(2);
 
+			switch (dir)
+			{
+			case 'H':
+				for (int i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir)) 
+						board.at(startLine).at(startColumn + i) = '.';
+				}
+				usedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			case 'V':
+				for (int i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+						board.at(startLine + i).at(startColumn) = '.';
+				}
+				usedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			default:
+				cerr << "Invalid direction!";
+			}
+			break; //can only remove one word, stops after it
+		}
 	}
-
 	//TODO When removing, be careful with adjacent words so as not to break them too
 }
 
@@ -376,6 +403,68 @@ bool Board::wordInterceptsPosition(string targetPosition, string word, string wo
 		cerr << "Invalid direction!";
 	}
 	return true;
+}
+
+//=================================================================================================================================
+
+bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
+{
+	int line = coordinates.first;
+	int column = coordinates.second;
+
+	bool empty = false;
+	switch (direction)
+	{
+	case 'H':
+		if (line == 0) //special case: only check downwards
+		{
+			if (board.at(line + 1).at(column) == '.' || board.at(line + 1).at(column) == '#')
+				empty = true;
+			else
+				empty = false;
+		}
+		else if (line == verticalSize-1) //special case: only check upwards
+		{
+			if (board.at(line - 1).at(column) == '.' || board.at(line - 1).at(column) == '#')
+				empty = true;
+			else
+				empty = false;
+		}
+		else
+		{
+			if ((board.at(line + 1).at(column) == '.' || board.at(line + 1).at(column) == '#') && (board.at(line - 1).at(column) == '.' || board.at(line - 1).at(column) == '#')) // check both up and down
+				empty = true;
+			else
+				empty = false;
+		}
+		break;
+	case 'V':
+		if (column == 0) //special case: only check right
+		{
+			if (board.at(line).at(column + 1) == '.' || board.at(line).at(column + 1) == '#')
+				empty = true;
+			else
+				empty = false;
+		}
+		else if (line == verticalSize - 1) //special case: only check left
+		{
+			if (board.at(line).at(column - 1) == '.' || board.at(line).at(column - 1) == '#')
+				empty = true;
+			else
+				empty = false;
+		}
+		else
+		{
+			if ((board.at(line).at(column + 1) == '.' || board.at(line).at(column + 1) == '#') && (board.at(line).at(column - 1) == '.' || board.at(line).at(column - 1) == '#')) // check both right and left
+				empty = true;
+			else
+				empty = false;
+		}
+		break;
+	default:
+		cerr << "Invalid direction!";
+	}
+	return empty;
 }
 
 //=================================================================================================================================

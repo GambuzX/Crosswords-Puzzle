@@ -208,11 +208,12 @@ void CreatePuzzle()
 			{
 				skip = true;
 				cout << endl;
-				break;
+				validWord = true; // exit loop
 			}
 			else if (word == "-") // Remove word
 			{
 				board.removeWord(positionInput);
+				validWord = true; // exit loop
 				cout << endl;
 			}
 			else if (word == "?") // Ask for help
