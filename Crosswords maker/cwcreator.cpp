@@ -187,8 +187,8 @@ void CreatePuzzle()
 		if (stopCreating) //exit loop if CTRL-Z
 			break;
 
-		bool validWord = false;
-		bool skip = false;
+		bool validInput = false;
+		bool skipInsertion = false;
 		do
 		{
 			if (cin.fail())
@@ -206,14 +206,13 @@ void CreatePuzzle()
 
 			if (word == "<") // Skip loop
 			{
-				skip = true;
+				validInput = true; // exit loop
 				cout << endl;
-				validWord = true; // exit loop
 			}
 			else if (word == "-") // Remove word
 			{
 				board.removeWord(positionInput);
-				validWord = true; // exit loop
+				validInput = true; // exit loop
 				cout << endl;
 			}
 			else if (word == "?") // Ask for help
@@ -222,18 +221,12 @@ void CreatePuzzle()
 				cout << endl;
 			}
 			else // default
-				if (board.canBeInserted(word, positionInput)) 	//Check validity			
-					validWord = true;
-
-			// TODO add options for help and deletion
-			// TODO add option to go back to position input
-
-		} while (!validWord); //loop until valid input
-
-		if (skip)
-			continue; //restart loop
-
-		board.insertWord(word, positionInput);
+				if (board.canBeInserted(word, positionInput)) //Check validity and output error messages if necessary
+				{
+					board.insertWord(word, positionInput);
+					validInput = true;
+				}
+		} while (!validInput); //loop until valid input
 
 		cout << endl;
 		board.showBoard();
