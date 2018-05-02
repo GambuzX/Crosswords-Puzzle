@@ -86,7 +86,7 @@ bool Board::canBeInserted(string word, string positionInput)
 	}
 	else if (!matchesCurrentBoard(word, positionInput))
 	{
-		cout << "Word does not match current board!!\n\n";
+		cout << "Word does not match current board!\n\n";
 		return false;
 	}
 
@@ -151,7 +151,6 @@ void Board::removeWord(string positionInput)
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
 		cout << "\nThere is no word in that location!\n";
-
 		return;
 	}
 
@@ -177,6 +176,7 @@ void Board::removeWord(string positionInput)
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
+				RemoveHashes(word, position);
 				break;
 			case 'V':
 				for (int i = 0; i < word.length(); i++)
@@ -185,6 +185,7 @@ void Board::removeWord(string positionInput)
 						board.at(startLine + i).at(startColumn) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
+				RemoveHashes(word, position);
 				break;
 			default:
 				cerr << "Invalid direction!";
@@ -220,6 +221,39 @@ void Board::InsertHashes(string word, string positionInput)
 			board.at(line-1).at(column) = '#';
 		if ((line + word.length() - 1) < verticalSize - 1)
 			board.at(line + word.length()).at(column) = '#';
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+}
+
+//=================================================================================================================================
+//
+
+void Board::RemoveHashes(string word, string positionInput)
+{
+	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
+	int line = coords.first;
+	int column = coords.second;
+	char dir = positionInput.at(2);
+
+	switch (dir)
+	{
+	case 'H':
+		if (column > 0)
+			if (board.at(line).at(column - 1) == '#')
+				board.at(line).at(column - 1) = '.';
+		if ((column + word.length() - 1) < horizontalSize - 1)
+			if (board.at(line).at(column + word.length()) == '#')
+				board.at(line).at(column + word.length()) = '.';
+		break;
+	case 'V':
+		if (line > 0)
+			if (board.at(line - 1).at(column) == '#')
+				board.at(line - 1).at(column) = '.';
+		if ((line + word.length() - 1) < verticalSize - 1)
+			if (board.at(line + word.length()).at(column) == '#')
+				board.at(line + word.length()).at(column) = '.';
 		break;
 	default:
 		cerr << "Invalid input!";
@@ -550,7 +584,7 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 			else
 				empty = false;
 		}
-		else if (line == verticalSize - 1) //special case: only check left
+		else if (column == (horizontalSize - 1)) //special case: only check left
 		{
 			if (board.at(line).at(column - 1) == '.' || board.at(line).at(column - 1) == '#')
 				empty = true;
