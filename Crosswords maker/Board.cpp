@@ -114,6 +114,11 @@ bool Board::canBeInserted(string word, string positionInput)
 
 void Board::insertWord(string word, string positionInput)
 {
+	//BACKUPS
+	vector<vector<char>> oldBoard = board;
+	vector<pair<string, string>> oldUsedWords = usedWords;
+
+
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
@@ -136,6 +141,13 @@ void Board::insertWord(string word, string positionInput)
 	default:
 		cerr << "Invalid input!";
 	}		
+
+	if (!validBoard()) //If insertWord broke the board, restore backup
+	{
+		cout << "Word does not match previous inserted words!\n\n";
+		board = oldBoard;
+		usedWords = oldUsedWords;
+	}
 }
 
 //=================================================================================================================================
@@ -365,76 +377,6 @@ int Board::mapCharToNumber(char letter)
 }
 
 //=================================================================================================================================
-// Calculates until where there are already placed words given a direction. Returns respective coordinate.
-
-int Board::calculateBound(pair<int, int> coords, char direction)
-{
-	int line = coords.first;
-	int column = coords.second;
-	direction = toupper(direction);
-
-	int bound;
-	switch (direction)
-	{
-	case 'U':
-		bound = line - 1;
-		while (bound >= 0)
-		{
-			if (isalpha(board.at(bound).at(column)))
-				bound--;
-			else
-			{
-				break;
-			}
-		}
-		bound++;
-		break;
-	case 'D':
-		bound = line + 1;
-		while (bound <= verticalSize)
-		{
-			if (isalpha(board.at(bound).at(column)))
-				bound++;
-			else
-			{
-				break;
-			}
-		}
-		bound--;
-		break;
-	case 'R':
-		bound = column + 1;
-		while (bound <= horizontalSize)
-		{
-			if (isalpha(board.at(bound).at(column)))
-				bound++;
-			else
-			{
-				break;
-			}
-		}
-		bound--;
-		break;
-	case 'L':
-		bound = column - 1;
-		while (bound >= 0)
-		{
-			if (isalpha(board.at(bound).at(column)))
-				bound--;
-			else
-			{
-				break;
-			}
-		}
-		bound++;
-		break;
-	}
-
-
-	return bound;
-}
-
-//=================================================================================================================================
 // Verifies the given headline is valid
 
 bool Board::isValidHeadline(string word)
@@ -497,72 +439,14 @@ bool Board::matchesCurrentBoard(string word, string positionInput)
 	int column = insertionPosition.second;
 	switch (direction)
 	{
-	case 'H':
-
+	case 'H':		
 		// MIDDLE
 		for (size_t i = 0; i < word.length(); i++) //for each position of the letter
 		{
-			int currentColumn = column + i;
-			pair<int, int> currentPos = pair<int, int>(line, currentColumn);
-
-			if (board.at(line).at(currentColumn) != word.at(i) && board.at(line).at(currentColumn) != '.') // must either correspond to the word letter or to '.'
-				return false;
-
-			//UP BOUND
-			if (line > 0 && isalpha(board.at(line - 1).at(currentColumn)))
-			{
-				int upBound = calculateBound(currentPos, 'U');
-				string wordToMatch = "";
-				for (int j = upBound; j < line; j++)
-					wordToMatch += board.at(j).at(currentColumn);
-				wordToMatch += word.at(i); //concatenate letters
-
-				if (!dictionary->existsWildcardMatchingWord(wordToMatch)) // if no word in the dictionary matches
-					return false;
-			}
-
-			//DOWN BOUND
-			if (line < verticalSize-1 && isalpha(board.at(line + 1).at(currentColumn)))
-			{
-				int downBound = calculateBound(currentPos, 'D');
-				string wordToMatch = "";
-				wordToMatch += word.at(i); //concatenate letters and words
-				for (int j = line+1; j <= downBound; j++)
-					wordToMatch += board.at(j).at(currentColumn);
-
-				if (!dictionary->existsWildcardMatchingWord(wordToMatch)) // if no word in the dictionary matches
-					return false;
-			}
-
-			//BOTH SIDES TODO THIS
+			if (board.at(line).at(column+i) != word.at(i) && board.at(line).at(column + i) != '.') // must either correspond to the word letter or to '.'
+				return false;			
 		}
 
-		// LEFT BOUND
-		if (column > 0 && isalpha(board.at(line).at(column - 1))) //if there are already letters to the left of the insertion position
-		{
-			int leftBound = calculateBound(insertionPosition, 'L'); //calculate until where there already exist letters
-			string wordToMatch = "";
-			for (int i = leftBound; i < column; i++)
-				wordToMatch += board.at(line).at(i);
-			wordToMatch += word; //concatenate letters and words
-
-			if (!dictionary->existsWildcardMatchingWord(wordToMatch)) // if no word in the dictionary matches
-				return false;
-		}
-
-		// RIGHT BOUND
-		if (column < horizontalSize-1 && isalpha(board.at(line).at(column + 1))) //if there are already letters to the left of the insertion position
-		{
-			pair<int, int> endPosition = pair<int, int>(line, column + word.length() - 1);
-			int rightBound = calculateBound(endPosition, 'R'); //calculate until where there already exist letters
-			string wordToMatch = "";
-			wordToMatch += word; //concatenate letters and words
-			for (int i = endPosition.second+1; i <= rightBound; i++)
-				wordToMatch += board.at(line).at(i);
-
-			if (!dictionary->existsWildcardMatchingWord(wordToMatch)) // if no word in the dictionary matches
-				return false;
-		}
 		break;
 	case 'V':
 		for (size_t i = 0; i < word.length(); i++)

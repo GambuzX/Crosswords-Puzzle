@@ -36,12 +36,11 @@ private:
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
-	int calculateBound(std::pair<int, int> coords, char direction);
 
 	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::string position);
-	bool matchesCurrentBoard(std::string word, std::string position);
+	bool matchesCurrentBoard(std::string word, std::string position); //TODO Change name
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool adjacentSpacesEmpty(std::pair<int,int> coordinates, char direction);
 };
