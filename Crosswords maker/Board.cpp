@@ -423,12 +423,14 @@ void Board::savePuzzle(string fileName)
 
 //=================================================================================================================================
 
+// TODO CANT REMOVE AFTER LOAD
+
 bool Board::loadPuzzle(string fileName)
 {
 	ifstream file(fileName, ios::binary);
 	
 	if (!file.is_open())
-		return;
+		return false;
 
 	file.read((char *)&horizontalSize, sizeof(int));
 	file.read((char *)&verticalSize, sizeof(int));
@@ -444,8 +446,8 @@ bool Board::loadPuzzle(string fileName)
 			file.read((char *) &board.at(i).at(j), sizeof(char));
 		}
 	}
-	int vectorSize;
-	file.read((char *)vectorSize, sizeof(int));
+	int vectorSize; //dummy value
+	file.read((char *)&vectorSize, sizeof(int));
 	usedWords.resize(vectorSize);
 
 	for (int i = 0; i < vectorSize; i++)
@@ -453,6 +455,7 @@ bool Board::loadPuzzle(string fileName)
 		file.read((char *)&usedWords.at(i).first, sizeof(string));
 		file.read((char *)&usedWords.at(i).second, sizeof(string));
 	}
+	return true;
 }
 
 //=================================================================================================================================
