@@ -8,20 +8,6 @@
 
 using namespace std;
 
-/*Board::Board(int horizontalSize, int verticalSize)
-{
-	this->horizontalSize = horizontalSize;
-	this->verticalSize = verticalSize;
-
-	board.resize(verticalSize);
-	for (size_t i = 0; i < board.size(); i++)
-		board.at(i).resize(horizontalSize);
-
-	for (size_t i = 0; i < board.size(); i++)
-		for (size_t j = 0; j < board.at(i).size(); j++)
-			board.at(i).at(j) = '.';
-}*/
-
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
@@ -208,6 +194,14 @@ void Board::removeWord(string positionInput)
 	}
 	if (!foundWord)
 		cout << "\nThere is no word in the specified direction!\n";
+}
+
+//=================================================================================================================================
+// Searches the board for places where to put hashes (places where no word fits)
+
+void Board::InsertHashes()
+{
+
 }
 
 //=================================================================================================================================
@@ -440,13 +434,11 @@ bool Board::matchesCurrentBoard(string word, string positionInput)
 	switch (direction)
 	{
 	case 'H':		
-		// MIDDLE
 		for (size_t i = 0; i < word.length(); i++) //for each position of the letter
 		{
 			if (board.at(line).at(column+i) != word.at(i) && board.at(line).at(column + i) != '.') // must either correspond to the word letter or to '.'
 				return false;			
 		}
-
 		break;
 	case 'V':
 		for (size_t i = 0; i < word.length(); i++)
