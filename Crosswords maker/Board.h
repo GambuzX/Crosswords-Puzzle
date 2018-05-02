@@ -19,7 +19,8 @@ public:
 	void insertWord(std::string word, std::string position);
 	void removeWord(std::string position);
 	// TODO Method to automatically insert hashes in places where no more words fit
-	void InsertHashes(); 
+	void InsertHashes(std::string word, std::string positionInput);
+	void RemoveHashes(std::string word, std::string positionInput);
 	void helpUser(std::string position);
 	bool validPositionInput(std::string);
 	bool validBoard();

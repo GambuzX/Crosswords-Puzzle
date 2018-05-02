@@ -86,7 +86,7 @@ bool Board::canBeInserted(string word, string positionInput)
 	}
 	else if (!matchesCurrentBoard(word, positionInput))
 	{
-		cout << "Word does not match previous inserted words!\n\n";
+		cout << "Word does not match current board!!\n\n";
 		return false;
 	}
 
@@ -126,11 +126,12 @@ void Board::insertWord(string word, string positionInput)
 		break;
 	default:
 		cerr << "Invalid input!";
-	}		
+	}
+	InsertHashes(word, positionInput);
 
 	if (!validBoard()) //If insertWord broke the board, restore backup
 	{
-		cout << "Word does not match previous inserted words!\n\n";
+		cout << "Word does not match current board!\n\n";
 		board = oldBoard;
 		usedWords = oldUsedWords;
 	}
@@ -197,11 +198,32 @@ void Board::removeWord(string positionInput)
 }
 
 //=================================================================================================================================
-// Searches the board for places where to put hashes (places where no word fits)
+// Places hashes before and after word
 
-void Board::InsertHashes()
+void Board::InsertHashes(string word, string positionInput)
 {
+	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
+	int line = coords.first;
+	int column = coords.second;
+	char dir = positionInput.at(2);
 
+	switch (dir)
+	{
+	case 'H':
+		if (column > 0)
+			board.at(line).at(column - 1) = '#';
+		if ((column + word.length() - 1) < horizontalSize - 1)
+			board.at(line).at(column + word.length()) = '#';
+		break;
+	case 'V':
+		if (line > 0)
+			board.at(line-1).at(column) = '#';
+		if ((line + word.length() - 1) < verticalSize - 1)
+			board.at(line + word.length()).at(column) = '#';
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
 }
 
 //=================================================================================================================================
