@@ -19,6 +19,7 @@ public:
 	void insertWord(std::string word, std::string position);
 	void removeWord(std::string position);
 	// TODO Method to automatically insert hashes in places where no more words fit
+	void InsertHashes(); 
 	void helpUser(std::string position);
 	bool validPositionInput(std::string);
 	void savePuzzle(std::string name);
@@ -40,7 +41,6 @@ private:
 	bool matchesCurrentBoard(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool adjacentSpacesEmpty(std::pair<int,int> coordinates, char direction);
-	bool wildcardMatch(const char *str, const char *strWild);
 };
 
 #endif

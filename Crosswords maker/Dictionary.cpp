@@ -87,6 +87,21 @@ bool Dictionary::isInWordList(string word)
 }
 
 //=================================================================================================================================
+//
+
+bool Dictionary::existsWildcardMatchingWord(string word)
+{
+	map<string, vector<string>>::iterator it;
+	string matchingWord = word + '*'; //Add wildcard operator
+	for (it = wordList.begin(); it != wordList.end(); it++)
+	{
+		if (wildcardMatch(it->first.c_str(), matchingWord.c_str()))
+			return true;
+	}
+	return false;
+}
+
+//=================================================================================================================================
 vector<string> Dictionary::fittingWords(int availableSpace)
 {
 	vector<string> validWords;
@@ -130,4 +145,64 @@ string Dictionary::toUpper(const string &word)
 	for (size_t i = 0; i < upperWord.length(); i++)
 		upperWord.at(i) = toupper(upperWord.at(i));
 	return upperWord;
+}
+
+//=================================================================================================================================
+// WildcardMatch
+// str - Input string to match
+// strWild - Match mask that may contain wildcards like ? and *
+//
+// A ? sign matches any character, except an empty string.
+// A * sign matches any string inclusive an empty string.
+// Characters are compared caseless.
+//
+// ADAPTED FROM:
+// https://www.codeproject.com/Articles/188256/A-Simple-Wildcard-Matching-Function
+bool Dictionary::wildcardMatch(const char *str, const char *strWild)
+{
+	// We have a special case where string is empty ("") and the mask is "*".
+	// We need to handle this too. So we can't test on !*str here.
+	// The loop breaks when the match string is exhausted.
+	while (*strWild)
+	{
+		// Single wildcard character
+		if (*strWild == '?')
+		{
+			// Matches any character except empty string
+			if (!*str)
+				return false;
+			// OK next
+			++str;
+			++strWild;
+		}
+		else if (*strWild == '*')
+		{
+			// Need to do some tricks.
+			// 1. The wildcard * is ignored.
+			// So just an empty string matches. This is done by recursion.
+			// Because we eat one character from the match string,
+			// the recursion will stop.
+			if (wildcardMatch(str, strWild + 1))
+				// we have a match and the * replaces no other character
+				return true;
+			// 2. Chance we eat the next character and try it again,
+			// with a wildcard * match. This is done by recursion.
+			// Because we eat one character from the string,
+			// the recursion will stop.
+			if (*str && wildcardMatch(str + 1, strWild))
+				return true;
+			// Nothing worked with this wildcard.
+			return false;
+		}
+		else
+		{
+			// Standard compare of 2 chars. Note that *str might be 0 here,
+			// but then we never get a match on *strWild
+			// that has always a value while inside this loop.
+			if (toupper(*str++) != toupper(*strWild++))
+				return false;
+		}
+	}
+	// Have a match? Only if both are at the end...
+	return !*str && !*strWild;
 }

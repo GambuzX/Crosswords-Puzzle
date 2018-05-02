@@ -14,6 +14,7 @@ public:
 	bool ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented
 	bool isInWordList(std::string word); // checks if word exists in word list
+	bool existsWildcardMatchingWord(std::string word);
 
 	std::vector<std::string> fittingWords(int availableSpace);
 	std::string GetWordSynonym(std::string word);
@@ -26,6 +27,7 @@ private:
 	bool isValid(std::string);
 	bool isInVector(std::string, std::vector<std::string>);
 	std::string toUpper(const std::string &word);
+	bool wildcardMatch(const char *str, const char *strWild);
 };
 
 #endif
