@@ -35,6 +35,8 @@ private:
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
+	int calculateBound(std::pair<int, int> coords, char direction);
+
 	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::string position);

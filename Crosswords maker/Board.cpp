@@ -310,6 +310,76 @@ int Board::mapCharToNumber(char letter)
 }
 
 //=================================================================================================================================
+// Calculates until where there are already placed words given a direction. Returns respective coordinate.
+
+int Board::calculateBound(pair<int, int> coords, char direction)
+{
+	int line = coords.first;
+	int column = coords.second;
+	direction = toupper(direction);
+
+	int bound;
+	switch (direction)
+	{
+	case 'U':
+		int bound = line - 1;
+		while (bound >= 0)
+		{
+			if (board.at(bound).at(column) != '.' && board.at(bound).at(column) != '#')
+				bound--;
+			else
+			{
+				break;
+			}
+		}
+		bound++;
+		break;
+	case 'D':
+		int bound = line + 1;
+		while (bound <= verticalSize)
+		{
+			if (board.at(bound).at(column) != '.' && board.at(bound).at(column) != '#')
+				bound++;
+			else
+			{
+				break;
+			}
+		}
+		bound--;
+		break;
+	case 'R':
+		int bound = column + 1;
+		while (bound <= horizontalSize)
+		{
+			if (board.at(line).at(bound) != '.' && board.at(line).at(bound) != '#')
+				bound++;
+			else
+			{
+				break;
+			}
+		}
+		bound--;
+		break;
+	case 'L':
+		int bound = column - 1;
+		while (bound >= 0)
+		{
+			if (board.at(line).at(bound) != '.' && board.at(line).at(bound) != '#')
+				bound--;
+			else
+			{
+				break;
+			}
+		}
+		bound++;
+		break;
+	}
+
+
+	return bound;
+}
+
+//=================================================================================================================================
 // Verifies the given headline is valid
 
 bool Board::isValidHeadline(string word)
