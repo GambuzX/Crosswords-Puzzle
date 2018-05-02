@@ -25,7 +25,7 @@ public:
 	bool validPositionInput(std::string);
 	bool validBoard();
 	void savePuzzle(std::string name);
-	void loadPuzzle(std::string name);
+	bool loadPuzzle(std::string name);
 
 private:
 	std::vector<std::vector<char>> board;

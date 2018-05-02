@@ -14,6 +14,7 @@ void Options();
 string askDictionaryName();
 pair<int, int> askBoardSize();
 void CreatePuzzle();
+void ResumePuzzle();
 
 int main()
 {
@@ -98,6 +99,16 @@ string askDictionaryName()
 
 //=================================================================================================================================
 
+string askBoardName()
+{
+	string boardName;
+	cout << "Board file name? ";
+	cin >> boardName;
+	return boardName;
+}
+
+//=================================================================================================================================
+
 pair<int,int> askBoardSize()
 {
 	pair<int, int> boardSize;
@@ -148,6 +159,7 @@ void askToSaveBoard(Board board)
 		{
 			string fileName;
 			cout << "File name? ";
+			cin.ignore(10000, '\n'); //ignore remaining chars in buffer
 			getline(cin, fileName);
 			board.savePuzzle(fileName);
 			validAnswer = true;
@@ -166,10 +178,9 @@ void CreatePuzzle()
 	cout << "           CREATE PUZZLE             \n";
 	cout << " ------------------------------------\n";
 
-	// TODO return to menu if invalid dictionary name
 	string dictName = askDictionaryName();
 	Dictionary dictionary(dictName);
-	bool dictionaryOpened = dictionary.ProcessDictionary(); // FINISH THIS!!!! DASDASDASASDADASDASDASDSA
+	bool dictionaryOpened = dictionary.ProcessDictionary();
 	if (!dictionaryOpened)
 	{
 		cout << "\nCould not locate file with that name.\n";
@@ -280,5 +291,31 @@ void CreatePuzzle()
 		cout << endl;
 		board.showBoard();
 		cout << endl;
+	}
+}
+
+//=================================================================================================================================
+
+void ResumePuzzle()
+{
+	string dictName = askDictionaryName();
+	Dictionary dictionary(dictName);
+	bool dictionaryOpened = dictionary.ProcessDictionary();
+	if (!dictionaryOpened)
+	{
+		cout << "\nCould not locate file with that name.\n";
+		//_getch();
+		return;
+	}
+	cout << endl;
+
+	string boardName = askBoardName();
+	Board board(1, 1, dictionary); //first two arguments are dummy values
+	bool boardLoaded = board.loadPuzzle(boardName);
+
+	if (!boardLoaded)
+	{
+		cout << "\nCould not locate file with that name.\n";
+		return;
 	}
 }

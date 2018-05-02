@@ -2,6 +2,7 @@
 #include "Dictionary.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include <vector>
 #include <map>
 #include <set>
@@ -397,13 +398,61 @@ void Board::savePuzzle(string fileName)
 {
 	//TODO implement when certain that no other attributes will be added
 	// Organize it well
+	ofstream file(fileName, ios::binary);
+	file.write((char *)&horizontalSize, sizeof(int));
+	file.write((char *)&verticalSize, sizeof(int));
+
+	for (int i = 0; i < verticalSize; i++) //Write all board chars
+	{
+		for (int j = 0; j < horizontalSize; j++)
+		{
+			file.write((char *)&board.at(i).at(j), sizeof(char));
+		}
+	}
+
+	int vectorSize = usedWords.size();
+	file.write((char *) &vectorSize, sizeof(int));
+	vector<pair<string, string>>::iterator it;
+	for (it = usedWords.begin(); it != usedWords.end(); it++)
+	{
+		file.write((char *)&it->first, sizeof(string));
+		file.write((char *)&it->second, sizeof(string));
+	}
+	file.close();
 }
 
 //=================================================================================================================================
 
-void Board::loadPuzzle(string fileName)
+bool Board::loadPuzzle(string fileName)
 {
+	ifstream file(fileName, ios::binary);
+	
+	if (!file.is_open())
+		return;
 
+	file.read((char *)&horizontalSize, sizeof(int));
+	file.read((char *)&verticalSize, sizeof(int));
+
+	board.resize(verticalSize);
+	for (int i = 0; i < verticalSize; i++)
+		board.at(i).resize(horizontalSize);
+
+	for (int i = 0; i < verticalSize; i++) //Write all board chars
+	{
+		for (int j = 0; j < horizontalSize; j++)
+		{
+			file.read((char *) &board.at(i).at(j), sizeof(char));
+		}
+	}
+	int vectorSize;
+	file.read((char *)vectorSize, sizeof(int));
+	usedWords.resize(vectorSize);
+
+	for (int i = 0; i < vectorSize; i++)
+	{
+		file.read((char *)&usedWords.at(i).first, sizeof(string));
+		file.read((char *)&usedWords.at(i).second, sizeof(string));
+	}
 }
 
 //=================================================================================================================================
