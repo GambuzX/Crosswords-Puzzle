@@ -319,6 +319,8 @@ void ResumePuzzle()
 		return;
 	}
 
+	board.debug();
+
 	cout << endl;
 	board.showBoard();
 	cout << endl;

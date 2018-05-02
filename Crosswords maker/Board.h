@@ -27,6 +27,8 @@ public:
 	void savePuzzle(std::string name);
 	bool loadPuzzle(std::string name);
 
+	void debug();
+
 private:
 	std::vector<std::vector<char>> board;
 	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)

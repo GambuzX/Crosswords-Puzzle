@@ -412,11 +412,16 @@ void Board::savePuzzle(string fileName)
 
 	int vectorSize = usedWords.size();
 	file.write((char *) &vectorSize, sizeof(int));
+
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
-		file.write((char *)&it->first, sizeof(string));
-		file.write((char *)&it->second, sizeof(string));
+		int firstSize = sizeof(char) * it->first.length();
+		int secondSize = sizeof(char) * it->second.length();
+		file.write((char *)&firstSize, sizeof(int));
+		file.write((char *)&secondSize, sizeof(int));
+		file.write((char *)&(it->first), firstSize);
+		file.write((char *)&(it->second), secondSize);
 	}
 	file.close();
 }
@@ -452,8 +457,11 @@ bool Board::loadPuzzle(string fileName)
 
 	for (int i = 0; i < vectorSize; i++)
 	{
-		file.read((char *)&usedWords.at(i).first, sizeof(string));
-		file.read((char *)&usedWords.at(i).second, sizeof(string));
+		int firstSize, secondSize;
+		file.read((char *)&firstSize, sizeof(int));
+		file.read((char *)&secondSize, sizeof(int));
+		file.read((char *)&usedWords.at(i).first, firstSize);
+		file.read((char *)&usedWords.at(i).second, secondSize);
 	}
 	return true;
 }
@@ -655,4 +663,19 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		cerr << "Invalid direction!";
 	}
 	return empty;
+}
+
+
+void Board::debug()
+{
+	cout << endl << endl;
+	cout << verticalSize << endl;
+	cout << horizontalSize << endl;
+	cout << usedWords.size() << endl;
+
+	for (int i = 0; i < usedWords.size(); i++)
+	{
+		cout << usedWords.at(i).first << " - " << usedWords.at(i).second << endl;
+	}
+	cout << endl << endl;
 }
