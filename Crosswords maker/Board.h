@@ -22,6 +22,7 @@ public:
 	void InsertHashes(); 
 	void helpUser(std::string position);
 	bool validPositionInput(std::string);
+	bool validBoard();
 	void savePuzzle(std::string name);
 	void loadPuzzle(std::string name);
 
