@@ -410,19 +410,20 @@ void Board::savePuzzle(string fileName)
 		}
 	}
 
-	int vectorSize = usedWords.size();
+	int vectorSize = usedWords.size(); //number of pairs
 	file.write((char *) &vectorSize, sizeof(int));
 
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
-		int firstSize = sizeof(char) * it->first.length();
-		int secondSize = sizeof(char) * it->second.length();
+		int firstSize = sizeof(it->first); //size of first string
+		int secondSize = sizeof(it->second); //size of second string
 		file.write((char *)&firstSize, sizeof(int));
 		file.write((char *)&secondSize, sizeof(int));
 		file.write((char *)&(it->first), firstSize);
 		file.write((char *)&(it->second), secondSize);
 	}
+
 	file.close();
 }
 
@@ -451,17 +452,17 @@ bool Board::loadPuzzle(string fileName)
 			file.read((char *) &board.at(i).at(j), sizeof(char));
 		}
 	}
-	int vectorSize; //dummy value
-	file.read((char *)&vectorSize, sizeof(int));
+	int vectorSize; // number of pairs
+	file.read((char *)&vectorSize, sizeof(int));	
 	usedWords.resize(vectorSize);
 
 	for (int i = 0; i < vectorSize; i++)
 	{
-		int firstSize, secondSize;
+		int firstSize, secondSize; //strings sizes
 		file.read((char *)&firstSize, sizeof(int));
 		file.read((char *)&secondSize, sizeof(int));
-		file.read((char *)&usedWords.at(i).first, firstSize);
-		file.read((char *)&usedWords.at(i).second, secondSize);
+		file.read((char *)&(usedWords.at(i).first), firstSize);
+		file.read((char *)&(usedWords.at(i).second), secondSize);
 	}
 	return true;
 }

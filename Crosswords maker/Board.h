@@ -36,7 +36,6 @@ private:
 	int horizontalSize = 0, verticalSize = 0;
 	Dictionary *dictionary; //pointer to the dictionary in use
 
-
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
 
