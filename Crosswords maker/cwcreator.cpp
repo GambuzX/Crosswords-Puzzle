@@ -40,6 +40,7 @@ int main()
 			cin >> answer;
 		} while (cin.fail() || answer < 0 || answer > 2);
 
+		//SELECT OPTION
 		Board board;
 		switch (answer)
 		{
@@ -97,6 +98,7 @@ void Options()
 }
 
 //=================================================================================================================================
+// Asks for the name of the dictionary
 
 string askDictionaryName()
 {
@@ -107,6 +109,7 @@ string askDictionaryName()
 }
 
 //=================================================================================================================================
+// Asks for the name of the board
 
 string askBoardName()
 {
@@ -117,6 +120,7 @@ string askBoardName()
 }
 
 //=================================================================================================================================
+// Asks for the size of the board
 
 pair<int,int> askBoardSize()
 {
@@ -148,6 +152,7 @@ pair<int,int> askBoardSize()
 }
 
 //=================================================================================================================================
+// Asks if the user wishes to save the current board
 
 void askToSaveBoard(Board board)
 {
@@ -180,6 +185,7 @@ void askToSaveBoard(Board board)
 }
 
 //=================================================================================================================================
+// Creates a new puzzle from scratch
 
 Board CreatePuzzle()
 {
@@ -205,6 +211,7 @@ Board CreatePuzzle()
 }
 
 //=================================================================================================================================
+// Resumes an already existing puzzle from a file
 
 Board ResumePuzzle()
 {
@@ -222,6 +229,7 @@ Board ResumePuzzle()
 }
 
 //=================================================================================================================================
+// Allows to make changes to an existing board
 
 void EditBoard(Board board)
 {
