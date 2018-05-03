@@ -9,6 +9,12 @@
 
 using namespace std;
 
+//TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user
+//TODO Option of adding hashes
+//TODO Better help function
+//TODO Final board check
+//TODO Board output file name according to project specifications
+
 //==========================================================================================
 //COLOR CODES:
 
