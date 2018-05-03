@@ -312,8 +312,9 @@ void EditBoard(Board board)
 			}
 			else if (word == "-") // Remove word
 			{
-				board.removeWord(positionInput);
-				validInput = true; // exit loop
+				bool wordRemoved = board.removeWord(positionInput);
+				if (wordRemoved)
+					validInput = true; // exit loop
 				cout << endl;
 			}
 			else if (word == "?") // Ask for help

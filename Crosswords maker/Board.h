@@ -15,9 +15,10 @@ public:
 	Board(int horiSize, int vertSize, Dictionary dict);
 
 	inline void setDictionary(Dictionary dict);
+
 	void showBoard();
 	void insertWord(std::string word, std::string position);
-	void removeWord(std::string position);
+	bool removeWord(std::string position);
 	void InsertHashes(std::string word, std::string positionInput);
 	void RemoveHashes(std::string word, std::string positionInput);
 	void helpUser(std::string position);

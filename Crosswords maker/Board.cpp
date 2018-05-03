@@ -168,9 +168,9 @@ void Board::insertWord(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Removes an already placed word
+// Removes an already placed word. If no word removed returns false.
 
-void Board::removeWord(string positionInput)
+bool Board::removeWord(string positionInput)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -181,7 +181,7 @@ void Board::removeWord(string positionInput)
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
 		cout << "\nThere is no word in that location!\n";
-		return;
+		return false;
 	}
 
 	bool foundWord = false;
@@ -225,7 +225,11 @@ void Board::removeWord(string positionInput)
 		}
 	}
 	if (!foundWord)
+	{
 		cout << "\nThere is no word in the specified direction!\n";
+		return false;
+	}
+	return true;
 }
 
 //=================================================================================================================================
