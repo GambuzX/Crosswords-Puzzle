@@ -13,8 +13,9 @@ void Instructions();
 void Options();
 string askDictionaryName();
 pair<int, int> askBoardSize();
-void CreatePuzzle();
-void ResumePuzzle();
+Board CreatePuzzle();
+Board ResumePuzzle();
+void EditBoard(Board board);
 
 int main()
 {
@@ -45,11 +46,12 @@ int main()
 			exit(0);
 			break;
 		case 1:
-			CreatePuzzle();
-			//TODO METHOD to edit puzzle
+			Board board = CreatePuzzle();
+			EditBoard(board);
 			break;
 		case 2:
-			ResumePuzzle();
+			Board board = ResumePuzzle();
+			EditBoard(board);
 			break;
 		default:
 			cerr << "Should not be able to get here!";
@@ -173,7 +175,7 @@ void askToSaveBoard(Board board)
 
 //=================================================================================================================================
 
-void CreatePuzzle()
+Board CreatePuzzle()
 {
 	cout << " ------------------------------------\n";
 	cout << "           CREATE PUZZLE             \n";
@@ -193,111 +195,12 @@ void CreatePuzzle()
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second, dictionary);
 
-	cout << endl;
-	board.showBoard();
-	cout << endl;
-
-	// Input loop
-	bool stopCreating = false;
-	while (!stopCreating)
-	{
-		string positionInput, word;
-
-		////////////////////////////////
-		//      ASK FOR POSITION      //
-		////////////////////////////////
-		bool validPositionInput = false;
-		do
-		{
-			cout << "Position (\"LCD\" / CTRL-Z = stop) ? ";
-			cin >> positionInput;
-
-			if (cin.fail())
-			{
-				if (cin.eof())
-				{
-					stopCreating = true;
-					cin.clear(); // Clears cin so as to enable next inputs
-					break; //exits this loop
-				}
-				else
-				{
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-			}
-			else //if good input
-			{
-				//Convert to uppercase
-				for (size_t i = 0; i < positionInput.length(); i++)
-					positionInput.at(i) = toupper(positionInput.at(i));
-
-				//Check validity
-				if (board.validPositionInput(positionInput))
-					validPositionInput = true;
-			}
-		} while (!validPositionInput); //loop until valid input
-
-		if (stopCreating) //exit loop if CTRL-Z
-		{
-			askToSaveBoard(board);
-			break;
-		}
-
-		////////////////////////////////
-		//        ASK FOR WORD        //
-		////////////////////////////////
-
-		bool validInput = false;
-		bool skipInsertion = false;
-		do
-		{
-			if (cin.fail())
-			{
-				cin.clear();
-				cin.ignore(10000, '\n');
-			}
-
-			cout << "Word (< = return / - = remove / ? = help) .. ? ";
-			cin >> word;
-
-			//Convert to uppercase
-			for (size_t i = 0; i < word.length(); i++)
-				word.at(i) = toupper(word.at(i));
-
-			if (word == "<") // Skip loop
-			{
-				validInput = true; // exit loop
-				cout << endl;
-			}
-			else if (word == "-") // Remove word
-			{
-				board.removeWord(positionInput);
-				validInput = true; // exit loop
-				cout << endl;
-			}
-			else if (word == "?") // Ask for help
-			{
-				board.helpUser(positionInput);
-				cout << endl;
-			}
-			else // default
-				if (board.canBeInserted(word, positionInput)) //Check validity and output error messages if necessary
-				{
-					board.insertWord(word, positionInput);
-					validInput = true;
-				}
-		} while (!validInput); //loop until valid input
-
-		cout << endl;
-		board.showBoard();
-		cout << endl;
-	}
+	return board;
 }
 
 //=================================================================================================================================
 
-void ResumePuzzle()
+Board ResumePuzzle()
 {
 	string boardName = askBoardName();
 	Board board;
@@ -310,7 +213,11 @@ void ResumePuzzle()
 	}
 
 	board.debug();
+	return board;
+}
 
+void EditBoard(Board board)
+{
 	cout << endl;
 	board.showBoard();
 	cout << endl;
@@ -412,4 +319,3 @@ void ResumePuzzle()
 		cout << endl;
 	}
 }
-
