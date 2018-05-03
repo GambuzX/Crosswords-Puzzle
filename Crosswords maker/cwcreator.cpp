@@ -363,7 +363,9 @@ void EditBoard(Board board)
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Word (";
+			cout << "Word";
+			colorMaster.setcolor(WHITE);
+			cout << " (";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << "<";
 			colorMaster.setcolor(WHITE);

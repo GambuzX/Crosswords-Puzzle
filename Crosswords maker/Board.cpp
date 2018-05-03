@@ -373,7 +373,7 @@ void Board::helpUser(string positionInput)
 	}
 
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nWords you can fit there:\n";
+	cout << "\nWords that fit there:\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
@@ -421,7 +421,9 @@ bool Board::validPositionInput(string input)
 
 	if (!valid)
 	{
-		cout << "Invalid input!\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nInvalid input!\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else
