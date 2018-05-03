@@ -23,6 +23,7 @@ public:
 	void helpUser(std::string position);
 
 	bool isInitialized();
+	bool hasHash(std::pair<int,int>);
 	bool canBeInserted(std::string word, std::string position);
 	bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);

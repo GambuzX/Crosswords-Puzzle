@@ -36,6 +36,13 @@ bool Board::isInitialized()
 }
 
 //=================================================================================================================================
+
+bool Board::hasHash(pair<int,int> position)
+{
+	return board.at(position.first).at(position.second) == '#';
+}
+
+//=================================================================================================================================
 // Changes current dictionary
 
 inline void Board::setDictionary(Dictionary dict)
@@ -73,7 +80,12 @@ bool Board::canBeInserted(string word, string positionInput)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
 
-	if (!isValidHeadline(word)) // verify word is valid
+	if (hasHash(insertionPosition))
+	{
+		cout << "You can not place a word in that location\n\n";
+		return false;
+	}
+	else if (!isValidHeadline(word)) // verify word is valid
 	{
 		cout << "Word is not valid! Please only use characters from 'A' to 'Z'\n\n";
 		return false;
@@ -104,6 +116,7 @@ bool Board::canBeInserted(string word, string positionInput)
 }
 
 //=================================================================================================================================
+// Simulates an insertion and verifies if the resulting board is valid
 
 bool Board::testInsertion(string word, string positionInput)
 {
