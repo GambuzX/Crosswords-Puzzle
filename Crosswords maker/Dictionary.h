@@ -10,6 +10,7 @@ class Dictionary
 public:
 	//Constructors
 	Dictionary(std::string dictName) : dictionaryName(dictName) {};
+	std::string getName();
 
 	bool ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented

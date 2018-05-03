@@ -398,30 +398,24 @@ void Board::savePuzzle(string fileName)
 {
 	//TODO implement when certain that no other attributes will be added
 	// Organize it well
-	ofstream file(fileName, ios::binary);
-	file.write((char *)&horizontalSize, sizeof(int));
-	file.write((char *)&verticalSize, sizeof(int));
+	ofstream file(fileName);
+	
+	file << dictionary->getName() << endl << endl;
 
-	for (int i = 0; i < verticalSize; i++) //Write all board chars
+	for (int i = 0; i < verticalSize; i++)
 	{
 		for (int j = 0; j < horizontalSize; j++)
 		{
-			file.write((char *)&board.at(i).at(j), sizeof(char));
+			file << board.at(i).at(j) << " ";
 		}
+		file << endl;
 	}
-
-	int vectorSize = usedWords.size(); //number of pairs
-	file.write((char *) &vectorSize, sizeof(int));
+	file << endl;
 
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
-		int firstSize = sizeof(it->first); //size of first string
-		int secondSize = sizeof(it->second); //size of second string
-		file.write((char *)&firstSize, sizeof(int));
-		file.write((char *)&secondSize, sizeof(int));
-		file.write((char *)&(it->first), firstSize);
-		file.write((char *)&(it->second), secondSize);
+		file << it->first << " " << it->second << endl;
 	}
 
 	file.close();
@@ -433,37 +427,14 @@ void Board::savePuzzle(string fileName)
 
 bool Board::loadPuzzle(string fileName)
 {
-	ifstream file(fileName, ios::binary);
+	ifstream file(fileName);
 	
 	if (!file.is_open())
 		return false;
 
-	file.read((char *)&horizontalSize, sizeof(int));
-	file.read((char *)&verticalSize, sizeof(int));
 
-	board.resize(verticalSize);
-	for (int i = 0; i < verticalSize; i++)
-		board.at(i).resize(horizontalSize);
 
-	for (int i = 0; i < verticalSize; i++) //Write all board chars
-	{
-		for (int j = 0; j < horizontalSize; j++)
-		{
-			file.read((char *) &board.at(i).at(j), sizeof(char));
-		}
-	}
-	int vectorSize; // number of pairs
-	file.read((char *)&vectorSize, sizeof(int));	
-	usedWords.resize(vectorSize);
-
-	for (int i = 0; i < vectorSize; i++)
-	{
-		int firstSize, secondSize; //strings sizes
-		file.read((char *)&firstSize, sizeof(int));
-		file.read((char *)&secondSize, sizeof(int));
-		file.read((char *)&(usedWords.at(i).first), firstSize);
-		file.read((char *)&(usedWords.at(i).second), secondSize);
-	}
+	
 	return true;
 }
 

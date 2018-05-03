@@ -15,6 +15,13 @@ using namespace std;
 //=================================================================================================================================
 // Verifies if dictionary exists and processes it, storing all word entries
 
+string Dictionary::getName()
+{
+	return dictionaryName;
+}
+
+//=================================================================================================================================
+
 bool Dictionary::ProcessDictionary()
 {
 	ifstream dict(dictionaryName);
