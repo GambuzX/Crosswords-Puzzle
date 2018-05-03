@@ -14,18 +14,19 @@ public:
 	Board() {};
 	Board(int horiSize, int vertSize, Dictionary dict);
 
-	bool isInitialized();
-
 	inline void setDictionary(Dictionary dict);
 	void showBoard();
-	bool canBeInserted(std::string word, std::string position);
 	void insertWord(std::string word, std::string position);
 	void removeWord(std::string position);
 	void InsertHashes(std::string word, std::string positionInput);
 	void RemoveHashes(std::string word, std::string positionInput);
 	void helpUser(std::string position);
+
+	bool isInitialized();
+	bool canBeInserted(std::string word, std::string position);
 	bool validPositionInput(std::string);
 	bool validBoard();
+
 	void savePuzzle(std::string name);
 	bool loadPuzzle(std::string name);
 

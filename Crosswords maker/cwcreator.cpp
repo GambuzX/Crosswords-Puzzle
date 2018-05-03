@@ -67,7 +67,6 @@ int main()
 	return 0;
 }
 
-// TODO Assure uppercase words
 // TODO Use _getch() where needed
 
 //=================================================================================================================================
@@ -212,16 +211,17 @@ Board ResumePuzzle()
 	string boardName = askBoardName();
 	Board board;
 	bool boardLoaded = board.loadPuzzle(boardName); 
-	
+
 	if (!boardLoaded)
 	{
 		cout << "\nCould not locate file with that name.\n";
 		return Board();
 	}
 
-	board.debug();
 	return board;
 }
+
+//=================================================================================================================================
 
 void EditBoard(Board board)
 {

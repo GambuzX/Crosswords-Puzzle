@@ -30,7 +30,7 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary dict)
 
 //=================================================================================================================================
 
-inline bool Board::isInitialized()
+bool Board::isInitialized()
 {
 	return initializedBoard;
 }
@@ -112,7 +112,6 @@ void Board::insertWord(string word, string positionInput)
 	//BACKUPS
 	vector<vector<char>> oldBoard = board;
 	vector<pair<string, string>> oldUsedWords = usedWords;
-
 
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -440,18 +439,26 @@ bool Board::loadPuzzle(string fileName)
 	if (!file.is_open())
 		return false;
 
+	//SETTING DICTIONARY
 	string dictName;
 	getline(file, dictName);
 	Dictionary dict(dictName);
+	bool dictionaryOpened = dict.ProcessDictionary();
+	if (!dictionaryOpened)
+	{
+		cout << "\nDictionary file was not found!\n";
+		return false;
+	}
 	setDictionary(dict);
 
 	string line;
 	getline(file, line); // empty line
 
+	//SETTING HORIZONTAL AND VERTICAL SIZES
 	int verticalSize = 0;
 	int horizontalSize = 0;
 	getline(file, line);
-	while (line != " ") //TODO Verify this works
+	while (line != "") //TODO Verify this works
 	{
 		horizontalSize = (line.length() + 1) / 2; //has one extra space for each char
 		verticalSize++;
@@ -460,10 +467,17 @@ bool Board::loadPuzzle(string fileName)
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
 
-	board.resize(verticalSize); //resize board
+	//RESIZE BOARD
+	board.resize(verticalSize);
 	for (int i = 0; i < verticalSize; i++)
 		board.at(i).resize(horizontalSize);
 
+	//INITIALIZE WITH DOTS
+	for (size_t i = 0; i < board.size(); i++)
+		for (size_t j = 0; j < board.at(i).size(); j++)
+			board.at(i).at(j) = '.';
+
+	//INSERT WORDS THAT WERE ON THE BOARD
 	usedWords.clear();
 	while (getline(file, line))
 	{
