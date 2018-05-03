@@ -12,14 +12,15 @@ public:
 	//Constructors
 	//Board(int horizontalSize, int verticalSize);
 	Board() {};
-	Board(int horiSize, int vertSize, Dictionary& dict);
+	Board(int horiSize, int vertSize, Dictionary dict);
 
-	inline void setDictionary(Dictionary& dict);
+	bool isInitialized();
+
+	inline void setDictionary(Dictionary dict);
 	void showBoard();
 	bool canBeInserted(std::string word, std::string position);
 	void insertWord(std::string word, std::string position);
 	void removeWord(std::string position);
-	// TODO Method to automatically insert hashes in places where no more words fit
 	void InsertHashes(std::string word, std::string positionInput);
 	void RemoveHashes(std::string word, std::string positionInput);
 	void helpUser(std::string position);
@@ -34,8 +35,9 @@ private:
 	std::vector<std::vector<char>> board;
 	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
 
+	bool initializedBoard = false;
 	int horizontalSize = 0, verticalSize = 0;
-	Dictionary *dictionary; //pointer to the dictionary in use
+	Dictionary dictionary; //pointer to the dictionary in use
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);

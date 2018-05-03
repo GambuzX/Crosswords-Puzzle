@@ -9,6 +9,7 @@ class Dictionary
 {
 public:
 	//Constructors
+	Dictionary() {};
 	Dictionary(std::string dictName) : dictionaryName(dictName) {};
 	std::string getName();
 

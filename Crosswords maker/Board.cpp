@@ -12,7 +12,7 @@ using namespace std;
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
-Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
+Board::Board(int horizontalSize, int verticalSize, Dictionary dict)
 {
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
@@ -24,15 +24,23 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary& dict)
 	for (size_t i = 0; i < board.size(); i++)
 		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
-	dictionary = &dict;
+	dictionary = dict;
+	initializedBoard = true;
+}
+
+//=================================================================================================================================
+
+inline bool Board::isInitialized()
+{
+	return initializedBoard;
 }
 
 //=================================================================================================================================
 // Changes current dictionary
 
-inline void Board::setDictionary(Dictionary& dict)
+inline void Board::setDictionary(Dictionary dict)
 {
-	dictionary = &dict;
+	dictionary = dict;
 }
 
 //=================================================================================================================================
@@ -70,7 +78,7 @@ bool Board::canBeInserted(string word, string positionInput)
 		cout << "Word is not valid! Please only use characters from 'A' to 'Z'\n\n";
 		return false;
 	}
-	else if (!dictionary->isInWordList(word)) // verify word belongs to the dictionary
+	else if (!dictionary.isInWordList(word)) // verify word belongs to the dictionary
 	{
 		cout << "Word is not present in the dictionary!\n\n";
 		return false;
@@ -285,7 +293,7 @@ void Board::helpUser(string positionInput)
 	cout << "Words you can fit there:\n";
 	cout << "________________________\n";
 
-	vector<string> fittingWords = dictionary->fittingWords(availableSpace);
+	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 	int counter = 0;
 	const int WORDS_PER_LINE = 6;
 	const int WORDS_WIDTH = 18;
@@ -356,13 +364,13 @@ bool Board::validBoard()
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary->isInWordList(currentWord)) //if word does not exist
+					if (!dictionary.isInWordList(currentWord)) //if word does not exist
 						valid = false;
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary->isInWordList(currentWord)) //if word does not exist
+			if (!dictionary.isInWordList(currentWord)) //if word does not exist
 				valid = false;
 	}
 
@@ -379,13 +387,13 @@ bool Board::validBoard()
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary->isInWordList(currentWord)) //if word does not exist
+					if (!dictionary.isInWordList(currentWord)) //if word does not exist
 						valid = false;
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary->isInWordList(currentWord)) //if word does not exist
+			if (!dictionary.isInWordList(currentWord)) //if word does not exist
 				valid = false;
 	}
 		
@@ -400,7 +408,7 @@ void Board::savePuzzle(string fileName)
 	// Organize it well
 	ofstream file(fileName);
 	
-	file << dictionary->getName() << endl << endl;
+	file << dictionary.getName() << endl << endl;
 
 	for (int i = 0; i < verticalSize; i++)
 	{
@@ -434,8 +442,36 @@ bool Board::loadPuzzle(string fileName)
 
 	string dictName;
 	getline(file, dictName);
+	Dictionary dict(dictName);
+	setDictionary(dict);
 
-	
+	string line;
+	getline(file, line); // empty line
+
+	int verticalSize = 0;
+	int horizontalSize = 0;
+	getline(file, line);
+	while (line != " ") //TODO Verify this works
+	{
+		horizontalSize = (line.length() + 1) / 2; //has one extra space for each char
+		verticalSize++;
+		getline(file, line);
+	}
+	this->horizontalSize = horizontalSize;
+	this->verticalSize = verticalSize;
+
+	board.resize(verticalSize); //resize board
+	for (int i = 0; i < verticalSize; i++)
+		board.at(i).resize(horizontalSize);
+
+	usedWords.clear();
+	while (getline(file, line))
+	{
+		string position = line.substr(0, 3);
+		string word = line.substr(4); //from index 4 to the end
+		insertWord(word, position);
+	}	
+	initializedBoard = true;
 	return true;
 }
 

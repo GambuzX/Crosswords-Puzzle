@@ -40,18 +40,25 @@ int main()
 			cin >> answer;
 		} while (cin.fail() || answer < 0 || answer > 2);
 
+		Board board;
 		switch (answer)
 		{
 		case 0:
 			exit(0);
 			break;
 		case 1:
-			Board board = CreatePuzzle();
-			EditBoard(board);
+			board = CreatePuzzle();
+			if (board.isInitialized())
+				EditBoard(board);
+			else
+				cout << "\nBoard was not opened successfuly\n";
 			break;
 		case 2:
-			Board board = ResumePuzzle();
-			EditBoard(board);
+			board = ResumePuzzle();
+			if (board.isInitialized())
+				EditBoard(board);
+			else
+				cout << "\nBoard was not opened successfuly\n";
 			break;
 		default:
 			cerr << "Should not be able to get here!";
@@ -188,7 +195,7 @@ Board CreatePuzzle()
 	{
 		cout << "\nCould not locate file with that name.\n";
 		//_getch();
-		return;
+		return Board();
 	}
 
 	cout << endl;
@@ -209,7 +216,7 @@ Board ResumePuzzle()
 	if (!boardLoaded)
 	{
 		cout << "\nCould not locate file with that name.\n";
-		return;
+		return Board();
 	}
 
 	board.debug();
