@@ -31,9 +31,9 @@ public:
 	bool canBeInserted(std::string word, std::string position);
 	bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
-	bool validBoard();
+	bool isBoardValid();
 
-	void saveBoard(std::string name);
+	bool saveBoard(std::string name);
 	bool loadBoard(std::string name);
 
 private:

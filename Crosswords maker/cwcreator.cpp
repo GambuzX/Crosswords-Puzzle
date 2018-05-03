@@ -12,8 +12,8 @@ using namespace std;
 //TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user
 //TODO Option of adding hashes
 //TODO Better help function
-//TODO Final board check
 //TODO Board output file name according to project specifications
+//TODO Clear all warnings
 
 //==========================================================================================
 //COLOR CODES:
@@ -203,10 +203,11 @@ pair<int,int> askBoardSize()
 }
 
 //=================================================================================================================================
-// Asks if the user wishes to save the current board
+// Asks if the user wishes to save the current board. Boolean to indicate operation success or not
 
-void askToSaveBoard(Board board)
+bool askToSaveBoard(Board board)
 {
+	bool success = true;
 	bool validAnswer = false;
 	do
 	{
@@ -230,14 +231,18 @@ void askToSaveBoard(Board board)
 			colorMaster.setcolor(WHITE);
 			cin.ignore(10000, '\n'); //ignore remaining chars in buffer
 			getline(cin, fileName);
-			board.saveBoard(fileName);
-			cout << "\nBoard was saved successfully.\n";
+			success = board.saveBoard(fileName);
+			if (success)
+				cout << "\nBoard was saved successfully.\n";
+			else
+				cout << "\nThe final board is not valid.\n";
 			validAnswer = true;
 		}
 		else if (answer == 'N')
 			validAnswer = true;
 
 	} while (!validAnswer);
+	return success;
 }
 
 //=================================================================================================================================
@@ -351,8 +356,10 @@ void EditBoard(Board board)
 
 		if (stopCreating) //exit loop if CTRL-Z
 		{
-			askToSaveBoard(board);
-			break;
+			bool successfulSave = askToSaveBoard(board);
+			if (!successfulSave) //if there was a problem saving board, continue with the loop
+				continue;
+			break; //if successful save of the board, end loop
 		}
 
 		////////////////////////////////

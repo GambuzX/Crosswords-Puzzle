@@ -174,7 +174,7 @@ bool Board::testInsertion(string word, string positionInput)
 {
 	Board testBoard = *this;
 	testBoard.insertWord(word, positionInput);
-	return testBoard.validBoard();
+	return testBoard.isBoardValid();
 }
 
 
@@ -357,7 +357,7 @@ void Board::RemoveHashes(string word, string positionInput)
 
 void Board::reprintHashes()
 {
-	for (int i = 0; i < usedWords.size(); i++)
+	for (size_t i = 0; i < usedWords.size(); i++)
 		InsertHashes(usedWords.at(i).second, usedWords.at(i).first);
 }
 
@@ -443,7 +443,7 @@ bool Board::validPositionInput(string input)
 //=================================================================================================================================
 // Verifies if all words in the board in both directions are valid
 
-bool Board::validBoard()
+bool Board::isBoardValid()
 {
 	bool valid = true;
 
@@ -497,10 +497,13 @@ bool Board::validBoard()
 }
 
 //=================================================================================================================================
-// Saves the board to a file
+// Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
 
-void Board::saveBoard(string fileName)
+bool Board::saveBoard(string fileName)
 {
+	if (!isBoardValid())
+		return false;
+
 	// Organize it well
 	ofstream file(fileName);
 	
@@ -523,6 +526,7 @@ void Board::saveBoard(string fileName)
 	}
 
 	file.close();
+	return true;
 }
 
 //=================================================================================================================================

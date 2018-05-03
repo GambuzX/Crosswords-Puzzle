@@ -1,11 +1,11 @@
 dictionary.txt
 
-W I Z A R D # A . . . . . . . 
+W I Z A R D # A . . # W R A P 
 R . . . # W I S D O M # . . . 
 E . . . . A . C . . . . . . . 
 T W I G # R # E C L I P S E # 
 C . . . . F . N # . . # . . . 
-H . . . . # # D E V I L # # . 
+H A W K # # # D E V I L # # . 
 E # . # . . . # V . # O R B # 
 D U M B # . . . E . . N . U . 
 # N . L . . . . N . . G . L . 
@@ -30,3 +30,5 @@ GLH ORB
 GNV BULLY
 FIV EVENT
 DHH ECLIPSE
+FAH HAWK
+ALH WRAP

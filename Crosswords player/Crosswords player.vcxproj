@@ -143,15 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Crosswords maker\Board.cpp" />
-    <ClCompile Include="..\Crosswords maker\ColorMaster.cpp" />
-    <ClCompile Include="..\Crosswords maker\Dictionary.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ColorMaster.cpp" />
     <ClCompile Include="cwplayer.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Crosswords maker\Board.h" />
-    <ClInclude Include="..\Crosswords maker\ColorMaster.h" />
-    <ClInclude Include="..\Crosswords maker\Dictionary.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="ColorMaster.h" />
+    <ClInclude Include="Dictionary.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

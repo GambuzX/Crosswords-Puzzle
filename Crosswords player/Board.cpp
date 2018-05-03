@@ -174,7 +174,7 @@ bool Board::testInsertion(string word, string positionInput)
 {
 	Board testBoard = *this;
 	testBoard.insertWord(word, positionInput);
-	return testBoard.validBoard();
+	return testBoard.isBoardValid();
 }
 
 
@@ -443,7 +443,7 @@ bool Board::validPositionInput(string input)
 //=================================================================================================================================
 // Verifies if all words in the board in both directions are valid
 
-bool Board::validBoard()
+bool Board::isBoardValid()
 {
 	bool valid = true;
 
