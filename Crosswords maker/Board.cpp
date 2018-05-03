@@ -29,6 +29,7 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary dict)
 }
 
 //=================================================================================================================================
+// Checks if the board was already initialized. The board has a bool that is updated whenever it's initialized.
 
 bool Board::isInitialized()
 {
@@ -36,6 +37,7 @@ bool Board::isInitialized()
 }
 
 //=================================================================================================================================
+// Checks if a given position has an hash ('#')
 
 bool Board::hasHash(pair<int,int> position)
 {
@@ -80,32 +82,32 @@ bool Board::canBeInserted(string word, string positionInput)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
 
-	if (hasHash(insertionPosition))
+	if (hasHash(insertionPosition)) // Verify it the position has an hash
 	{
 		cout << "You can not place a word in that location\n\n";
 		return false;
 	}
-	else if (!isValidHeadline(word)) // verify word is valid
+	else if (!isValidHeadline(word)) // Verify word is valid
 	{
 		cout << "Word is not valid! Please only use characters from 'A' to 'Z'\n\n";
 		return false;
 	}
-	else if (!dictionary.isInWordList(word)) // verify word belongs to the dictionary
+	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
 	{
 		cout << "Word is not present in the dictionary!\n\n";
 		return false;
 	}
-	else if (!wordFitsSpace(word, positionInput)) // verify it fits the space
+	else if (!wordFitsSpace(word, positionInput)) // Verify it fits the space
 	{
 		cout << "Word does not fit the specified space!\n\n";
 		return false;
 	}
-	else if (isWordUsed(word))	// verify if word was already used
+	else if (isWordUsed(word))	// Verify if word was already used
 	{
 		cout << "Word is already in use!\n\n";
 		return false;
 	}
-	else if (!matchesCurrentBoard(word, positionInput) || !testInsertion(word,positionInput))
+	else if (!matchesCurrentBoard(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
 		cout << "Word does not match current board!\n\n";
 		return false;
@@ -116,7 +118,7 @@ bool Board::canBeInserted(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Simulates an insertion and verifies if the resulting board is valid
+// Simulates an insertion and verifies if the resulting board is valid.
 
 bool Board::testInsertion(string word, string positionInput)
 {
@@ -200,7 +202,7 @@ bool Board::removeWord(string positionInput)
 			switch (dir)
 			{
 			case 'H':
-				for (int i = 0; i < word.length(); i++)
+				for (size_t i = 0; i < word.length(); i++)
 				{
 					if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir)) 
 						board.at(startLine).at(startColumn + i) = '.';
@@ -209,7 +211,7 @@ bool Board::removeWord(string positionInput)
 				RemoveHashes(word, position);
 				break;
 			case 'V':
-				for (int i = 0; i < word.length(); i++)
+				for (size_t i = 0; i < word.length(); i++)
 				{
 					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
 						board.at(startLine + i).at(startColumn) = '.';
@@ -247,13 +249,13 @@ void Board::InsertHashes(string word, string positionInput)
 	case 'H':
 		if (column > 0)
 			board.at(line).at(column - 1) = '#';
-		if ((column + word.length() - 1) < horizontalSize - 1)
+		if ((column + (int) word.length() - 1) < horizontalSize - 1)
 			board.at(line).at(column + word.length()) = '#';
 		break;
 	case 'V':
 		if (line > 0)
 			board.at(line-1).at(column) = '#';
-		if ((line + word.length() - 1) < verticalSize - 1)
+		if ((line + (int) word.length() - 1) < verticalSize - 1)
 			board.at(line + word.length()).at(column) = '#';
 		break;
 	default:
@@ -262,7 +264,7 @@ void Board::InsertHashes(string word, string positionInput)
 }
 
 //=================================================================================================================================
-//
+// Removes hashes associated with the word from the given position
 
 void Board::RemoveHashes(string word, string positionInput)
 {
@@ -277,7 +279,7 @@ void Board::RemoveHashes(string word, string positionInput)
 		if (column > 0)
 			if (board.at(line).at(column - 1) == '#')
 				board.at(line).at(column - 1) = '.';
-		if ((column + word.length() - 1) < horizontalSize - 1)
+		if ((column + (int) word.length() - 1) < horizontalSize - 1)
 			if (board.at(line).at(column + word.length()) == '#')
 				board.at(line).at(column + word.length()) = '.';
 		break;
@@ -285,7 +287,7 @@ void Board::RemoveHashes(string word, string positionInput)
 		if (line > 0)
 			if (board.at(line - 1).at(column) == '#')
 				board.at(line - 1).at(column) = '.';
-		if ((line + word.length() - 1) < verticalSize - 1)
+		if ((line + (int) word.length() - 1) < verticalSize - 1)
 			if (board.at(line + word.length()).at(column) == '#')
 				board.at(line + word.length()).at(column) = '.';
 		break;
@@ -371,6 +373,7 @@ bool Board::validPositionInput(string input)
 }
 
 //=================================================================================================================================
+// Verifies if all words in the board in both directions are valid
 
 bool Board::validBoard()
 {
@@ -426,8 +429,9 @@ bool Board::validBoard()
 }
 
 //=================================================================================================================================
+// Saves the board to a file
 
-void Board::savePuzzle(string fileName)
+void Board::saveBoard(string fileName)
 {
 	//TODO implement when certain that no other attributes will be added
 	// Organize it well
@@ -455,10 +459,9 @@ void Board::savePuzzle(string fileName)
 }
 
 //=================================================================================================================================
+// Loads a board from a file
 
-// TODO CANT REMOVE AFTER LOAD
-
-bool Board::loadPuzzle(string fileName)
+bool Board::loadBoard(string fileName)
 {
 	ifstream file(fileName);
 	
@@ -570,7 +573,7 @@ bool Board::wordFitsSpace(string word, string positionInput)
 	char direction = toupper(positionInput.at(2));
 
 	char dir = toupper(direction);
-	size_t wordSize = word.length();
+	int wordSize = word.length();
 	int availableSpace;
 	switch (dir){
 	case 'H':
@@ -637,13 +640,13 @@ bool Board::wordInterceptsPosition(string targetPosition, string word, string wo
 	case 'H':
 		if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
 			return false;
-		if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + word.length())) //if out of the range occupied by the word
+		if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + (int) word.length())) //if out of the range occupied by the word
 			return false;
 		break;
 	case 'V':
 		if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
 			return false;
-		if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + word.length())) //if out of the range occupied by the word
+		if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + (int) word.length())) //if out of the range occupied by the word
 			return false;
 		break;
 	default:
@@ -653,6 +656,7 @@ bool Board::wordInterceptsPosition(string targetPosition, string word, string wo
 }
 
 //=================================================================================================================================
+// Checks if the adjacent spaces of a given position on a direction are empty
 
 bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 {
@@ -712,19 +716,4 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		cerr << "Invalid direction!";
 	}
 	return empty;
-}
-
-
-void Board::debug()
-{
-	cout << endl << endl;
-	cout << verticalSize << endl;
-	cout << horizontalSize << endl;
-	cout << usedWords.size() << endl;
-
-	for (int i = 0; i < usedWords.size(); i++)
-	{
-		cout << usedWords.at(i).first << " - " << usedWords.at(i).second << endl;
-	}
-	cout << endl << endl;
 }

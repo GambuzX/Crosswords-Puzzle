@@ -30,10 +30,8 @@ public:
 	bool validPositionInput(std::string);
 	bool validBoard();
 
-	void savePuzzle(std::string name);
-	bool loadPuzzle(std::string name);
-
-	void debug();
+	void saveBoard(std::string name);
+	bool loadBoard(std::string name);
 
 private:
 	std::vector<std::vector<char>> board;

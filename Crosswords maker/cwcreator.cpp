@@ -307,7 +307,7 @@ void EditBoard(Board board)
 
 			if (word == "<") // Skip loop
 			{
-				validInput = true; // exit loop
+				validInput = true; // Exit loop
 				cout << endl;
 			}
 			else if (word == "-") // Remove word
