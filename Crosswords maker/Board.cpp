@@ -157,14 +157,13 @@ bool Board::canBeInserted(string word, string positionInput)
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
-	else if (!matchesCurrentBoard(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
+	else if (!matchesInterceptedPositions(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
 		colorMaster.setcolor(RED);
 		cout << "\nWord does not match current board!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
-	// TODO Prevent words on top of each other
 	return true;
 }
 
@@ -262,6 +261,7 @@ bool Board::removeWord(string positionInput)
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
 				RemoveHashes(word, position);
+				reprintHashes();
 				break;
 			case 'V':
 				for (size_t i = 0; i < word.length(); i++)
@@ -271,6 +271,7 @@ bool Board::removeWord(string positionInput)
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
 				RemoveHashes(word, position);
+				reprintHashes();
 				break;
 			default:
 				cerr << "Invalid direction!";
@@ -352,6 +353,15 @@ void Board::RemoveHashes(string word, string positionInput)
 }
 
 //=================================================================================================================================
+// Reprints all hashes of inserted words
+
+void Board::reprintHashes()
+{
+	for (int i = 0; i < usedWords.size(); i++)
+		InsertHashes(usedWords.at(i).second, usedWords.at(i).first);
+}
+
+//=================================================================================================================================
 // Shows the user what words he can put in the specified location
 
 void Board::helpUser(string positionInput)
@@ -383,7 +393,7 @@ void Board::helpUser(string positionInput)
 	for (size_t i = 0; i < fittingWords.size(); i++)
 	{
 		string currentWord = fittingWords.at(i);
-		if (!isWordUsed(currentWord) && matchesCurrentBoard(currentWord, positionInput))
+		if (!isWordUsed(currentWord) && matchesInterceptedPositions(currentWord, positionInput))
 		{
 			if (counter % WORDS_PER_LINE == 0) cout << endl;
 			cout << setw(WORDS_WIDTH) << currentWord;
@@ -491,7 +501,6 @@ bool Board::validBoard()
 
 void Board::saveBoard(string fileName)
 {
-	//TODO implement when certain that no other attributes will be added
 	// Organize it well
 	ofstream file(fileName);
 	
@@ -547,7 +556,7 @@ bool Board::loadBoard(string fileName)
 	int verticalSize = 0;
 	int horizontalSize = 0;
 	getline(file, line);
-	while (line != "") //TODO Verify this works
+	while (line != "")
 	{
 		horizontalSize = (line.length() + 1) / 2; //has one extra space for each char
 		verticalSize++;
@@ -649,10 +658,10 @@ bool Board::wordFitsSpace(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if the word matches the current board, i.e. the words already placed
+// Checks if the word matches the positions in the board it will intercept
 // Assumes all other conditios are met: valid, not used and fits space
 
-bool Board::matchesCurrentBoard(string word, string positionInput)
+bool Board::matchesInterceptedPositions(string word, string positionInput)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -677,8 +686,6 @@ bool Board::matchesCurrentBoard(string word, string positionInput)
 		cerr << "Invalid input!";
 	}
 	return true;
-
-	//TODO Check it matches from all sides, not just positions I want to place
 }
 
 //=================================================================================================================================

@@ -362,7 +362,7 @@ void EditBoard(Board board)
 				cin.clear();
 				cin.ignore(10000, '\n');
 			}
-			colorMaster.setcolor(QUESTION_COLOR);
+			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
 			cout << "Word";
 			colorMaster.setcolor(WHITE);
 			cout << " (";

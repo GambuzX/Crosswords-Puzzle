@@ -22,6 +22,7 @@ public:
 	bool removeWord(std::string position);
 	void InsertHashes(std::string word, std::string positionInput);
 	void RemoveHashes(std::string word, std::string positionInput);
+	void reprintHashes();
 	void helpUser(std::string position);
 	//void helpUserComplete(std::string position);
 
@@ -51,7 +52,7 @@ private:
 	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::string position);
-	bool matchesCurrentBoard(std::string word, std::string position); //TODO Change name
+	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool adjacentSpacesEmpty(std::pair<int,int> coordinates, char direction);
 };
