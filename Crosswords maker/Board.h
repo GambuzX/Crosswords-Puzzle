@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include "Dictionary.h"
+#include "ColorMaster.h"
 #include <vector>
 #include <map>
 #include <set>
@@ -40,7 +41,9 @@ private:
 
 	bool initializedBoard = false;
 	int horizontalSize = 0, verticalSize = 0;
-	Dictionary dictionary; //pointer to the dictionary in use
+
+	Dictionary dictionary; //dictionary to be used
+	ColorMaster colorMaster;
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);

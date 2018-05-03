@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Dictionary.h"
+#include "ColorMaster.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -9,6 +10,23 @@
 
 using namespace std;
 
+//==========================================================================================
+//COLOR CODES:
+#define BLACK 0
+#define BLUE 1
+#define GREEN 2
+#define CYAN 3
+#define RED 4
+#define MAGENTA 5
+#define BROWN 6
+#define LIGHTGRAY 7
+#define DARKGRAY 8
+#define LIGHTBLUE 9
+#define LIGHTGREEN 10
+#define LIGHTCYAN 11
+#define LIGHTRED 12
+#define LIGHTMAGENTA 13
+#define YELLOW 14
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
@@ -61,16 +79,35 @@ void Board::showBoard()
 
 	cout << setw(WIDTH) << " ";
 	for (size_t i = 0; i < board.at(0).size(); i++)
-		cout << setw(WIDTH) << (char) ('a' + i);
+	{
+		colorMaster.setcolor(RED);
+		cout << setw(WIDTH) << (char)('a' + i);
+	}
 	cout << endl;
 
 	for (size_t i = 0; i < board.size(); i++)
 	{
-		cout << setw(WIDTH) << (char)('A' + i);
+		colorMaster.setcolor(RED);
+		cout << (char)('A' + i) << " ";
+
 		for (size_t j = 0; j < board.at(i).size(); j++)
-			cout << setw(WIDTH) << board.at(i).at(j);
+		{
+			if (board.at(i).at(j) == '#')
+			{
+				colorMaster.setcolor(BLACK, LIGHTGRAY);
+				cout << " ";
+				colorMaster.setcolor(LIGHTGRAY, BLACK);
+				cout << "#";
+			}
+			else
+			{
+				colorMaster.setcolor(BLACK, LIGHTGRAY);
+				cout << setw(WIDTH) << board.at(i).at(j);
+			}
+		}
 		cout << '\n';
 	}
+	colorMaster.setcolor(LIGHTGRAY, BLACK); //set to default
 }
 
 //=================================================================================================================================

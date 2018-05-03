@@ -9,6 +9,7 @@
 class ColorMaster
 {
 public:
+	ColorMaster() {};
 	void clrscr(void);
 	void gotoxy(int x, int y);
 	void setcolor(unsigned int color);

@@ -24,6 +24,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -32,7 +35,7 @@
     <ClInclude Include="Dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Puzzle.h">
+    <ClInclude Include="ColorMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
