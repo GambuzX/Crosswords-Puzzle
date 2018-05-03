@@ -56,7 +56,7 @@ bool Dictionary::ProcessDictionary()
 			if (ret.second == false) //if insertion failed, i.e., it is a duplicate entry
 			{
 				// Since the entry is repeated, only adds new synonyms to the previous entry
-				for (int i = 0; i < synonyms.size(); i++)
+				for (size_t i = 0; i < synonyms.size(); i++)
 				{
 					if (!isInVector(synonyms.at(i), wordList[word]))
 						wordList[word].push_back(synonyms.at(i));
@@ -77,7 +77,7 @@ void Dictionary::showWordList()
 		cout << it->first << ": ";
 
 		vector<string> vec = it->second;
-		for (int i = 0; i < vec.size(); i++)
+		for (size_t i = 0; i < vec.size(); i++)
 			cout << vec.at(i) << "; ";
 		cout << endl;
 	}
@@ -114,7 +114,7 @@ vector<string> Dictionary::fittingWords(int availableSpace)
 	vector<string> validWords;
 	map<string, vector<string>>::iterator it;
 	for (it = wordList.begin(); it != wordList.end(); it++)
-		if (it->first.length() <= availableSpace)
+		if ((int) it->first.length() <= availableSpace)
 			validWords.push_back(it->first);
 	return validWords;
 }
@@ -137,7 +137,7 @@ bool Dictionary::isValid(string word)
 
 bool Dictionary::isInVector(string word, vector<string> words)
 {
-	for (int i = 0; i < words.size(); i++)
+	for (size_t i = 0; i < words.size(); i++)
 		if (words.at(i) == word)
 			return true;
 	return false;

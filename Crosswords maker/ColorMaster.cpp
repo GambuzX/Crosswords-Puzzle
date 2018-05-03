@@ -6,6 +6,7 @@ using namespace std;
 
 //==========================================================================================
 //COLOR CODES: (alternative: use symbolic const’s)
+
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2
@@ -21,7 +22,8 @@ using namespace std;
 #define LIGHTRED 12
 #define LIGHTMAGENTA 13
 #define YELLOW 14
-#define WHITE 15
+#define WHITE 15
+
 //==========================================================================================
 void ColorMaster::clrscr(void)
 {
@@ -66,4 +68,5 @@ void ColorMaster::setcolor(unsigned int color, unsigned int background_color)
 	else
 		SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN |
 			BACKGROUND_RED);
-}
+}
+

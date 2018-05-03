@@ -12,6 +12,7 @@ using namespace std;
 
 //==========================================================================================
 //COLOR CODES:
+
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2
@@ -26,7 +27,9 @@ using namespace std;
 #define LIGHTCYAN 11
 #define LIGHTRED 12
 #define LIGHTMAGENTA 13
-#define YELLOW 14
+#define YELLOW 14
+#define WHITE 15
+
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
@@ -94,20 +97,20 @@ void Board::showBoard()
 		{
 			if (board.at(i).at(j) == '#')
 			{
-				colorMaster.setcolor(BLACK, LIGHTGRAY);
+				colorMaster.setcolor(BLACK, WHITE);
 				cout << " ";
-				colorMaster.setcolor(LIGHTGRAY, BLACK);
+				colorMaster.setcolor(WHITE, BLACK);
 				cout << "#";
 			}
 			else
 			{
-				colorMaster.setcolor(BLACK, LIGHTGRAY);
+				colorMaster.setcolor(BLACK, WHITE);
 				cout << setw(WIDTH) << board.at(i).at(j);
 			}
 		}
 		cout << '\n';
 	}
-	colorMaster.setcolor(LIGHTGRAY, BLACK); //set to default
+	colorMaster.setcolor(WHITE, BLACK); //set to default
 }
 
 //=================================================================================================================================
@@ -121,35 +124,46 @@ bool Board::canBeInserted(string word, string positionInput)
 
 	if (hasHash(insertionPosition)) // Verify it the position has an hash
 	{
-		cout << "You can not place a word in that location\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nYou can not place a word in that location.\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!isValidHeadline(word)) // Verify word is valid
 	{
-		cout << "Word is not valid! Please only use characters from 'A' to 'Z'\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
 	{
-		cout << "Word is not present in the dictionary!\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nWord is not present in the dictionary!\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!wordFitsSpace(word, positionInput)) // Verify it fits the space
 	{
-		cout << "Word does not fit the specified space!\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nWord does not fit the specified space!\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (isWordUsed(word))	// Verify if word was already used
 	{
-		cout << "Word is already in use!\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!matchesCurrentBoard(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
-		cout << "Word does not match current board!\n\n";
+		colorMaster.setcolor(RED);
+		cout << "\nWord does not match current board!\n\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
-
 	// TODO Prevent words on top of each other
 	return true;
 }
@@ -219,7 +233,9 @@ bool Board::removeWord(string positionInput)
 
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
+		colorMaster.setcolor(RED);
 		cout << "\nThere is no word in that location!\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 
@@ -265,7 +281,9 @@ bool Board::removeWord(string positionInput)
 	}
 	if (!foundWord)
 	{
+		colorMaster.setcolor(RED);
 		cout << "\nThere is no word in the specified direction!\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	return true;
@@ -354,8 +372,9 @@ void Board::helpUser(string positionInput)
 		cerr << "Invalid input!";
 	}
 
-	cout << "Words you can fit there:\n";
-	cout << "________________________\n";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nWords you can fit there:\n";
+	colorMaster.setcolor(WHITE, BLACK);
 
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 	int counter = 0;
@@ -512,7 +531,9 @@ bool Board::loadBoard(string fileName)
 	bool dictionaryOpened = dict.ProcessDictionary();
 	if (!dictionaryOpened)
 	{
+		colorMaster.setcolor(RED);
 		cout << "\nDictionary file was not found!\n";
+		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	setDictionary(dict);
