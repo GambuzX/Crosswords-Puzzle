@@ -11,6 +11,7 @@ class Board
 public:
 	//Constructors
 	//Board(int horizontalSize, int verticalSize);
+	Board() {};
 	Board(int horiSize, int vertSize, Dictionary& dict);
 
 	inline void setDictionary(Dictionary& dict);

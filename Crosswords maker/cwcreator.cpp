@@ -46,6 +46,7 @@ int main()
 			break;
 		case 1:
 			CreatePuzzle();
+			//TODO METHOD to edit puzzle
 			break;
 		case 2:
 			ResumePuzzle();
@@ -298,21 +299,10 @@ void CreatePuzzle()
 
 void ResumePuzzle()
 {
-	string dictName = askDictionaryName();
-	Dictionary dictionary(dictName);
-	bool dictionaryOpened = dictionary.ProcessDictionary();
-	if (!dictionaryOpened)
-	{
-		cout << "\nCould not locate file with that name.\n";
-		//_getch();
-		return;
-	}
-	cout << endl;
-
 	string boardName = askBoardName();
-	Board board(1, 1, dictionary); //first two arguments are dummy values
-	bool boardLoaded = board.loadPuzzle(boardName);
-
+	Board board;
+	bool boardLoaded = board.loadPuzzle(boardName); 
+	
 	if (!boardLoaded)
 	{
 		cout << "\nCould not locate file with that name.\n";

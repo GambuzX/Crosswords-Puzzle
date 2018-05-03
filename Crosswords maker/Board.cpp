@@ -432,7 +432,8 @@ bool Board::loadPuzzle(string fileName)
 	if (!file.is_open())
 		return false;
 
-
+	string dictName;
+	getline(file, dictName);
 
 	
 	return true;
