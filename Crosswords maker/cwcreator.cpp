@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <conio.h>
+#include <Windows.h>
 
 #include "Dictionary.h"
 #include "Board.h"
@@ -20,6 +21,7 @@ void EditBoard(Board board);
 int main()
 {
 	Introduction();
+
 	cout << endl << endl;
 
 	Instructions();
