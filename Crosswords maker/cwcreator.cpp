@@ -175,7 +175,7 @@ void askToSaveBoard(Board board)
 			cout << "File name? ";
 			cin.ignore(10000, '\n'); //ignore remaining chars in buffer
 			getline(cin, fileName);
-			board.savePuzzle(fileName);
+			board.saveBoard(fileName);
 			validAnswer = true;
 		}
 		else if (answer == 'N')
@@ -217,7 +217,7 @@ Board ResumePuzzle()
 {
 	string boardName = askBoardName();
 	Board board;
-	bool boardLoaded = board.loadPuzzle(boardName); 
+	bool boardLoaded = board.loadBoard(boardName); 
 
 	if (!boardLoaded)
 	{
