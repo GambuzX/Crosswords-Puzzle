@@ -93,7 +93,7 @@ bool Board::canBeInserted(string word, string positionInput)
 		cout << "Word is already in use!\n\n";
 		return false;
 	}
-	else if (!matchesCurrentBoard(word, positionInput))
+	else if (!matchesCurrentBoard(word, positionInput) || !testInsertion(word,positionInput))
 	{
 		cout << "Word does not match current board!\n\n";
 		return false;
@@ -103,6 +103,15 @@ bool Board::canBeInserted(string word, string positionInput)
 	return true;
 }
 
+//=================================================================================================================================
+
+bool Board::testInsertion(string word, string positionInput)
+{
+	Board testBoard = *this;
+	testBoard.insertWord(word, positionInput);
+	return testBoard.validBoard();
+}
+
 
 //=================================================================================================================================
 // Inserts a word on the board. Assumes it is a valid insertion.
@@ -110,8 +119,8 @@ bool Board::canBeInserted(string word, string positionInput)
 void Board::insertWord(string word, string positionInput)
 {
 	//BACKUPS
-	vector<vector<char>> oldBoard = board;
-	vector<pair<string, string>> oldUsedWords = usedWords;
+	//vector<vector<char>> oldBoard = board;
+	//vector<pair<string, string>> oldUsedWords = usedWords;
 
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -137,12 +146,12 @@ void Board::insertWord(string word, string positionInput)
 	}
 	InsertHashes(word, positionInput);
 
-	if (!validBoard()) //If insertWord broke the board, restore backup
-	{
-		cout << "Word does not match current board!\n\n";
-		board = oldBoard;
-		usedWords = oldUsedWords;
-	}
+	//if (!validBoard()) //If insertWord broke the board, restore backup
+	//{
+	//	cout << "Word does not match current board!\n\n";
+	//	board = oldBoard;
+	//	usedWords = oldUsedWords;
+	//}
 }
 
 //=================================================================================================================================

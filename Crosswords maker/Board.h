@@ -24,6 +24,7 @@ public:
 
 	bool isInitialized();
 	bool canBeInserted(std::string word, std::string position);
+	bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
 	bool validBoard();
 
