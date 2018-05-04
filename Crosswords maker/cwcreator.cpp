@@ -4,7 +4,6 @@
 #include <fstream>
 #include <conio.h>
 #include "ColorMaster.h"
-
 #include "Dictionary.h"
 #include "Board.h"
 
