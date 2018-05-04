@@ -74,7 +74,9 @@ int main()
 	string playerName = askPlayerName();
 	Player player(playerName);
 
-	board.showEmptyBoard();
+	//CREATE EDITABLE BOARD
+	board.createPlayerBoard();
+	board.showPlayerBoard();
 
 	return 0;
 }

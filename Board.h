@@ -18,7 +18,7 @@ public:
 	inline void setDictionary(Dictionary dict);
 
 	void showBoard();
-	void showEmptyBoard();
+	void showPlayerBoard();
 	void insertWord(std::string word, std::string position);
 	bool removeWord(std::string position);
 	void InsertHashes(std::string word, std::string positionInput);
@@ -27,6 +27,7 @@ public:
 	void fillRemainingSpots();
 	void helpUser(std::string position);
 	void helpUserComplete(std::string position);
+	void createPlayerBoard();
 
 	bool isInitialized();
 	bool hasHash(std::pair<int,int>);
@@ -41,6 +42,7 @@ public:
 
 private:
 	std::vector<std::vector<char>> board;
+	std::vector<std::vector<char>> playerBoard;
 	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
 
 	bool initializedBoard = false;
