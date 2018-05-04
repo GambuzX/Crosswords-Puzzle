@@ -9,11 +9,11 @@
 
 using namespace std;
 
-//TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user
+//TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
 //TODO Option of adding hashes
 //TODO Better help function
 //TODO Board output file name according to project specifications
-//TODO Substitute dots with hashes in the end
+
 //TODO Clear all warnings
 
 //==========================================================================================

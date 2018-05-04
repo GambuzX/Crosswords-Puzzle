@@ -182,6 +182,15 @@ bool Board::testInsertion(string word, string positionInput)
 	return testBoard.isBoardValid();
 }
 
+//=================================================================================================================================
+// Simulates an insertion and verifies if the resulting board is valid.
+
+bool Board::testLimitedInsertion(string word, string positionInput)
+{
+	Board testBoard = *this;
+	testBoard.insertWord(word, positionInput);
+	return testBoard.isBoardValid(word, positionInput);
+}
 
 //=================================================================================================================================
 // Inserts a word on the board. Assumes it is a valid insertion.
@@ -511,6 +520,122 @@ bool Board::isBoardValid()
 		
 	return valid;
 }
+
+//=================================================================================================================================
+// Same as above, but limits verification to the places the inserted word crosses
+
+bool Board::isBoardValid(string word, string position)
+{
+	pair<int, int> coords = calculateInsertionCoordinates(position);
+	char dir = position.at(2);
+	int start, end;
+	bool valid = true;
+
+	//TODO also test single line / column of word
+	string currentWord;
+	switch (dir)
+	{
+	case 'H':
+		start = coords.second;
+		end = start + (int) word.length() - 1;
+
+		//VERTICAL
+		for (int column = start; column <= end; column++)
+		{
+			currentWord = "";
+			for (int line = 0; line < verticalSize; line++)
+			{
+				if (isalpha(board.at(line).at(column)))
+				{
+					currentWord += board.at(line).at(column);
+				}
+				else
+				{
+					if (currentWord.length() >= 2) //only check if word size is bigger than 1
+						if (!dictionary.isInWordList(currentWord)) //if word does not exist
+							valid = false;
+					currentWord = ""; //reset word
+				}
+			}
+			if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				if (!dictionary.isInWordList(currentWord)) //if word does not exist
+					valid = false;
+		}
+
+		//HORIZONTAL
+		currentWord = "";
+		for (int column = 0; column < horizontalSize; column++)
+		{
+			if (isalpha(board.at(coords.first).at(column)))
+			{
+				currentWord += board.at(coords.first).at(column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					if (!dictionary.isInWordList(currentWord)) //if word does not exist
+						valid = false;
+				currentWord = ""; //reset word
+			}
+		}
+
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			if (!dictionary.isInWordList(currentWord)) //if word does not exist
+				valid = false;
+		break;
+
+	case'V':
+		//HORIZONTAL
+		start = coords.first;
+		end = start + (int) word.length() - 1;
+
+		for (int line = start; line <= end; line ++)
+		{
+			currentWord = "";
+			for (int column = 0; column < horizontalSize; column++)
+			{
+				if (isalpha(board.at(line).at(column)))
+				{
+					currentWord += board.at(line).at(column);
+				}
+				else
+				{
+					if (currentWord.length() >= 2) //only check if word size is bigger than 1
+						if (!dictionary.isInWordList(currentWord)) //if word does not exist
+							valid = false;
+					currentWord = ""; //reset word
+				}
+			}
+			if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				if (!dictionary.isInWordList(currentWord)) //if word does not exist
+					valid = false;
+		}
+
+		//VERTICAL
+		currentWord = "";
+		for (int line = 0; line < verticalSize; line++)
+		{
+			if (isalpha(board.at(line).at(coords.second)))
+			{
+				currentWord += board.at(line).at(coords.second);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					if (!dictionary.isInWordList(currentWord)) //if word does not exist
+						valid = false;
+				currentWord = ""; //reset word
+			}
+		}
+
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			if (!dictionary.isInWordList(currentWord)) //if word does not exist
+				valid = false;
+		break;
+	}
+	return valid;
+}
+
 
 //=================================================================================================================================
 // Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
