@@ -37,6 +37,7 @@ using namespace std;
 #define YELLOW 14
 #define WHITE 15
 
+#define DEFAULT 15
 #define QUESTION_COLOR 11
 #define SYMBOL_COLOR 14
 #define ERROR_MESSAGE 4
@@ -94,7 +95,7 @@ int main()
 			{
 				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nBoard was not opened successfuly\n";
-				colorMaster.setcolor(WHITE);
+				colorMaster.setcolor(DEFAULT);
 			}
 			break;
 		case 2:
@@ -105,7 +106,7 @@ int main()
 			{
 				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nBoard was not opened successfuly\n";
-				colorMaster.setcolor(WHITE);
+				colorMaster.setcolor(DEFAULT);
 			}
 			break;
 		default:
@@ -152,7 +153,7 @@ string askDictionaryName()
 	string dictName;
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Dictionary file name? ";
-	colorMaster.setcolor(WHITE);
+	colorMaster.setcolor(DEFAULT);
 	cin >> dictName;
 	return dictName;
 }
@@ -165,7 +166,7 @@ string askBoardName()
 	string boardName;
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Board file name? ";
-	colorMaster.setcolor(WHITE);
+	colorMaster.setcolor(DEFAULT);
 	cin >> boardName;
 	return boardName;
 }
@@ -186,7 +187,7 @@ pair<int,int> askBoardSize()
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
 		cout << "Horizontal board size? ";	
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		cin >> boardSize.first;
 	} while (!cin || boardSize.first <= 0 || boardSize.first > 26);
 
@@ -199,7 +200,7 @@ pair<int,int> askBoardSize()
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
 		cout << "Vertical board size? ";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		cin >> boardSize.second;
 	} while (!cin || boardSize.second <= 0 || boardSize.second > 26);
 
@@ -223,7 +224,7 @@ bool askToSaveBoard(Board board)
 		char answer;
 		colorMaster.setcolor(QUESTION_COLOR);
 		cout << "Do you wish to save the current board (Y/N) ? ";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 		answer = toupper(answer);
 
@@ -240,7 +241,7 @@ bool askToSaveBoard(Board board)
 				}
 				colorMaster.setcolor(QUESTION_COLOR);
 				cout << "Is the board finished (Y/N) ? ";
-				colorMaster.setcolor(WHITE);
+				colorMaster.setcolor(DEFAULT);
 				cin >> answer2;
 				answer2 = toupper(answer2);
 
@@ -260,13 +261,13 @@ bool askToSaveBoard(Board board)
 			{
 				colorMaster.setcolor(SUCCESS);
 				cout << "\nBoard was saved successfully.\n";
-				colorMaster.setcolor(WHITE);
+				colorMaster.setcolor(DEFAULT);
 			}
 			else
 			{
 				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nThe final board is not valid.\n";
-				colorMaster.setcolor(WHITE);
+				colorMaster.setcolor(DEFAULT);
 			}
 			validAnswer = true;
 		}
@@ -318,7 +319,7 @@ Board CreatePuzzle()
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		//_getch();
 		return Board();
 	}
@@ -344,7 +345,7 @@ Board ResumePuzzle()
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return Board();
 	}
 
@@ -374,15 +375,15 @@ void EditBoard(Board board)
 		{
 			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "Position ";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << "(\"LCD\" / ";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << "CTRL - Z";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << " = stop) ";
 			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "? ";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cin >> positionInput;
 
 			if (cin.fail())
@@ -434,23 +435,23 @@ void EditBoard(Board board)
 			}
 			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
 			cout << "Word";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << " (";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << "<";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << " = return / ";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << "-";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << " = remove / ";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << "?";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cout << " = help)";
 			colorMaster.setcolor(QUESTION_COLOR);
 			cout << " ? ";
-			colorMaster.setcolor(WHITE);
+			colorMaster.setcolor(DEFAULT);
 			cin >> word;
 
 			//Convert to uppercase

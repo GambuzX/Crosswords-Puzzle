@@ -30,6 +30,7 @@ using namespace std;
 #define YELLOW 14
 #define WHITE 15
 
+#define DEFAULT 15
 #define QUESTION_COLOR 11
 #define SYMBOL_COLOR 14
 #define ERROR_MESSAGE 4
@@ -131,42 +132,42 @@ bool Board::canBeInserted(string word, string positionInput)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nYou can not place a word in that location.\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else if (!isValidHeadline(word)) // Verify word is valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not present in the dictionary!\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else if (!wordFitsSpace(word, positionInput)) // Verify it fits the space
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not fit the specified space!\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else if (isWordUsed(word))	// Verify if word was already used
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is already in use!\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else if (!matchesInterceptedPositions(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not match current board!\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	return true;
@@ -247,7 +248,7 @@ bool Board::removeWord(string positionInput)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in that location!\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 
@@ -297,7 +298,7 @@ bool Board::removeWord(string positionInput)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in the specified direction!\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	return true;
@@ -502,7 +503,7 @@ bool Board::validPositionInput(string input)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nInvalid input!\n\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	else
@@ -730,7 +731,7 @@ bool Board::loadBoard(string fileName)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nDictionary file was not found!\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
 	setDictionary(dict);
