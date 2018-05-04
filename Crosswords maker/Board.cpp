@@ -741,10 +741,13 @@ bool Board::loadBoard(string fileName)
 	//SETTING HORIZONTAL AND VERTICAL SIZES
 	int verticalSize = 0;
 	int horizontalSize = 0;
+	bool foundDot = false; //Bool to check whether or not the board was finished
 	getline(file, line);
 	while (line != "")
 	{
 		horizontalSize = (line.length() + 1) / 2; //has one extra space for each char
+		if (line.find('.') != string::npos)
+			foundDot = true;
 		verticalSize++;
 		getline(file, line);
 	}
@@ -770,6 +773,8 @@ bool Board::loadBoard(string fileName)
 		insertWord(word, position);
 	}	
 	initializedBoard = true;
+	if (!foundDot)
+		fillRemainingSpots();
 	return true;
 }
 

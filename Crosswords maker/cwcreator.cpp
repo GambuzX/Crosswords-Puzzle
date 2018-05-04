@@ -14,7 +14,6 @@ using namespace std;
 
 //TODO Project specification + operation
 //TODO Option of adding hashes
-//TODO Read from file not reading hashes
 
 //TODO Clear all warnings
 
