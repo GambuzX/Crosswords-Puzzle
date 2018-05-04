@@ -30,6 +30,11 @@ using namespace std;
 #define YELLOW 14
 #define WHITE 15
 
+#define QUESTION_COLOR 11
+#define SYMBOL_COLOR 14
+#define ERROR_MESSAGE 4
+#define SUCCESS 10
+
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
@@ -83,14 +88,14 @@ void Board::showBoard()
 	cout << setw(WIDTH) << " ";
 	for (size_t i = 0; i < board.at(0).size(); i++)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << setw(WIDTH) << (char)('a' + i);
 	}
 	cout << endl;
 
 	for (size_t i = 0; i < board.size(); i++)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << (char)('A' + i) << " ";
 
 		for (size_t j = 0; j < board.at(i).size(); j++)
@@ -124,42 +129,42 @@ bool Board::canBeInserted(string word, string positionInput)
 
 	if (hasHash(insertionPosition)) // Verify it the position has an hash
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nYou can not place a word in that location.\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!isValidHeadline(word)) // Verify word is valid
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not present in the dictionary!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!wordFitsSpace(word, positionInput)) // Verify it fits the space
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not fit the specified space!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (isWordUsed(word))	// Verify if word was already used
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is already in use!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
 	}
 	else if (!matchesInterceptedPositions(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not match current board!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
@@ -232,7 +237,7 @@ bool Board::removeWord(string positionInput)
 
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in that location!\n";
 		colorMaster.setcolor(WHITE);
 		return false;
@@ -282,7 +287,7 @@ bool Board::removeWord(string positionInput)
 	}
 	if (!foundWord)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in the specified direction!\n";
 		colorMaster.setcolor(WHITE);
 		return false;
@@ -442,7 +447,7 @@ bool Board::validPositionInput(string input)
 
 	if (!valid)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nInvalid input!\n\n";
 		colorMaster.setcolor(WHITE);
 		return false;
@@ -557,7 +562,7 @@ bool Board::loadBoard(string fileName)
 	bool dictionaryOpened = dict.ProcessDictionary();
 	if (!dictionaryOpened)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nDictionary file was not found!\n";
 		colorMaster.setcolor(WHITE);
 		return false;

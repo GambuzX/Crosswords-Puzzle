@@ -38,6 +38,8 @@ using namespace std;
 
 #define QUESTION_COLOR 11
 #define SYMBOL_COLOR 14
+#define ERROR_MESSAGE 4
+#define SUCCESS 10
 
 //==========================================================================================
 
@@ -89,7 +91,7 @@ int main()
 				EditBoard(board);
 			else
 			{
-				colorMaster.setcolor(RED);
+				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nBoard was not opened successfuly\n";
 				colorMaster.setcolor(WHITE);
 			}
@@ -100,7 +102,7 @@ int main()
 				EditBoard(board);
 			else
 			{
-				colorMaster.setcolor(RED);
+				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nBoard was not opened successfuly\n";
 				colorMaster.setcolor(WHITE);
 			}
@@ -239,15 +241,11 @@ bool askToSaveBoard(Board board)
 				cout << "Is the board finished (Y/N) ? ";
 				colorMaster.setcolor(WHITE);
 				cin >> answer2;
-				answer = toupper(answer2);
+				answer2 = toupper(answer2);
 
 				if (answer2 == 'Y')
 					board.fillRemainingSpots();
-
-
 			} while (answer2 != 'Y' && answer2 != 'N');
-
-
 
 			//Save file
 			string fileName;
@@ -258,9 +256,17 @@ bool askToSaveBoard(Board board)
 			getline(cin, fileName);
 			success = board.saveBoard(fileName);
 			if (success)
+			{
+				colorMaster.setcolor(SUCCESS);
 				cout << "\nBoard was saved successfully.\n";
+				colorMaster.setcolor(WHITE);
+			}
 			else
+			{
+				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nThe final board is not valid.\n";
+				colorMaster.setcolor(WHITE);
+			}
 			validAnswer = true;
 		}
 		else if (answer == 'N')
@@ -284,7 +290,7 @@ Board CreatePuzzle()
 	bool dictionaryOpened = dictionary.ProcessDictionary();
 	if (!dictionaryOpened)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
 		colorMaster.setcolor(WHITE);
 		//_getch();
@@ -310,7 +316,7 @@ Board ResumePuzzle()
 
 	if (!boardLoaded)
 	{
-		colorMaster.setcolor(RED);
+		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
 		colorMaster.setcolor(WHITE);
 		return Board();
