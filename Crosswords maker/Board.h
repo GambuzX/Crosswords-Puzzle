@@ -23,6 +23,7 @@ public:
 	void InsertHashes(std::string word, std::string positionInput);
 	void RemoveHashes(std::string word, std::string positionInput);
 	void reprintHashes();
+	void fillRemainingSpots();
 	void helpUser(std::string position);
 	//void helpUserComplete(std::string position);
 

@@ -13,6 +13,7 @@ using namespace std;
 //TODO Option of adding hashes
 //TODO Better help function
 //TODO Board output file name according to project specifications
+//TODO Substitute dots with hashes in the end
 //TODO Clear all warnings
 
 //==========================================================================================
@@ -225,6 +226,30 @@ bool askToSaveBoard(Board board)
 
 		if (answer == 'Y')
 		{
+			//Check if board is finished or not
+			char answer2;
+			do
+			{
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+				colorMaster.setcolor(QUESTION_COLOR);
+				cout << "Is the board finished (Y/N) ? ";
+				colorMaster.setcolor(WHITE);
+				cin >> answer2;
+				answer = toupper(answer2);
+
+				if (answer2 == 'Y')
+					board.fillRemainingSpots();
+
+
+			} while (answer2 != 'Y' && answer2 != 'N');
+
+
+
+			//Save file
 			string fileName;
 			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "File name? ";

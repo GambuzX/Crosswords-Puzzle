@@ -362,6 +362,17 @@ void Board::reprintHashes()
 }
 
 //=================================================================================================================================
+// Substitutes all dots in the board for hashes
+
+void Board::fillRemainingSpots()
+{
+	for (size_t i = 0; i < verticalSize; i++)
+		for (size_t j = 0; j < horizontalSize; j++)
+			if (board.at(i).at(j) == '.')
+				board.at(i).at(j) = '#';
+}
+
+//=================================================================================================================================
 // Shows the user what words he can put in the specified location
 
 void Board::helpUser(string positionInput)
