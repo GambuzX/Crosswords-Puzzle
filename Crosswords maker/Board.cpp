@@ -383,8 +383,8 @@ void Board::reprintHashes()
 
 void Board::fillRemainingSpots()
 {
-	for (size_t i = 0; i < verticalSize; i++)
-		for (size_t j = 0; j < horizontalSize; j++)
+	for (int i = 0; i < verticalSize; i++)
+		for (int j = 0; j < horizontalSize; j++)
 			if (board.at(i).at(j) == '.')
 				board.at(i).at(j) = '#';
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <fstream>
 #include <conio.h>
 #include "ColorMaster.h"
 
@@ -10,9 +11,10 @@
 using namespace std;
 
 //TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
+
+//TODO Project specification + operation
 //TODO Option of adding hashes
-//TODO Better help function
-//TODO Board output file name according to project specifications
+//TODO Read from file not reading hashes
 
 //TODO Clear all warnings
 
@@ -47,6 +49,7 @@ void Introduction();
 void Instructions();
 void Options();
 string askDictionaryName();
+string determineBoardName();
 pair<int, int> askBoardSize();
 Board CreatePuzzle();
 Board ResumePuzzle();
@@ -248,12 +251,12 @@ bool askToSaveBoard(Board board)
 			} while (answer2 != 'Y' && answer2 != 'N');
 
 			//Save file
-			string fileName;
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "File name? ";
-			colorMaster.setcolor(WHITE);
-			cin.ignore(10000, '\n'); //ignore remaining chars in buffer
-			getline(cin, fileName);
+			string fileName = determineBoardName();
+			//colorMaster.setcolor(QUESTION_COLOR);
+			//cout << "File name? ";
+			//colorMaster.setcolor(WHITE);
+			//cin.ignore(10000, '\n'); //ignore remaining chars in buffer
+			//getline(cin, fileName);
 			success = board.saveBoard(fileName);
 			if (success)
 			{
@@ -274,6 +277,31 @@ bool askToSaveBoard(Board board)
 
 	} while (!validAnswer);
 	return success;
+}
+
+string determineBoardName()
+{
+	string boardName = "";
+	int counter = 1;
+
+	while (boardName == "")
+	{
+		string tempName;
+		if (counter < 10)
+			tempName = "B00" + to_string(counter) + ".txt";
+		else if (counter < 100)
+			tempName = "B0" + to_string(counter) + ".txt";
+		else if (counter < 1000)
+			tempName = "B" + to_string(counter) + ".txt";
+		else
+			tempName = "BOverflow.txt";
+
+		ifstream file(tempName); //opens files until it finds one that does not exist
+		if (!file.is_open())
+			boardName = tempName;
+		counter++;
+	}
+	return boardName;
 }
 
 //=================================================================================================================================
