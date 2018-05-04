@@ -13,6 +13,7 @@ using namespace std;
 
 //TODO Project specification + operation
 //TODO Option of adding hashes
+//TODO Operation success messages
 
 //TODO Clear all warnings
 

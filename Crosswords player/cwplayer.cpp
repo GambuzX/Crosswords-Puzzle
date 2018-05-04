@@ -14,6 +14,7 @@ void Introduction();
 void Instructions();
 string askDictionaryName();
 string askBoardName();
+string askPlayerName();
 
 ColorMaster colorMaster;
 
@@ -37,6 +38,7 @@ ColorMaster colorMaster;
 #define YELLOW 14
 #define WHITE 15
 
+#define DEFAULT 15
 #define QUESTION_COLOR 11
 #define SYMBOL_COLOR 14
 #define ERROR_MESSAGE 4
@@ -62,7 +64,7 @@ int main()
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		exit(1);
 	}
 
@@ -74,9 +76,12 @@ int main()
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
-		colorMaster.setcolor(WHITE);
+		colorMaster.setcolor(DEFAULT);
 		exit(1);
 	}
+
+
+
 	return 0;
 }
 
@@ -115,7 +120,7 @@ string askDictionaryName()
 	string dictName;
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Dictionary file name? ";
-	colorMaster.setcolor(WHITE);
+	colorMaster.setcolor(DEFAULT);
 	cin >> dictName;
 	return dictName;
 }
@@ -128,7 +133,20 @@ string askBoardName()
 	string boardName;
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Board file name? ";
-	colorMaster.setcolor(WHITE);
+	colorMaster.setcolor(DEFAULT);
 	cin >> boardName;
 	return boardName;
+}
+
+//=================================================================================================================================
+// Asks for the name of the player
+
+string askPlayerName()
+{
+	string playerName;
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "Player name? ";
+	colorMaster.setcolor(DEFAULT);
+	getline(cin, playerName);
+	return playerName;
 }
