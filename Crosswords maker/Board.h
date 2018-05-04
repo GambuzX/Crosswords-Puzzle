@@ -31,7 +31,6 @@ public:
 	bool hasHash(std::pair<int,int>);
 	bool canBeInserted(std::string word, std::string position);
 	bool testInsertion(std::string word, std::string position);
-	bool testLimitedInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
 	bool isBoardValid();
 	bool isBoardValid(std::string word, std::string positionInput);

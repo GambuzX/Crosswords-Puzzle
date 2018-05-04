@@ -177,30 +177,18 @@ bool Board::canBeInserted(string word, string positionInput)
 
 bool Board::testInsertion(string word, string positionInput)
 {
-	Board testBoard = *this;
-	testBoard.insertWord(word, positionInput);
-	return testBoard.isBoardValid();
-}
-
-//=================================================================================================================================
-// Simulates an insertion and verifies if the resulting board is valid.
-
-bool Board::testLimitedInsertion(string word, string positionInput)
-{
 	//Backup
 	std::vector<std::vector<char>> oldboard = board;
 	std::vector<std::pair<std::string, std::string>> oldusedWords = usedWords;
 
-	insertWord(word, positionInput); //idea overload ?
+	insertWord(word, positionInput);
 	bool valid = isBoardValid(word, positionInput);
 
+	//Restore backup
 	board = oldboard;
 	usedWords = oldusedWords;
-	return valid;
 
-	//Board testBoard = *this;
-	//testBoard.insertWord(word, positionInput);
-	//return testBoard.isBoardValid(word, positionInput);
+	return valid;
 }
 
 //=================================================================================================================================
@@ -474,7 +462,7 @@ void Board::helpUserComplete(string positionInput)
 	for (size_t i = 0; i < fittingWords.size(); i++)
 	{
 		string currentWord = fittingWords.at(i);
-		if (!isWordUsed(currentWord) && matchesInterceptedPositions(currentWord, positionInput) && testLimitedInsertion(currentWord, positionInput))
+		if (!isWordUsed(currentWord) && matchesInterceptedPositions(currentWord, positionInput) && testInsertion(currentWord, positionInput))
 		{
 			if (counter % WORDS_PER_LINE == 0) cout << endl;
 			cout << setw(WORDS_WIDTH) << currentWord;
@@ -695,7 +683,7 @@ bool Board::isBoardValid(string word, string position)
 
 bool Board::saveBoard(string fileName)
 {
-	if (!isBoardValid())
+	if (!isBoardValid()) //FINAL CHECK
 		return false;
 
 	// Organize it well
