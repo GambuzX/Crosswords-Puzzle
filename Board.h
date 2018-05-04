@@ -18,6 +18,7 @@ public:
 	inline void setDictionary(Dictionary dict);
 
 	void showBoard();
+	void showEmptyBoard();
 	void insertWord(std::string word, std::string position);
 	bool removeWord(std::string position);
 	void InsertHashes(std::string word, std::string positionInput);

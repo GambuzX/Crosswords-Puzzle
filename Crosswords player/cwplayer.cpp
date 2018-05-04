@@ -7,12 +7,12 @@
 #include "ColorMaster.h"
 #include "Dictionary.h"
 #include "Board.h"
+#include "Player.h"
 
 using namespace std;
 
 void Introduction();
 void Instructions();
-string askDictionaryName();
 string askBoardName();
 string askPlayerName();
 
@@ -56,22 +56,11 @@ int main()
 	Instructions();
 	cout << endl;
 
-	//OPEN DICTIONARY
-	string dictName = askDictionaryName();
-	Dictionary dict(dictName);
-	bool dictionarySuccess = dict.ProcessDictionary();
-	if (!dictionarySuccess)
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nCould not locate file with that name.\n";
-		colorMaster.setcolor(DEFAULT);
-		exit(1);
-	}
-
 	//LOAD BOARD
 	string boardName = askBoardName();
 	Board board;
 	bool boardLoaded = board.loadBoard(boardName);
+	cout << endl;
 	if (!boardLoaded)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
@@ -80,7 +69,12 @@ int main()
 		exit(1);
 	}
 
+	//CREATE PLAYER
+	cin.ignore(10000, '\n'); //needed because of remaining '\n' in the buffer
+	string playerName = askPlayerName();
+	Player player(playerName);
 
+	board.showEmptyBoard();
 
 	return 0;
 }
@@ -110,19 +104,6 @@ void Options()
 {
 	cout << "Options: \n";
 	cout << " (...)\n";
-}
-
-//=================================================================================================================================
-// Asks for the name of the dictionary
-
-string askDictionaryName()
-{
-	string dictName;
-	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "Dictionary file name? ";
-	colorMaster.setcolor(DEFAULT);
-	cin >> dictName;
-	return dictName;
 }
 
 //=================================================================================================================================

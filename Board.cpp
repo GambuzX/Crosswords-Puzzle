@@ -120,6 +120,44 @@ void Board::showBoard()
 }
 
 //=================================================================================================================================
+// Shows an "empy board", only white and black cells
+
+void Board::showEmptyBoard()
+{
+	const int WIDTH = 2;
+
+	cout << setw(WIDTH) << " ";
+	for (size_t i = 0; i < board.at(0).size(); i++)
+	{
+		colorMaster.setcolor(RED);
+		cout << setw(WIDTH) << (char)('a' + i);
+	}
+	cout << endl;
+
+	for (size_t i = 0; i < board.size(); i++)
+	{
+		colorMaster.setcolor(RED);
+		cout << (char)('A' + i) << " ";
+
+		for (size_t j = 0; j < board.at(i).size(); j++)
+		{
+			if (board.at(i).at(j) == '#')
+			{
+				colorMaster.setcolor(WHITE, BLACK);
+				cout << "  "; //empty black space
+			}
+			else
+			{
+				colorMaster.setcolor(BLACK, WHITE);
+				cout << "  "; //empty white space
+			}
+		}
+		cout << '\n';
+	}
+	colorMaster.setcolor(WHITE, BLACK); //set to default
+}
+
+//=================================================================================================================================
 // Verifies if a word can be inserted in a determined location, informing why not if false
 
 bool Board::canBeInserted(string word, string positionInput)
