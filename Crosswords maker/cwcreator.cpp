@@ -445,7 +445,7 @@ void EditBoard(Board board)
 			}
 			else if (word == "?") // Ask for help
 			{
-				board.helpUser(positionInput);
+				board.helpUserComplete(positionInput);
 				cout << endl;
 			}
 			else // default

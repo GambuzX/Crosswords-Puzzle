@@ -25,7 +25,7 @@ public:
 	void reprintHashes();
 	void fillRemainingSpots();
 	void helpUser(std::string position);
-	//void helpUserComplete(std::string position);
+	void helpUserComplete(std::string position);
 
 	bool isInitialized();
 	bool hasHash(std::pair<int,int>);
