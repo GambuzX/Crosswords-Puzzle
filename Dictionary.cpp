@@ -33,6 +33,8 @@ bool Dictionary::ProcessDictionary()
 		return false;
 	}
 
+	cout << "\nProcessing dictionary...\n";
+
 	string line;
 	while (getline(dict, line))
 	{

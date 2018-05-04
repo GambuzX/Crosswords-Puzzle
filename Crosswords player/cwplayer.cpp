@@ -10,6 +10,13 @@
 
 using namespace std;
 
+void Introduction();
+void Instructions();
+string askDictionaryName();
+string askBoardName();
+
+ColorMaster colorMaster;
+
 //==========================================================================================
 //COLOR CODES:
 
@@ -32,6 +39,8 @@ using namespace std;
 
 #define QUESTION_COLOR 11
 #define SYMBOL_COLOR 14
+#define ERROR_MESSAGE 4
+#define SUCCESS 10
 
 //==========================================================================================
 
@@ -39,5 +48,87 @@ int main()
 {
 	srand(time_t(NULL));
 
+	Introduction();
+	cout << endl;
+
+	Instructions();
+	cout << endl;
+
+	//OPEN DICTIONARY
+	string dictName = askDictionaryName();
+	Dictionary dict(dictName);
+	bool dictionarySuccess = dict.ProcessDictionary();
+	if (!dictionarySuccess)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nCould not locate file with that name.\n";
+		colorMaster.setcolor(WHITE);
+		exit(1);
+	}
+
+	//LOAD BOARD
+	string boardName = askBoardName();
+	Board board;
+	bool boardLoaded = board.loadBoard(boardName);
+	if (!boardLoaded)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nCould not locate file with that name.\n";
+		colorMaster.setcolor(WHITE);
+		exit(1);
+	}
 	return 0;
+}
+
+//=================================================================================================================================
+//TODO Ascii art with colors
+
+void Introduction()
+{
+	cout << "Crosswords Puzzle Solver\n";
+	cout << "=========================\n";
+}
+
+//=================================================================================================================================
+//TODO Instructions
+
+void Instructions()
+{
+	cout << "Instructions: \n";
+	cout << "(...)\n";
+}
+
+//=================================================================================================================================
+//TODO Show options
+
+void Options()
+{
+	cout << "Options: \n";
+	cout << " (...)\n";
+}
+
+//=================================================================================================================================
+// Asks for the name of the dictionary
+
+string askDictionaryName()
+{
+	string dictName;
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "Dictionary file name? ";
+	colorMaster.setcolor(WHITE);
+	cin >> dictName;
+	return dictName;
+}
+
+//=================================================================================================================================
+// Asks for the name of the board
+
+string askBoardName()
+{
+	string boardName;
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "Board file name? ";
+	colorMaster.setcolor(WHITE);
+	cin >> boardName;
+	return boardName;
 }

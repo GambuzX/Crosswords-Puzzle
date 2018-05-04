@@ -58,8 +58,7 @@ ColorMaster colorMaster;
 int main()
 {
 	Introduction();
-
-	cout << endl << endl;
+	cout << endl;
 
 	Instructions();
 	cout << endl;
