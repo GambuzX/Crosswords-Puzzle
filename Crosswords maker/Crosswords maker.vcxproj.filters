@@ -18,24 +18,24 @@
     <ClCompile Include="cwcreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dictionary.cpp">
+    <ClCompile Include="..\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
+    <ClCompile Include="..\ColorMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorMaster.cpp">
+    <ClCompile Include="..\Dictionary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h">
+    <ClInclude Include="..\Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dictionary.h">
+    <ClInclude Include="..\ColorMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColorMaster.h">
+    <ClInclude Include="..\Dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
