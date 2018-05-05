@@ -1,7 +1,7 @@
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
-#include <string>;
+#include <string>
 #include <vector>
 #include <map>
 
@@ -23,6 +23,8 @@ private:
 
 	std::vector<std::vector<char>> playerBoard;
 	std::vector<std::pair<std::string, std::string>> clueList;
+
+	ColorMaster colorMaster;
 
 	int horizontalSize;
 	int verticalSize;	

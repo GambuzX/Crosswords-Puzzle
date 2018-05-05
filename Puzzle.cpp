@@ -10,8 +10,6 @@
 
 using namespace std;
 
-ColorMaster colorMaster;
-
 //==========================================================================================
 //COLOR CODES:
 

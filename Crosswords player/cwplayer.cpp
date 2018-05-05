@@ -8,6 +8,7 @@
 #include "Dictionary.h"
 #include "Board.h"
 #include "Player.h"
+#include "Puzzle.h"
 
 using namespace std;
 
@@ -74,9 +75,10 @@ int main()
 	string playerName = askPlayerName();
 	Player player(playerName);
 
-	//CREATE EDITABLE BOARD
-	board.createPlayerBoard();
-	board.showPlayerBoard();
+	//CREATE PUZZLE TO BE SOLVED
+	Puzzle puzzle(board);
+	puzzle.createPlayerBoard();
+	puzzle.showPlayerBoard();
 
 	return 0;
 }

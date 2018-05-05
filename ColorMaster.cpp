@@ -1,6 +1,6 @@
 #include "ColorMaster.h"
 
-//CREDITS to JAS
+//TODO CREDITS to JAS
 
 using namespace std;
 

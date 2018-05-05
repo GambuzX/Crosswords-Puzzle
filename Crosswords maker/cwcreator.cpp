@@ -15,6 +15,7 @@ using namespace std;
 //TODO Option of adding hashes
 //TODO Operation success messages
 
+//TODO Specify objectives of each file and function
 //TODO Clear all warnings
 
 //==========================================================================================

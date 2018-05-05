@@ -145,49 +145,6 @@ void Board::showBoard()
 }
 
 //=================================================================================================================================
-// Shows an "empty board", only white and black cells
-
-void Board::showPlayerBoard()
-{
-	const int WIDTH = 2;
-
-	cout << setw(WIDTH) << " ";
-	for (size_t i = 0; i < playerBoard.at(0).size(); i++)
-	{
-		colorMaster.setcolor(RED);
-		cout << setw(WIDTH) << (char)('a' + i);
-	}
-	cout << endl;
-
-	for (size_t i = 0; i < playerBoard.size(); i++)
-	{
-		colorMaster.setcolor(RED);
-		cout << (char)('A' + i) << " ";
-
-		for (size_t j = 0; j < playerBoard.at(i).size(); j++)
-		{
-			if (playerBoard.at(i).at(j) == '#')
-			{
-				colorMaster.setcolor(WHITE, BLACK);
-				cout << "  "; //empty black space
-			}
-			else if (playerBoard.at(i).at(j) == '.')
-			{
-				colorMaster.setcolor(BLACK, WHITE);
-				cout << "  "; //empty white space
-			}
-			else
-			{
-				colorMaster.setcolor(BLACK, WHITE);
-				cout << setw(WIDTH) << playerBoard.at(i).at(j); // show user input letters
-			}
-		}
-		cout << '\n';
-	}
-	colorMaster.setcolor(WHITE, BLACK); //set to default
-}
-
-//=================================================================================================================================
 // Verifies if a word can be inserted in a determined location, informing why not if false
 
 bool Board::canBeInserted(string word, string positionInput)
@@ -538,18 +495,6 @@ void Board::helpUserComplete(string positionInput)
 			counter++;
 		}
 	}
-}
-
-//=================================================================================================================================
-// Creates a dummy board for the player to add words. Created from the original board by replacing letters with dots
-
-void Board::createPlayerBoard()
-{
-	playerBoard = board;
-	for (int i = 0; i < verticalSize; i++)
-		for (int j = 0; j < horizontalSize; j++)
-			if (isalpha(playerBoard.at(i).at(j)))
-				playerBoard.at(i).at(j) = '.';
 }
 
 //=================================================================================================================================
