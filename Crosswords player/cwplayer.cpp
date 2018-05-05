@@ -208,7 +208,24 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 				//Check validity
 				if (puzzle.validPositionInput(positionInput))
-					validPositionInput = true;
+				{
+					if (puzzle.hasHash(positionInput))
+					{
+						colorMaster.setcolor(ERROR_MESSAGE);
+						cout << "\nYou can not place a word in that location.\n\n";
+						colorMaster.setcolor(DEFAULT);
+					}
+					else if (!puzzle.isValidInsertionLocation(positionInput)) //Only accept input if there is a word starting there
+					{
+						colorMaster.setcolor(ERROR_MESSAGE);
+						cout << "\nThere is no word starting in that location and direction.\n\n";
+						colorMaster.setcolor(DEFAULT);
+					}
+					else
+					{
+						validPositionInput = true;
+					}
+				}
 			}
 		} while (!validPositionInput); //loop until valid input
 

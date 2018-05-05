@@ -22,6 +22,8 @@ public:
 	void showDifferentSynonym(std::string);
 	void insertWord(std::string word, std::string position);
 
+	bool hasHash(std::string position);
+	bool isValidInsertionLocation(std::string position);
 	bool validPositionInput(std::string);
 	bool canBeInserted(std::string word, std::string position);
 	bool removeWord(std::string position);
@@ -43,8 +45,6 @@ private:
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
 	std::string toUpperString(std::string word);
-
-	bool isValidInsertionLocation(std::string position);
 	bool isValidHeadline(std::string);
 	bool wordFitsSpace(std::string word, std::string position);
 	bool isWordUsed(std::string word);

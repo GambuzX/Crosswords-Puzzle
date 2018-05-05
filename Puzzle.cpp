@@ -202,6 +202,15 @@ void Puzzle::insertWord(std::string word, std::string positionInput)
 }
 
 //=================================================================================================================================
+// Verifies it the specified position has an hash
+
+bool Puzzle::hasHash(std::string position)
+{
+	pair<int, int> coords = calculateInsertionCoordinates(position);
+	return playerBoard.at(coords.first).at(coords.second) == '#';
+}
+
+//=================================================================================================================================
 // Verifies the user position input is valid
 
 bool Puzzle::validPositionInput(string input)
