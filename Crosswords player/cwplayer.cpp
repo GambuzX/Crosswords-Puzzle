@@ -211,10 +211,30 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 		} while (!validPositionInput); //loop until valid input
 
-		if (finishedPuzzle) //exit loop if CTRL-Z
+		if (finishedPuzzle) //If CTRL-Z, confirm if the player wishes to leave
 		{
-			//TODO Check puzzle is correct
-			//If wrong, ask if player wants to keep playing
+			bool leave = false;
+			char answer;
+			do
+			{
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+				colorMaster.setcolor(QUESTION_COLOR);
+				cout << "\nIf you leave all your progress will be lost. Proceed (Y/N)? ";
+				colorMaster.setcolor(DEFAULT);
+				cin >> answer;
+				answer = toupper(answer);
+				if (answer == 'Y')
+					leave = true;
+			} while (answer != 'Y' && answer != 'N');
+
+			if (leave)
+				break;
+			else
+				continue;
 		}
 
 		////////////////////////////////
