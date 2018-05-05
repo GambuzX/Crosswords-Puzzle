@@ -42,7 +42,7 @@ using namespace std;
 Puzzle::Puzzle(Board board)
 {
 	solutionBoard = board.getBoard();
-	usedWords = board.getUsedWords();
+	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
@@ -54,7 +54,7 @@ Puzzle::Puzzle(Board board)
 void Puzzle::setSolutionBoard(Board board)
 {
 	solutionBoard = board.getBoard();
-	usedWords = board.getUsedWords();
+	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
@@ -120,11 +120,11 @@ void Puzzle::showPlayerBoard()
 
 void Puzzle::buildClueList()
 {
-	for (size_t i = 0; i < usedWords.size(); i++)
+	for (size_t i = 0; i < solutionUsedWords.size(); i++)
 	{
-		string position = usedWords.at(i).first; //Location and direction
+		string position = solutionUsedWords.at(i).first; //Location and direction
 		position.at(1) = tolower(position.at(1)); //Set column to be lowercase
-		string word = usedWords.at(i).second;
+		string word = solutionUsedWords.at(i).second;
 		string clue = dictionary.GetWordSynonym(word);
 		clueList.push_back(pair<string, string>(position, clue));
 	}
@@ -202,3 +202,159 @@ bool Puzzle::validPositionInput(string input)
 		return true;
 }
 
+//=================================================================================================================================
+// Verifies the given word can be inserted in the specified position
+
+bool Puzzle::canBeInserted(string word, string position)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(position);
+	char direction = position.at(2);
+
+	if (hasHash(insertionPosition)) // Verify it the position has an hash
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou can not place a word in that location.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!isValidHeadline(word)) // Verify word is valid
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!wordFitsSpace(word, position)) // Verify it fits the space
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not fit the specified space!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (isWordUsed(word))	// Verify if word was already used
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!matchesInterceptedPositions(word, position)) // Verify if the insertion can be executed while keeping the board valid
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not match current board!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Checks if a given position has an hash ('#')
+
+bool Puzzle::hasHash(pair<int, int> position)
+{
+	return playerBoard.at(position.first).at(position.second) == '#';
+}
+
+//=================================================================================================================================
+// Determines line and column indexes given text input
+
+pair<int, int> Puzzle::calculateInsertionCoordinates(string coordinates)
+{
+	pair<int, int> position;
+	position.first = mapCharToNumber(coordinates.at(0)); //line
+	position.second = mapCharToNumber(coordinates.at(1)); //column
+	return position;
+}
+
+//=================================================================================================================================
+// Converts line / columns letter to respective index
+
+int Puzzle::mapCharToNumber(char letter)
+{
+	char upper = toupper(letter);
+	return ((int)upper - (int) 'A');
+}
+
+//=================================================================================================================================
+// Verifies the given headline is valid
+
+bool Puzzle::isValidHeadline(string word)
+{
+	for (size_t i = 0; i < word.length(); i++)
+	{
+		if (word.at(i) < 'A' || word.at(i) > 'Z')
+			return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Checks if the word fits in the specified space
+
+bool Puzzle::wordFitsSpace(string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
+
+	char dir = toupper(direction);
+	int wordSize = word.length();
+	int availableSpace;
+	switch (dir)
+	{
+	case 'H':
+		availableSpace = horizontalSize - insertionPosition.second;
+		break;
+	case 'V':
+		availableSpace = verticalSize - insertionPosition.first;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+	return availableSpace >= wordSize;
+}
+
+//=================================================================================================================================
+// Checks if the given word is already on the board or not
+
+bool Puzzle::isWordUsed(string word)
+{
+	vector<pair<string, string>>::iterator it;
+	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
+		if (it->second == word)
+			return true;
+	return false;
+}
+
+//=================================================================================================================================
+// Checks if the word matches the positions in the board it will intercept
+// Assumes all other conditios are met: valid, not used and fits space
+
+bool Puzzle::matchesInterceptedPositions(string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	switch (direction)
+	{
+	case 'H':
+		for (size_t i = 0; i < word.length(); i++) //for each position of the letter
+		{
+			if (playerBoard.at(line).at(column + i) != word.at(i) && playerBoard.at(line).at(column + i) != '.') // must either correspond to the word letter or to '.'
+				return false;
+		}
+		break;
+	case 'V':
+		for (size_t i = 0; i < word.length(); i++)
+			if (playerBoard.at(line + i).at(column) != word.at(i) && playerBoard.at(line + i).at(column) != '.')
+				return false;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+	return true;
+}

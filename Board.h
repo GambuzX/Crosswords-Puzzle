@@ -35,7 +35,6 @@ public:
 	void helpUserComplete(std::string position);
 
 	bool isInitialized();
-	bool hasHash(std::pair<int,int>);
 	bool canBeInserted(std::string word, std::string position);
 	bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
@@ -58,6 +57,7 @@ private:
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
 
+	bool hasHash(std::pair<int, int>);
 	bool isValidHeadline(std::string);
 	bool isWordUsed(std::string word);
 	bool wordFitsSpace(std::string word, std::string position);
