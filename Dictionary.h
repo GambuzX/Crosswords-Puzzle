@@ -11,6 +11,11 @@ public:
 	//Constructors
 	Dictionary() {};
 	Dictionary(std::string dictName) : dictionaryName(dictName) {};
+
+	//Destructor
+	~Dictionary();
+
+	//Getters
 	std::string getName();
 
 	bool ProcessDictionary();

@@ -59,8 +59,8 @@ int main()
 
 	//LOAD BOARD
 	string boardName = askBoardName();
-	Board board;
-	bool boardLoaded = board.loadBoard(boardName);
+	Board *board = new Board();
+	bool boardLoaded = board->loadBoard(boardName);
 	cout << endl;
 	if (!boardLoaded)
 	{
@@ -76,7 +76,8 @@ int main()
 	Player player(playerName);
 
 	//CREATE PUZZLE TO BE SOLVED
-	Puzzle puzzle(board);
+	Puzzle puzzle(*board);
+	delete board; //board is copied to the puzzle instance, duplicate is not needed
 	puzzle.createPlayerBoard();
 	puzzle.showPlayerBoard();
 
