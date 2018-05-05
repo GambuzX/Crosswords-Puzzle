@@ -22,8 +22,8 @@ public:
 private:
 	std::vector<std::vector<char>> solutionBoard;
 	std::vector<std::vector<char>> playerBoard;
-	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
-	std::vector<std::pair<std::string, std::string>> clueList; // list of clues for each placed word
+	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position [all uppercase], word)
+	std::vector<std::pair<std::string, std::string>> clueList; // list of clues for each placed word (position[upper,lower,upper], clue)
 
 	Dictionary dictionary; //dictionary to be used
 	ColorMaster colorMaster;

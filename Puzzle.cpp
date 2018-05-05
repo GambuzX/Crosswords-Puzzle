@@ -120,6 +120,13 @@ void Puzzle::showPlayerBoard()
 
 void Puzzle::buildClueList()
 {
-	//for (size_t i = 0; i < usedWords)
+	for (size_t i = 0; i < usedWords.size(); i++)
+	{
+		string position = usedWords.at(i).first; //Location and direction
+		position.at(1) = tolower(position.at(1)); //Set column to be lowercase
+		string word = usedWords.at(i).second;
+		string clue = dictionary.GetWordSynonym(word);
+		clueList.push_back(pair<string, string>(position, clue));
+	}
 }
 
