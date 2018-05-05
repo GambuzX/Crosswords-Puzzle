@@ -116,7 +116,7 @@ void Puzzle::showPlayerBoard()
 }
 
 //=================================================================================================================================
-// Builds an initial list of clues
+// Builds an initial list of clues.
 
 void Puzzle::buildClueList()
 {
@@ -127,6 +127,40 @@ void Puzzle::buildClueList()
 		string word = usedWords.at(i).second;
 		string clue = dictionary.GetWordSynonym(word);
 		clueList.push_back(pair<string, string>(position, clue));
+	}
+}
+
+//=================================================================================================================================
+// Shows the list of clues to the user.
+
+void Puzzle::showClueList()
+{
+	//TODO add colors
+
+	//HORIZONTAL
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nHORIZONTAL WORDS\n";
+	colorMaster.setcolor(WHITE, BLACK);
+	for (size_t i = 0; i < clueList.size(); i++)
+	{
+		if (clueList.at(i).first.at(2) == 'H')
+		{
+			cout << clueList.at(i).first.substr(0, 2) << " - " << clueList.at(i).second << endl;
+		}
+	}
+
+	cout << endl;
+
+	//VERTICAL
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\VERTICAL WORDS\n";
+	colorMaster.setcolor(WHITE, BLACK);
+	for (size_t i = 0; i < clueList.size(); i++)
+	{
+		if (clueList.at(i).first.at(2) == 'V')
+		{
+			cout << clueList.at(i).first.substr(0, 2) << " - " << clueList.at(i).second << endl;
+		}
 	}
 }
 

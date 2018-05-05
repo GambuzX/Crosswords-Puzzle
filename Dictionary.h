@@ -12,9 +12,6 @@ public:
 	Dictionary() {};
 	Dictionary(std::string dictName) : dictionaryName(dictName) {};
 
-	//Destructor
-	~Dictionary();
-
 	//Getters
 	std::string getName();
 

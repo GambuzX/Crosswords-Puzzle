@@ -18,6 +18,7 @@ public:
 	void createPlayerBoard();
 	void showPlayerBoard();
 	void buildClueList();
+	void showClueList();
 
 private:
 	std::vector<std::vector<char>> solutionBoard;

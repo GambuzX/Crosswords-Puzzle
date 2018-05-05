@@ -81,7 +81,7 @@ int main()
 	puzzle.createPlayerBoard();
 	puzzle.buildClueList();
 
-	bool boardFinished = false;
+	/*bool boardFinished = false;
 	do
 	{
 		puzzle.showPlayerBoard();
@@ -91,7 +91,7 @@ int main()
 
 
 
-	} while (!boardFinished);
+	} while (!boardFinished);*/
 
 
 
