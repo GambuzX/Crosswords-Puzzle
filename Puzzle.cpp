@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <conio.h>
 
 using namespace std;
 
@@ -243,11 +244,7 @@ bool Puzzle::validPositionInput(string input)
 
 bool Puzzle::canBeInserted(string word, string position)
 {
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = calculateInsertionCoordinates(position);
-	char direction = position.at(2);
-
-	if (hasHash(insertionPosition)) // Verify it the position has an hash
+	if (!isValidInsertionLocation(position)) // Verify it the position has an hash
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nYou can not place a word in that location.\n\n";
@@ -355,9 +352,16 @@ bool Puzzle::removeWord(std::string positionInput)
 //=================================================================================================================================
 // Checks if a given position has an hash ('#')
 
-bool Puzzle::hasHash(pair<int, int> position)
+bool Puzzle::isValidInsertionLocation(string positionInput)
 {
-	return playerBoard.at(position.first).at(position.second) == '#';
+	pair<int, int> position = calculateInsertionCoordinates(positionInput);
+	if (playerBoard.at(position.first).at(position.second) == '#') return false;
+
+	vector<pair<string, string>>::iterator it;
+	for (it = solutionUsedWords.begin(); it != solutionUsedWords.end(); it++) //Go through all of the solution inserted words
+		if (toUpperString(it->first) == toUpperString(positionInput))
+			return true;
+	return false;
 }
 
 //=================================================================================================================================
@@ -378,6 +382,17 @@ int Puzzle::mapCharToNumber(char letter)
 {
 	char upper = toupper(letter);
 	return ((int)upper - (int) 'A');
+}
+
+//=================================================================================================================================
+// Converts a string to uppercase
+
+string Puzzle::toUpperString(string word)
+{
+	string upper = word;
+	for (int i = 0; i < upper.length(); i++)
+		upper.at(i) = toupper(upper.at(i));
+	return upper;
 }
 
 //=================================================================================================================================

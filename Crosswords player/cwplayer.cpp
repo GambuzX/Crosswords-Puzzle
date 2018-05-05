@@ -295,11 +295,13 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cout << endl;
 			}
 			else // default
-				if (puzzle.canBeInserted(word, positionInput)) //Check validity and output error messages if necessary
+			{
+				if (puzzle.canBeInserted(word, positionInput)) //Check validity and output error messages if necessary 
 				{
 					puzzle.insertWord(word, positionInput);
 					validInput = true;
 				}
+			}
 		} while (!validInput); //loop until valid input
 
 		cout << endl;

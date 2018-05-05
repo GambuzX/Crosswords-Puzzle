@@ -42,8 +42,9 @@ private:
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
+	std::string toUpperString(std::string word);
 
-	bool hasHash(std::pair<int, int>);
+	bool isValidInsertionLocation(std::string position);
 	bool isValidHeadline(std::string);
 	bool wordFitsSpace(std::string word, std::string position);
 	bool isWordUsed(std::string word);
