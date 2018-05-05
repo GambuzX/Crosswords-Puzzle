@@ -952,57 +952,44 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 	int line = coordinates.first;
 	int column = coordinates.second;
 
-	bool empty = false;
 	switch (direction)
 	{
 	case 'H':
 		if (line == 0) //special case: only check downwards
 		{
-			if (board.at(line + 1).at(column) == '.' || board.at(line + 1).at(column) == '#')
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line + 1).at(column)))
+				return false;
 		}
-		else if (line == verticalSize-1) //special case: only check upwards
+		else if (line == verticalSize - 1) //special case: only check upwards
 		{
-			if (board.at(line - 1).at(column) == '.' || board.at(line - 1).at(column) == '#')
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line - 1).at(column)))
+				return false;
 		}
 		else
 		{
-			if ((board.at(line + 1).at(column) == '.' || board.at(line + 1).at(column) == '#') && (board.at(line - 1).at(column) == '.' || board.at(line - 1).at(column) == '#')) // check both up and down
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line + 1).at(column)) || isalpha(board.at(line - 1).at(column))) // check both up and down
+				return false;
 		}
 		break;
 	case 'V':
 		if (column == 0) //special case: only check right
 		{
-			if (board.at(line).at(column + 1) == '.' || board.at(line).at(column + 1) == '#')
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line).at(column + 1)))
+				return false;
 		}
 		else if (column == (horizontalSize - 1)) //special case: only check left
 		{
-			if (board.at(line).at(column - 1) == '.' || board.at(line).at(column - 1) == '#')
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line).at(column - 1)))
+				return false;
 		}
 		else
 		{
-			if ((board.at(line).at(column + 1) == '.' || board.at(line).at(column + 1) == '#') && (board.at(line).at(column - 1) == '.' || board.at(line).at(column - 1) == '#')) // check both right and left
-				empty = true;
-			else
-				empty = false;
+			if (isalpha(board.at(line).at(column + 1)) || isalpha(board.at(line).at(column - 1))) // check both right and left
+				return false;
 		}
 		break;
 	default:
 		cerr << "Invalid direction!";
 	}
-	return empty;
+	return true;
 }

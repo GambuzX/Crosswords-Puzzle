@@ -279,6 +279,73 @@ bool Puzzle::canBeInserted(string word, string position)
 }
 
 //=================================================================================================================================
+// Removes an already placed word. If no word removed returns false.
+
+bool Puzzle::removeWord(std::string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	char direction = positionInput.at(2);
+
+	if (playerBoard.at(line).at(column) == '.' || playerBoard.at(line).at(column) == '#')
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no word in that location!\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+
+	bool foundWord = false;
+	vector<pair<string, string>>::iterator it;
+	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
+	{
+		string position = it->first;
+		string word = it->second;
+		if (wordInterceptsPosition(positionInput, word, position))
+		{
+			pair<int, int> wordPos = calculateInsertionCoordinates(position);
+			int startLine = wordPos.first;
+			int startColumn = wordPos.second;
+			char dir = position.at(2);
+
+			switch (dir)
+			{
+			case 'H':
+				for (size_t i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
+						playerBoard.at(startLine).at(startColumn + i) = '.';
+				}
+				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			case 'V':
+				for (size_t i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+						playerBoard.at(startLine + i).at(startColumn) = '.';
+				}
+				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			default:
+				cerr << "Invalid direction!";
+			}
+			foundWord = true;
+			break; //can only remove one word, stops after it
+		}
+	}
+	if (!foundWord)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no word in the specified direction!\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
 // Checks if a given position has an hash ('#')
 
 bool Puzzle::hasHash(pair<int, int> position)
@@ -384,6 +451,90 @@ bool Puzzle::matchesInterceptedPositions(string word, string positionInput)
 		break;
 	default:
 		cerr << "Invalid input!";
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Checks if a word in the board intercepts determined coordinates in the board
+
+bool Puzzle::wordInterceptsPosition(string targetPosition, string word, string wordPosition)
+{
+	// position = (line, column)
+	pair<int, int> targetCoords = calculateInsertionCoordinates(targetPosition);
+	pair<int, int> wordCoords = calculateInsertionCoordinates(wordPosition);
+	char targetDir = targetPosition.at(2);
+	char wordDir = wordPosition.at(2);
+
+	if (targetDir != wordDir) //must be on the same direction
+		return false;
+
+	switch (targetDir)
+	{
+	case 'H':
+		if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
+			return false;
+		if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + (int)word.length())) //if out of the range occupied by the word
+			return false;
+		break;
+	case 'V':
+		if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
+			return false;
+		if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + (int)word.length())) //if out of the range occupied by the word
+			return false;
+		break;
+	default:
+		cerr << "Invalid direction!";
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Checks if the adjacent spaces of a given position on a direction are empty
+
+bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
+{
+	int line = coordinates.first;
+	int column = coordinates.second;
+
+	switch (direction)
+	{
+	case 'H':
+		if (line == 0) //special case: only check downwards
+		{
+			if (isalpha(playerBoard.at(line + 1).at(column)))
+				return false;
+		}
+		else if (line == verticalSize - 1) //special case: only check upwards
+		{
+			if (isalpha(playerBoard.at(line - 1).at(column)))
+				return false;
+		}
+		else
+		{
+			if (isalpha(playerBoard.at(line + 1).at(column)) || isalpha(playerBoard.at(line - 1).at(column))) // check both up and down
+				return false;
+		}
+		break;
+	case 'V':
+		if (column == 0) //special case: only check right
+		{
+			if (isalpha(playerBoard.at(line).at(column + 1)))
+				return false;
+		}
+		else if (column == (horizontalSize - 1)) //special case: only check left
+		{
+			if (isalpha(playerBoard.at(line).at(column - 1)))
+				return false;
+		}
+		else
+		{
+			if (isalpha(playerBoard.at(line).at(column + 1)) || isalpha(playerBoard.at(line).at(column - 1))) // check both right and left
+				return false;
+		}
+		break;
+	default:
+		cerr << "Invalid direction!";
 	}
 	return true;
 }
