@@ -288,7 +288,7 @@ bool Board::removeWord(string positionInput)
 	{
 		string position = it->first;
 		string word = it->second;
-		if (wordInterceptsPosition(positionInput, word, position))
+		if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
 		{
 			pair<int, int> wordPos = calculateInsertionCoordinates(position);
 			int startLine = wordPos.first;
@@ -821,7 +821,7 @@ pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
 }
 
 //=================================================================================================================================
-// Converts line / columns letter to respective index
+// Converts line / columns letter to respective index.
 
 int Board::mapCharToNumber(char letter)
 {
@@ -830,7 +830,7 @@ int Board::mapCharToNumber(char letter)
 }
 
 //=================================================================================================================================
-// Verifies the given headline is valid
+// Verifies the given headline is valid.
 
 bool Board::isValidHeadline(string word)
 {
@@ -843,7 +843,7 @@ bool Board::isValidHeadline(string word)
 }
 
 //=================================================================================================================================
-// Checks if the given word is already on the board or not
+// Checks if the given word is already on the board or not.
 
 bool Board::isWordUsed(string word)
 {
@@ -855,7 +855,7 @@ bool Board::isWordUsed(string word)
 }
 
 //=================================================================================================================================
-// Checks if the word fits in the specified space
+// Checks if the word fits in the specified space. 
 
 bool Board::wordFitsSpace(string word, string positionInput)
 {
@@ -880,8 +880,8 @@ bool Board::wordFitsSpace(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if the word matches the positions in the board it will intercept
-// Assumes all other conditios are met: valid, not used and fits space
+// Checks if the word matches the positions in the board it will intercept.
+// Assumes all other conditios are met: valid, not used and fits space.
 
 bool Board::matchesInterceptedPositions(string word, string positionInput)
 {

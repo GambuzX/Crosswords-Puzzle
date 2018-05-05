@@ -159,6 +159,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 {
 	puzzle.showPlayerBoard();
 	puzzle.showClueList();
+	cout << endl;
 
 	bool finishedPuzzle = false;
 	do
@@ -226,6 +227,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cout << "\nIf you leave all your progress will be lost. Proceed (Y/N)? ";
 				colorMaster.setcolor(DEFAULT);
 				cin >> answer;
+				cout << endl;
 				answer = toupper(answer);
 				if (answer == 'Y')
 					leave = true;

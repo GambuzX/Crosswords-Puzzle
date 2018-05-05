@@ -165,6 +165,13 @@ void Puzzle::showClueList()
 }
 
 //=================================================================================================================================
+// Shows a different synonym for the specified word
+
+void Puzzle::showDifferentSynonym(std::string position)
+{
+}
+
+//=================================================================================================================================
 // Inserts a word in the specified position. Assumes all tests have been made.
 
 void Puzzle::insertWord(std::string word, std::string positionInput)
@@ -279,7 +286,7 @@ bool Puzzle::canBeInserted(string word, string position)
 }
 
 //=================================================================================================================================
-// Removes an already placed word. If no word removed returns false.
+// Removes an already placed word. If word removed returns true, else returns false.
 
 bool Puzzle::removeWord(std::string positionInput)
 {
@@ -303,7 +310,7 @@ bool Puzzle::removeWord(std::string positionInput)
 	{
 		string position = it->first;
 		string word = it->second;
-		if (wordInterceptsPosition(positionInput, word, position))
+		if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
 		{
 			pair<int, int> wordPos = calculateInsertionCoordinates(position);
 			int startLine = wordPos.first;
@@ -387,7 +394,7 @@ bool Puzzle::isValidHeadline(string word)
 }
 
 //=================================================================================================================================
-// Checks if the word fits in the specified space
+// Checks if the word fits in the specified space, i.e., if it occupies the entire space
 
 bool Puzzle::wordFitsSpace(string word, string positionInput)
 {
@@ -401,15 +408,39 @@ bool Puzzle::wordFitsSpace(string word, string positionInput)
 	switch (dir)
 	{
 	case 'H':
-		availableSpace = horizontalSize - insertionPosition.second;
+		for (int column = insertionPosition.second; column < horizontalSize; column++)
+		{
+			if (playerBoard.at(insertionPosition.first).at(column) == '#')
+			{
+				availableSpace = column - insertionPosition.second;
+				break;
+			}
+			else if (column == horizontalSize - 1) //if on last board position and is not an hash
+			{
+				availableSpace = horizontalSize - insertionPosition.second;
+				break;
+			}
+		}
 		break;
 	case 'V':
-		availableSpace = verticalSize - insertionPosition.first;
+		for (int line = insertionPosition.first; line < verticalSize; line++)
+		{
+			if (playerBoard.at(line).at(insertionPosition.second) == '#')
+			{
+				availableSpace = line - insertionPosition.first;
+				break;
+			}
+			else if (line == verticalSize - 1) //if on last board position and is not an hash
+			{
+				availableSpace = verticalSize - insertionPosition.first;
+				break;
+			}
+		}
 		break;
 	default:
 		cerr << "Invalid input!";
 	}
-	return availableSpace >= wordSize;
+	return availableSpace == wordSize;
 }
 
 //=================================================================================================================================
