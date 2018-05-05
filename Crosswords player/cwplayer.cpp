@@ -97,6 +97,10 @@ void Instructions()
 {
 	cout << "Instructions: \n";
 	cout << "(...)\n";
+
+	//TODO Implement these ideas
+	// C for clues at anytime
+	// 
 }
 
 //=================================================================================================================================

@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Dictionary.h"
 #include "ColorMaster.h"
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -80,6 +81,30 @@ inline void Board::setDictionary(Dictionary dict)
 }
 
 //=================================================================================================================================
+// Returns current board
+
+vector<vector<char>> Board::getBoard()
+{
+	return board;
+}
+
+//=================================================================================================================================
+// Returns vertical size
+
+int Board::getVerticalSize()
+{
+	return verticalSize;
+}
+
+//=================================================================================================================================
+// Returns horizontal size
+
+int Board::getHorizontalSize()
+{
+	return horizontalSize;
+}
+
+//=================================================================================================================================
 // Shows current board
 
 void Board::showBoard()
@@ -120,7 +145,7 @@ void Board::showBoard()
 }
 
 //=================================================================================================================================
-// Shows an "empy board", only white and black cells
+// Shows an "empty board", only white and black cells
 
 void Board::showPlayerBoard()
 {

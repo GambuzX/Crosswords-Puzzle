@@ -148,6 +148,7 @@
     <ClCompile Include="..\ColorMaster.cpp" />
     <ClCompile Include="..\Dictionary.cpp" />
     <ClCompile Include="..\Player.cpp" />
+    <ClCompile Include="..\Puzzle.cpp" />
     <ClCompile Include="cwplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="..\ColorMaster.h" />
     <ClInclude Include="..\Dictionary.h" />
     <ClInclude Include="..\Player.h" />
+    <ClInclude Include="..\Puzzle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
