@@ -14,6 +14,7 @@ using namespace std;
 //TODO Project specification + operation
 //TODO Option of adding hashes
 //TODO Operation success messages
+//TODO _getch() after instructions
 
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
@@ -371,6 +372,7 @@ void EditBoard(Board board)
 		////////////////////////////////
 		//      ASK FOR POSITION      //
 		////////////////////////////////
+
 		bool validPositionInput = false;
 		do
 		{

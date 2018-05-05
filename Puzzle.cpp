@@ -164,3 +164,41 @@ void Puzzle::showClueList()
 	}
 }
 
+//=================================================================================================================================
+// Verifies the user position input is valid
+
+bool Puzzle::validPositionInput(string input)
+{
+	bool valid = true;
+
+	if (input.length() != 3)
+		valid = false;
+	else
+	{
+		char line = toupper(input.at(0));
+		char column = toupper(input.at(1));
+		char direction = toupper(input.at(2));
+		char maxHorizontal = 'A' + horizontalSize - 1;
+		char maxVertical = 'A' + verticalSize - 1;
+
+		if (line < 'A' || line > maxVertical)
+			valid = false;
+
+		if (column < 'A' || column > maxHorizontal)
+			valid = false;
+
+		if (direction != 'H' && direction != 'V')
+			valid = false;
+	}
+
+	if (!valid)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nInvalid input!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else
+		return true;
+}
+

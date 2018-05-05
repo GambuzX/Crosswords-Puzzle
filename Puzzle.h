@@ -19,6 +19,12 @@ public:
 	void showPlayerBoard();
 	void buildClueList();
 	void showClueList();
+	void showDifferentSynonym(std::string);
+	void insertWord(std::string word, std::string position);
+
+	bool validPositionInput(std::string);
+	bool canBeInserted(std::string word, std::string position);
+	bool removeWord(std::string position);
 
 private:
 	std::vector<std::vector<char>> solutionBoard;
