@@ -153,7 +153,7 @@ void Puzzle::showClueList()
 
 	//VERTICAL
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\VERTICAL WORDS\n";
+	cout << "\nVERTICAL WORDS\n";
 	colorMaster.setcolor(WHITE, BLACK);
 	for (size_t i = 0; i < clueList.size(); i++)
 	{
@@ -161,6 +161,35 @@ void Puzzle::showClueList()
 		{
 			cout << clueList.at(i).first.substr(0, 2) << " - " << clueList.at(i).second << endl;
 		}
+	}
+}
+
+//=================================================================================================================================
+// Inserts a word in the specified position. Assumes all tests have been made.
+
+void Puzzle::insertWord(std::string word, std::string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+	playerUsedWords.push_back(pair<string, string>(positionInput, word)); //add word to the vector
+
+	//Insert word
+	char dir = toupper(direction);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	switch (dir)
+	{
+	case 'H':
+		for (size_t i = 0; i < word.length(); i++)
+			playerBoard.at(line).at(column + i) = word.at(i);
+		break;
+	case 'V':
+		for (size_t i = 0; i < word.length(); i++)
+			playerBoard.at(line + i).at(column) = word.at(i);
+		break;
+	default:
+		cerr << "Invalid input!";
 	}
 }
 

@@ -238,10 +238,6 @@ bool Board::testInsertion(string word, string positionInput)
 
 void Board::insertWord(string word, string positionInput)
 {
-	//BACKUPS
-	//vector<vector<char>> oldBoard = board;
-	//vector<pair<string, string>> oldUsedWords = usedWords;
-
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
@@ -265,13 +261,6 @@ void Board::insertWord(string word, string positionInput)
 		cerr << "Invalid input!";
 	}
 	InsertHashes(word, positionInput);
-
-	//if (!validBoard()) //If insertWord broke the board, restore backup
-	//{
-	//	cout << "Word does not match current board!\n\n";
-	//	board = oldBoard;
-	//	usedWords = oldUsedWords;
-	//}
 }
 
 //=================================================================================================================================
