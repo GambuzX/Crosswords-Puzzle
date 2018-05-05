@@ -89,6 +89,14 @@ vector<vector<char>> Board::getBoard()
 }
 
 //=================================================================================================================================
+// Returns used words vector
+
+vector<pair<string, string>> Board::getUsedWords()
+{
+	return usedWords;
+}
+
+//=================================================================================================================================
 // Returns vertical size
 
 int Board::getVerticalSize()
@@ -102,6 +110,14 @@ int Board::getVerticalSize()
 int Board::getHorizontalSize()
 {
 	return horizontalSize;
+}
+
+//=================================================================================================================================
+// Returns current dictionary
+
+Dictionary Board::getDictionary()
+{
+	return dictionary;
 }
 
 //=================================================================================================================================

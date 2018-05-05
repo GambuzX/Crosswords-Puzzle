@@ -79,7 +79,20 @@ int main()
 	Puzzle puzzle(*board);
 	delete board; //board is copied to the puzzle instance, duplicate is not needed
 	puzzle.createPlayerBoard();
-	puzzle.showPlayerBoard();
+
+	bool boardFinished = false;
+	do
+	{
+		puzzle.showPlayerBoard();
+
+		// Ask for input
+		// Option to display clue list
+
+
+
+	} while (!boardFinished);
+
+
 
 	return 0;
 }

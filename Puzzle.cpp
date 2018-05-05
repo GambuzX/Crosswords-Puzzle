@@ -41,9 +41,11 @@ using namespace std;
 
 Puzzle::Puzzle(Board board)
 {
-	solutionBoard = board;
+	solutionBoard = board.getBoard();
+	usedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
+	dictionary = board.getDictionary();
 }
 
 //=================================================================================================================================
@@ -51,9 +53,11 @@ Puzzle::Puzzle(Board board)
 
 void Puzzle::setSolutionBoard(Board board)
 {
-	solutionBoard = board;
+	solutionBoard = board.getBoard();
+	usedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
+	dictionary = board.getDictionary();
 }
 
 //=================================================================================================================================
@@ -61,19 +65,12 @@ void Puzzle::setSolutionBoard(Board board)
 
 void Puzzle::createPlayerBoard()
 {
-	playerBoard = solutionBoard.getBoard();
+	playerBoard = solutionBoard;
 	for (int i = 0; i < verticalSize; i++)
 		for (int j = 0; j < horizontalSize; j++)
 			if (isalpha(playerBoard.at(i).at(j)))
 				playerBoard.at(i).at(j) = '.';
 }
-
-
-//=================================================================================================================================
-
-
-
-
 
 //=================================================================================================================================
 // Shows an "empty board", only white and black cells.
@@ -117,3 +114,12 @@ void Puzzle::showPlayerBoard()
 	}
 	colorMaster.setcolor(WHITE, BLACK); //set to default
 }
+
+//=================================================================================================================================
+// Builds an initial list of clues
+
+void Puzzle::buildClueList()
+{
+	//for (size_t i = 0; i < usedWords)
+}
+

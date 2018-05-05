@@ -17,13 +17,15 @@ public:
 	void setSolutionBoard(Board board);
 	void createPlayerBoard();
 	void showPlayerBoard();
+	void buildClueList();
 
 private:
-	Board solutionBoard;
-
+	std::vector<std::vector<char>> solutionBoard;
 	std::vector<std::vector<char>> playerBoard;
-	std::vector<std::pair<std::string, std::string>> clueList;
+	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
+	std::vector<std::pair<std::string, std::string>> clueList; // list of clues for each placed word
 
+	Dictionary dictionary; //dictionary to be used
 	ColorMaster colorMaster;
 
 	int horizontalSize;
