@@ -89,10 +89,31 @@ int main()
 
 		solveCurrentPuzzle(puzzle);
 
-		//Ask if player wants to solve other puzzle or not
+		char answer;
+		do
+		{
+			if (cin.fail())
+			{
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+			colorMaster.setcolor(QUESTION_COLOR);
+			cout << "Do you wish to play again (Y/N) ? ";
+			colorMaster.setcolor(DEFAULT);
+			cin >> answer;
+			answer = toupper(answer);
+		} while (answer != 'N' && answer != 'Y');
+
+		if (answer == 'N') //Leave program
+			finishedProgram = true;
 
 	} while (!finishedProgram);
-	
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "\nThanks for playing! Hope you had fun :D\n";
+	colorMaster.setcolor(DEFAULT);
+
+	exit(0);
 	return 0;
 }
 
