@@ -16,6 +16,10 @@ public:
 	Puzzle(Board originalBoard);
 	Puzzle(Board originalBoard, Player player);
 
+	//Getters
+	int getNumberOfSolutionWords();
+	int getNumberOfPlayerWords();
+
 	void setPlayer(Player player);
 	void setSolutionBoard(Board board);
 	void createPlayerBoard();
@@ -24,12 +28,14 @@ public:
 	void showClueList();
 	void showDifferentSynonym(std::string);
 	void insertWord(std::string word, std::string position);
+	void showWrongAnswers();
 
 	bool hasHash(std::string position);
 	bool isValidInsertionLocation(std::string position);
 	bool validPositionInput(std::string);
 	bool canBeInserted(std::string word, std::string position);
 	bool removeWord(std::string position);
+	bool boardsMatch();
 
 private:
 	std::vector<std::vector<char>> solutionBoard; //Only has the 2D vector of the board so as to be more independent of Board Class
@@ -45,6 +51,8 @@ private:
 
 	int horizontalSize;
 	int verticalSize;	
+	int numberOfSolutionWords;
+	int numberOfPlayerWords = 0;
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);

@@ -49,6 +49,8 @@ Puzzle::Puzzle(Board board)
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
+	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfPlayerWords = 0;
 }
 
 //=================================================================================================================================
@@ -61,7 +63,25 @@ Puzzle::Puzzle(Board board, Player player)
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
-	currentPlayer = player;
+	currentPlayer = player; 
+	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfPlayerWords = 0;
+}
+
+//=================================================================================================================================
+// Returns number of words in the solution board.
+
+int Puzzle::getNumberOfSolutionWords()
+{
+	return numberOfSolutionWords;
+}
+
+//=================================================================================================================================
+// Returns number of words in the player board.
+
+int Puzzle::getNumberOfPlayerWords()
+{
+	return numberOfPlayerWords;
 }
 
 //=================================================================================================================================
@@ -263,6 +283,15 @@ void Puzzle::insertWord(std::string word, std::string positionInput)
 	default:
 		cerr << "Invalid input!";
 	}
+	numberOfPlayerWords++;
+}
+
+//=================================================================================================================================
+// Displays a board highlighting which words are misplaced
+
+void Puzzle::showWrongAnswers()
+{
+
 }
 
 //=================================================================================================================================
@@ -419,6 +448,7 @@ bool Puzzle::removeWord(std::string positionInput)
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
+	numberOfPlayerWords--;
 	return true;
 }
 
@@ -656,4 +686,12 @@ bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		cerr << "Invalid direction!";
 	}
 	return true;
+}
+
+//=================================================================================================================================
+// Checks if the player board is equal to the solution board, i.e., if the player has won
+
+bool Puzzle::boardsMatch()
+{
+	return playerBoard == solutionBoard;
 }

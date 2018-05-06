@@ -120,6 +120,7 @@ int main()
 
 //TODO Verify player wins
 //TODO Player class stuff
+//TODO button to submit solution
 
 //=================================================================================================================================
 //TODO Ascii art with colors
@@ -346,6 +347,38 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				}
 			}
 		} while (!validInput); //loop until valid input
+
+		if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
+		{
+			char answer;
+			do
+			{
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+				colorMaster.setcolor(QUESTION_COLOR);
+				cout << "\nDo you wish to submit this solution (Y/N)? ";
+				colorMaster.setcolor(DEFAULT);
+				cin >> answer;
+				answer = toupper(answer);
+			} while (answer != 'N' && answer != 'Y');
+
+			if (answer == 'Y')
+			{
+				if (puzzle.boardsMatch()) //if the player won
+				{
+					//congratz message
+					//save puzzle
+				}
+				else
+				{
+					puzzle.showWrongAnswers();
+				}
+			}
+		}
+
 
 		cout << endl;
 		puzzle.showPlayerBoard();
