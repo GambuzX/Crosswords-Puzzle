@@ -83,6 +83,29 @@ int Puzzle::getNumberOfPlayerWords()
 {
 	return numberOfPlayerWords;
 }
+//=================================================================================================================================
+// Returns number of correct words.
+
+int Puzzle::calculateNumberOfCorrectWords()
+{
+	int counter = 0;
+	for (int i = 0; i < playerUsedWords.size(); i++)
+	{
+		string position = playerUsedWords.at(i).first;
+		string userWord = playerUsedWords.at(i).second;
+
+		string solutionWord;
+		for (int j = 0; j < solutionUsedWords.size(); j++)
+		{
+			if (solutionUsedWords.at(j).first == position)
+				solutionWord == solutionUsedWords.at(j).second;
+		}
+
+		if (userWord == solutionWord)
+			counter++;
+	}
+	return counter;
+}
 
 //=================================================================================================================================
 // Changes current board.

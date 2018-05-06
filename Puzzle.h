@@ -19,6 +19,7 @@ public:
 	//Getters
 	int getNumberOfSolutionWords();
 	int getNumberOfPlayerWords();
+	int calculateNumberOfCorrectWords();
 
 	void setPlayer(Player player);
 	void setSolutionBoard(Board board);

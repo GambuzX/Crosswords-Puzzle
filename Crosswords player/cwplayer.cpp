@@ -360,6 +360,9 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 	} while (!finishedPuzzle);
 }
 
+//=================================================================================================================================
+// Checks if the player has won. Returns a bool indicating whether or not to stop editing puzzle.
+
 bool CheckPlayerWon(Puzzle& puzzle)
 {
 	char answer;
@@ -390,9 +393,38 @@ bool CheckPlayerWon(Puzzle& puzzle)
 		}
 		else
 		{
+			int correctWords = puzzle.calculateNumberOfCorrectWords(); //TODO test this works
+			cout << "\nYou have guessed ";
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << correctWords;
+			colorMaster.setcolor(DEFAULT);
+			cout << " words!\nTake a better look at these ones:\n";
+
 			puzzle.showWrongAnswers(); //TODO test this works
-			//ASK if he wants to keep trying
-				//if not, ask if he wants to see solutions
+
+			//Ask if player wants to keep trying
+			char answer2;
+			do
+			{
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+				colorMaster.setcolor(QUESTION_COLOR);
+				cout << "\nDo you wish to continue playing (Y/N)? ";
+				colorMaster.setcolor(DEFAULT);
+				cin >> answer2;
+				answer2 = toupper(answer2);
+			} while (answer2 != 'N' && answer2 != 'Y');
+
+			if (answer2 == 'N')
+			{
+				//Ask if player wants to see solutions
+
+				//leave
+			} 
 		}
 	}
+	return false; //keep playing
 }
