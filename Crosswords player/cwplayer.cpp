@@ -348,15 +348,22 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				}
 			}
 		} while (!validInput); //loop until valid input
+		
+		cout << endl;
+		puzzle.showPlayerBoard();
+		cout << endl;
 
 		if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
 		{
-			bool playerWon = CheckPlayerWon(puzzle);
+			bool endPuzzle = CheckPlayerWon(puzzle);
+			if (endPuzzle)
+				finishedPuzzle = true;
 		}
 
 		cout << endl;
 		puzzle.showPlayerBoard();
 		cout << endl;
+
 	} while (!finishedPuzzle);
 }
 
@@ -374,7 +381,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			cin.ignore(10000, '\n');
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "\nSubmit solution (Y/N)? ";
+		cout << "Submit solution (Y/N)? ";
 		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 		answer = toupper(answer);
@@ -385,11 +392,13 @@ bool CheckPlayerWon(Puzzle& puzzle)
 		if (puzzle.boardsMatch()) //if the player won
 		{
 			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "Congratulations! You have guessed all the words!";
+			cout << "\nCongratulations! You have guessed all the words!\n";
 			colorMaster.setcolor(DEFAULT);
 
 			//display player stats
 			//save puzzle
+
+			return true;
 		}
 		else
 		{
@@ -430,7 +439,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 						cin.ignore(10000, '\n');
 					}
 					colorMaster.setcolor(QUESTION_COLOR);
-					cout << "\n Show solutions (Y/N)? ";
+					cout << "\nShow solutions (Y/N)? ";
 					colorMaster.setcolor(DEFAULT);
 					cin >> answer3;
 					answer3 = toupper(answer3);

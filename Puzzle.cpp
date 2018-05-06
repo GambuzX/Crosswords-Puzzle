@@ -98,7 +98,7 @@ int Puzzle::calculateNumberOfCorrectWords()
 		for (int j = 0; j < solutionUsedWords.size(); j++)
 		{
 			if (solutionUsedWords.at(j).first == position)
-				solutionWord == solutionUsedWords.at(j).second;
+				solutionWord = solutionUsedWords.at(j).second;
 		}
 
 		if (userWord == solutionWord)
@@ -206,6 +206,7 @@ void Puzzle::showSolutionBoard()
 		{
 			if (solutionBoard.at(i).at(j) == '#')
 			{
+				colorMaster.setcolor(WHITE, BLACK);
 				cout << "  ";
 			}
 			else
@@ -319,12 +320,12 @@ void Puzzle::showDifferentSynonym(std::string position)
 //=================================================================================================================================
 // Inserts a word in the specified position. Assumes all tests have been made.
 
-void Puzzle::insertWord(std::string word, std::string positionInput)
+void Puzzle::insertWord(string word, string positionInput)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
-	playerUsedWords.push_back(pair<string, string>(positionInput, word)); //add word to the vector
+	playerUsedWords.push_back(pair<string, string>(positionInput, toUpperString(word))); //add word to the vector
 
 	//Insert word
 	char dir = toupper(direction);
@@ -363,7 +364,7 @@ void Puzzle::showWrongAnswers()
 		for (int j = 0; j < solutionUsedWords.size(); j++)
 		{
 			if (solutionUsedWords.at(j).first == position)
-				solutionWord == solutionUsedWords.at(j).second;
+				solutionWord = solutionUsedWords.at(j).second;
 		}
 
 		bool correctAnswer = (userWord == solutionWord);
@@ -385,9 +386,8 @@ void Puzzle::showWrongAnswers()
 		for (size_t i = 0; i < horizontalErrors.size(); i++)
 		{
 			string position = horizontalErrors.at(i).first;
-			cout << position.at(0) << tolower(position.at(1)) << " - " << horizontalErrors.at(i).second << endl;
+			cout << position.at(0) << (char) tolower(position.at(1)) << " - " << horizontalErrors.at(i).second << endl;
 		}
-		cout << endl;
 	}
 
 	//VERTICAL
@@ -399,7 +399,7 @@ void Puzzle::showWrongAnswers()
 		for (size_t i = 0; i < verticalErrors.size(); i++)
 		{
 			string position = verticalErrors.at(i).first;
-			cout << position.at(0) << tolower(position.at(1)) << " - " << verticalErrors.at(i).second << endl;
+			cout << position.at(0) << (char) tolower(position.at(1)) << " - " << verticalErrors.at(i).second << endl;
 		}
 	}
 }
