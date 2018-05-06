@@ -79,11 +79,12 @@ int main()
 		//CREATE PLAYER
 		cin.ignore(10000, '\n'); //needed because of remaining '\n' in the buffer
 		string playerName = askPlayerName();
-		Player player(playerName);
+		Player *player = new Player(playerName);
 
 		//CREATE PUZZLE TO BE SOLVED
-		Puzzle puzzle(*board);
+		Puzzle puzzle(*board, *player);
 		delete board; //board is copied to the puzzle instance, duplicate is not needed
+		delete player; // same with player
 		puzzle.createPlayerBoard();
 		puzzle.buildClueList();
 
@@ -116,6 +117,9 @@ int main()
 	exit(0);
 	return 0;
 }
+
+//TODO Verify player wins
+//TODO Player class stuff
 
 //=================================================================================================================================
 //TODO Ascii art with colors

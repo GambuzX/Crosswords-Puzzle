@@ -52,6 +52,19 @@ Puzzle::Puzzle(Board board)
 }
 
 //=================================================================================================================================
+// Class constructor. Assigns a board and a player to the Puzzle.
+
+Puzzle::Puzzle(Board board, Player player)
+{
+	solutionBoard = board.getBoard();
+	solutionUsedWords = board.getUsedWords();
+	verticalSize = board.getVerticalSize();
+	horizontalSize = board.getHorizontalSize();
+	dictionary = board.getDictionary();
+	currentPlayer = player;
+}
+
+//=================================================================================================================================
 // Changes current board.
 
 void Puzzle::setSolutionBoard(Board board)
@@ -61,6 +74,14 @@ void Puzzle::setSolutionBoard(Board board)
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
+}
+
+//=================================================================================================================================
+// Changes current player.
+
+void Puzzle::setPlayer(Player player)
+{
+	currentPlayer = player;
 }
 
 //=================================================================================================================================

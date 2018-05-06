@@ -6,6 +6,7 @@
 #include <map>
 
 #include <Board.h>
+#include <Player.h>
 
 class Puzzle
 {
@@ -13,7 +14,9 @@ public:
 	// Constructors
 	Puzzle() {};
 	Puzzle(Board originalBoard);
+	Puzzle(Board originalBoard, Player player);
 
+	void setPlayer(Player player);
 	void setSolutionBoard(Board board);
 	void createPlayerBoard();
 	void showPlayerBoard();
@@ -37,6 +40,7 @@ private:
 	std::vector<std::pair<std::string, std::string>> clueList; // list of clues for each placed word (position[upper,lower,upper], clue)
 
 	Dictionary dictionary; //dictionary to be used
+	Player currentPlayer;
 	ColorMaster colorMaster;
 
 	int horizontalSize;
