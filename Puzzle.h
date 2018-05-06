@@ -15,12 +15,14 @@ public:
 	Puzzle() {};
 	Puzzle(Board originalBoard);
 	Puzzle(Board originalBoard, Player player);
+	Puzzle(Board originalBoard, std::string boardName, Player player);
 
 	//Getters
 	int getNumberOfSolutionWords();
 	int getNumberOfPlayerWords();
 	int calculateNumberOfCorrectWords();
 
+	void setLoadedBoardNumber(std::string);
 	void setPlayer(Player player);
 	void setSolutionBoard(Board board);
 	void createPlayerBoard();
@@ -33,6 +35,7 @@ public:
 	void showWrongAnswers();
 	void showPlayerStats();
 	void addWrongSubmission();
+	void saveStats();
 
 	bool hasHash(std::string position);
 	bool isValidInsertionLocation(std::string position);
@@ -42,6 +45,8 @@ public:
 	bool boardsMatch();
 
 private:
+
+	std::string loadedBoardNumber;
 	std::vector<std::vector<char>> solutionBoard; //Only has the 2D vector of the board so as to be more independent of Board Class
 	std::vector<std::vector<char>> playerBoard;
 

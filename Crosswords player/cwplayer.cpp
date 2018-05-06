@@ -83,7 +83,7 @@ int main()
 		Player *player = new Player(playerName);
 
 		//CREATE PUZZLE TO BE SOLVED
-		Puzzle puzzle(*board, *player);
+		Puzzle puzzle(*board, boardName, *player);
 		delete board; //board is copied to the puzzle instance, duplicate is not needed
 		delete player; // same with player
 		puzzle.createPlayerBoard();
@@ -100,10 +100,10 @@ int main()
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Do you wish to play again (Y/N) ? ";
+			cout << "\nDo you wish to play again (Y/N) ? ";
 			colorMaster.setcolor(DEFAULT);
-			cout << endl;
 			cin >> answer;
+			cout << endl;
 			answer = toupper(answer);
 		} while (answer != 'N' && answer != 'Y');
 
@@ -402,7 +402,9 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			puzzle.showPlayerStats();
 
 			//save puzzle
-
+			puzzle.saveStats();
+			
+			//TODO cout message of save
 			return true;
 		}
 		else

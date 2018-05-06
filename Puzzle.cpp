@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <map>
@@ -69,6 +70,22 @@ Puzzle::Puzzle(Board board, Player player)
 }
 
 //=================================================================================================================================
+// Class constructor. Assigns a board and a player to the Puzzle. Also stores the board number
+
+Puzzle::Puzzle(Board board, string boardName, Player player)
+{
+	solutionBoard = board.getBoard();
+	solutionUsedWords = board.getUsedWords();
+	verticalSize = board.getVerticalSize();
+	horizontalSize = board.getHorizontalSize();
+	dictionary = board.getDictionary();
+	currentPlayer = player;
+	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfPlayerWords = 0;
+	loadedBoardNumber = boardName.substr(1, 3);
+}
+
+//=================================================================================================================================
 // Returns number of words in the solution board.
 
 int Puzzle::getNumberOfSolutionWords()
@@ -117,6 +134,14 @@ void Puzzle::setSolutionBoard(Board board)
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = board.getDictionary();
+}
+
+//=================================================================================================================================
+// Stores the board number
+
+void Puzzle::setLoadedBoardNumber(string name)
+{
+	loadedBoardNumber = name.substr(1, 3);
 }
 
 //=================================================================================================================================
@@ -381,7 +406,7 @@ void Puzzle::showWrongAnswers()
 	if ((int)horizontalErrors.size() > 0)
 	{
 		colorMaster.setcolor(BLACK, WHITE);
-		cout << "\nHORIZONTAL ERRORS\n";
+		cout << "\nHORIZONTAL\n";
 		colorMaster.setcolor(WHITE, BLACK);
 		for (size_t i = 0; i < horizontalErrors.size(); i++)
 		{
@@ -394,7 +419,7 @@ void Puzzle::showWrongAnswers()
 	if ((int)verticalErrors.size() > 0)
 	{
 		colorMaster.setcolor(BLACK, WHITE);
-		cout << "\nVERTICAL ERRORS\n";
+		cout << "\nVERTICAL\n";
 		colorMaster.setcolor(WHITE, BLACK);
 		for (size_t i = 0; i < verticalErrors.size(); i++)
 		{
@@ -445,6 +470,22 @@ void Puzzle::addWrongSubmission()
 {
 	currentPlayer.incrementWrongSubmissions();
 }
+
+//=================================================================================================================================
+// Saves the player stats to a file 
+
+void Puzzle::saveStats()
+{
+	string fileName = "b" + loadedBoardNumber + "_p.txt";
+	ofstream file(fileName, ios::app);
+
+	file << "Player name: " << currentPlayer.getName() << "; Time: " << currentPlayer.calculateTimeSpent();
+	file << "s; Hints: " << currentPlayer.getNumberOfClues() << "; Wrong submissions: " << currentPlayer.getNumberOfWrongSubmissions();
+	file << endl;
+
+	file.close();
+}
+
 
 //=================================================================================================================================
 // Verifies it the specified position has an hash
