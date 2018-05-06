@@ -378,15 +378,21 @@ bool CheckPlayerWon(Puzzle& puzzle)
 	} while (answer != 'N' && answer != 'Y');
 
 	if (answer == 'Y')
-	{
+	{//TODO test this works v
 		if (puzzle.boardsMatch()) //if the player won
 		{
-			//congratz message
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << "Congratulations! You have guessed all the words!";
+			colorMaster.setcolor(DEFAULT);
+
+			//display player stats
 			//save puzzle
 		}
 		else
 		{
-			puzzle.showWrongAnswers();
+			puzzle.showWrongAnswers(); //TODO test this works
+			//ASK if he wants to keep trying
+				//if not, ask if he wants to see solutions
 		}
 	}
 }
