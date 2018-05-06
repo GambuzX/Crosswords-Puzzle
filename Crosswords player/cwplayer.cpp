@@ -358,11 +358,13 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			bool endPuzzle = CheckPlayerWon(puzzle);
 			if (endPuzzle)
 				finishedPuzzle = true;
+			else
+			{
+				cout << endl;
+				puzzle.showPlayerBoard();
+				cout << endl;
+			}
 		}
-
-		cout << endl;
-		puzzle.showPlayerBoard();
-		cout << endl;
 
 	} while (!finishedPuzzle);
 }
@@ -388,7 +390,6 @@ bool CheckPlayerWon(Puzzle& puzzle)
 	} while (answer != 'N' && answer != 'Y');
 
 	if (answer == 'Y')
-	{//TODO test this works v
 		if (puzzle.boardsMatch()) //if the player won
 		{
 			colorMaster.setcolor(SYMBOL_COLOR);
@@ -396,12 +397,15 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			colorMaster.setcolor(DEFAULT);
 
 			//display player stats
+			puzzle.showPlayerStats();
+
 			//save puzzle
 
 			return true;
 		}
 		else
 		{
+			puzzle.addWrongSubmission();
 			int correctWords = puzzle.calculateNumberOfCorrectWords(); //TODO test this works
 			cout << "\nYou have guessed ";
 			colorMaster.setcolor(SYMBOL_COLOR);

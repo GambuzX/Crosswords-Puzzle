@@ -10,6 +10,8 @@ using namespace std;
 Player::Player()
 {
 	time(&initialTime); //sets initial time
+	clues = 0;
+	wrongSubmissions = 0;
 }
 
 //==========================================================================================
@@ -19,6 +21,8 @@ Player::Player(string name)
 {
 	this->name = name;
 	time(&initialTime); //sets initial time
+	clues = 0;
+	wrongSubmissions = 0;
 }
 
 //==========================================================================================
@@ -32,14 +36,28 @@ std::string Player::getName()
 
 int Player::getNumberOfClues()
 {
-	return numberOfClues;
+	return clues;
+}
+
+//==========================================================================================
+
+int Player::getNumberOfWrongSubmissions()
+{
+	return wrongSubmissions;
 }
 
 //==========================================================================================
 
 void Player::incrementNumberOfClues()
 {
-	numberOfClues++;
+	clues++;
+}
+
+//==========================================================================================
+
+void Player::incrementWrongSubmissions()
+{
+	wrongSubmissions++;
 }
 
 //==========================================================================================

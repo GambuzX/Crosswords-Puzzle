@@ -405,6 +405,50 @@ void Puzzle::showWrongAnswers()
 }
 
 //=================================================================================================================================
+// Displays player stats
+
+void Puzzle::showPlayerStats()
+{
+	const double TIME_PRECISION = 5;
+
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nSTATS\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "Player name: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << currentPlayer.getName();
+	colorMaster.setcolor(DEFAULT);
+	cout << endl;
+
+	cout << "Time to solve: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << fixed << setprecision(TIME_PRECISION) << currentPlayer.calculateTimeSpent() << " seconds";
+	colorMaster.setcolor(DEFAULT);
+	cout << endl;
+
+	cout << "Number of hints: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << currentPlayer.getNumberOfClues();
+	colorMaster.setcolor(DEFAULT);
+	cout << endl;
+
+	cout << "Number of wrong submissions: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << currentPlayer.getNumberOfWrongSubmissions();
+	colorMaster.setcolor(DEFAULT);
+	cout << endl;
+}
+
+//=================================================================================================================================
+// Adds a wrong submission to the player
+
+void Puzzle::addWrongSubmission()
+{
+	currentPlayer.incrementWrongSubmissions();
+}
+
+//=================================================================================================================================
 // Verifies it the specified position has an hash
 
 bool Puzzle::hasHash(std::string position)

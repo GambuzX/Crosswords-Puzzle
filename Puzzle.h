@@ -31,6 +31,8 @@ public:
 	void showDifferentSynonym(std::string);
 	void insertWord(std::string word, std::string position);
 	void showWrongAnswers();
+	void showPlayerStats();
+	void addWrongSubmission();
 
 	bool hasHash(std::string position);
 	bool isValidInsertionLocation(std::string position);

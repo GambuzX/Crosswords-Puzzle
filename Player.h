@@ -14,8 +14,10 @@ public:
 	// Getters
 	std::string getName();
 	int getNumberOfClues();
+	int getNumberOfWrongSubmissions();
 
 	void incrementNumberOfClues();
+	void incrementWrongSubmissions();
 	void setInitialTime();
 	double calculateTimeSpent();
 
@@ -23,7 +25,7 @@ private:
 	std::string name;
 	time_t initialTime;
 	double timeSpent;
-	int numberOfClues = 0;
+	int clues = 0, wrongSubmissions = 0;
 };
 
 
