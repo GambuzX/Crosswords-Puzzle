@@ -464,7 +464,7 @@ void Puzzle::showPlayerStats()
 }
 
 //=================================================================================================================================
-// Adds a wrong submission to the player
+// Increments wrong submission counter of the player
 
 void Puzzle::addWrongSubmission()
 {

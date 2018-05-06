@@ -120,9 +120,7 @@ int main()
 	return 0;
 }
 
-//TODO Verify player wins
-//TODO Player class stuff
-//TODO button to submit solution
+//TODO option to submit solution
 
 //=================================================================================================================================
 //TODO Ascii art with colors
@@ -404,20 +402,23 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			//save puzzle
 			puzzle.saveStats();
 			
-			//TODO cout message of save
+			colorMaster.setcolor(SUCCESS);
+			cout << "\nPlayer stats were saved successfully.\n";
+			colorMaster.setcolor(DEFAULT);
+
 			return true;
 		}
 		else
 		{
 			puzzle.addWrongSubmission();
-			int correctWords = puzzle.calculateNumberOfCorrectWords(); //TODO test this works
+			int correctWords = puzzle.calculateNumberOfCorrectWords();
 			cout << "\nYou have guessed ";
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << correctWords;
 			colorMaster.setcolor(DEFAULT);
 			cout << " words!\nTake a better look at these ones:\n";
 
-			puzzle.showWrongAnswers(); //TODO test this works
+			puzzle.showWrongAnswers();
 
 			//Ask if player wants to keep trying
 			char answer2;
@@ -454,7 +455,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 				} while (answer3 != 'N' && answer3 != 'Y');
 
 				if (answer3 == 'Y')
-					puzzle.showSolutionBoard(); //TODO test this
+					puzzle.showSolutionBoard();
 
 				//leave
 				return true;
