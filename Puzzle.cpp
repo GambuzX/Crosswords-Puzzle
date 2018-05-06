@@ -89,13 +89,13 @@ int Puzzle::getNumberOfPlayerWords()
 int Puzzle::calculateNumberOfCorrectWords()
 {
 	int counter = 0;
-	for (int i = 0; i < playerUsedWords.size(); i++)
+	for (size_t i = 0; i < playerUsedWords.size(); i++)
 	{
 		string position = playerUsedWords.at(i).first;
 		string userWord = playerUsedWords.at(i).second;
 
 		string solutionWord;
-		for (int j = 0; j < solutionUsedWords.size(); j++)
+		for (size_t j = 0; j < solutionUsedWords.size(); j++)
 		{
 			if (solutionUsedWords.at(j).first == position)
 				solutionWord = solutionUsedWords.at(j).second;
@@ -275,7 +275,7 @@ void Puzzle::showClueList()
 void Puzzle::showDifferentSynonym(std::string position)
 {
 	string word;
-	for (int i = 0; i < solutionUsedWords.size(); i++)
+	for (size_t i = 0; i < solutionUsedWords.size(); i++)
 		if (toUpperString(solutionUsedWords.at(i).first) == toUpperString(position))
 		{
 			word = solutionUsedWords.at(i).second;
@@ -283,7 +283,7 @@ void Puzzle::showDifferentSynonym(std::string position)
 		}
 
 	string usedSynonym;
-	for (int i = 0; i < clueList.size(); i++)
+	for (size_t i = 0; i < clueList.size(); i++)
 		if (toUpperString(clueList.at(i).first) == toUpperString(position))
 		{
 			usedSynonym = clueList.at(i).second;
@@ -355,13 +355,13 @@ void Puzzle::showWrongAnswers()
 	vector<pair<string, string>> horizontalErrors;
 	vector<pair<string,string>> verticalErrors;
 
-	for (int i = 0; i < playerUsedWords.size(); i++)
+	for (size_t i = 0; i < playerUsedWords.size(); i++)
 	{
 		string position = playerUsedWords.at(i).first;
 		string userWord = playerUsedWords.at(i).second;
 
 		string solutionWord;
-		for (int j = 0; j < solutionUsedWords.size(); j++)
+		for (size_t j = 0; j < solutionUsedWords.size(); j++)
 		{
 			if (solutionUsedWords.at(j).first == position)
 				solutionWord = solutionUsedWords.at(j).second;
@@ -409,8 +409,6 @@ void Puzzle::showWrongAnswers()
 
 void Puzzle::showPlayerStats()
 {
-	const double TIME_PRECISION = 5;
-
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nSTATS\n";
 	colorMaster.setcolor(WHITE, BLACK);
@@ -423,7 +421,7 @@ void Puzzle::showPlayerStats()
 
 	cout << "Time to solve: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << fixed << setprecision(TIME_PRECISION) << currentPlayer.calculateTimeSpent() << " seconds";
+	cout << currentPlayer.calculateTimeSpent() << " seconds";
 	colorMaster.setcolor(DEFAULT);
 	cout << endl;
 
@@ -647,7 +645,7 @@ int Puzzle::mapCharToNumber(char letter)
 string Puzzle::toUpperString(string word)
 {
 	string upper = word;
-	for (int i = 0; i < upper.length(); i++)
+	for (size_t i = 0; i < upper.length(); i++)
 		upper.at(i) = toupper(upper.at(i));
 	return upper;
 }

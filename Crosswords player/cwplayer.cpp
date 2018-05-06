@@ -52,7 +52,7 @@ ColorMaster colorMaster;
 
 int main()
 {
-	srand(time(NULL));
+	srand(time_t(NULL));
 
 	Introduction();
 	cout << endl;
@@ -102,6 +102,7 @@ int main()
 			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "Do you wish to play again (Y/N) ? ";
 			colorMaster.setcolor(DEFAULT);
+			cout << endl;
 			cin >> answer;
 			answer = toupper(answer);
 		} while (answer != 'N' && answer != 'Y');
@@ -112,7 +113,7 @@ int main()
 	} while (!finishedProgram);
 
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "\nThanks for playing! Hope you had fun :D\n";
+	cout << "Thanks for playing! Hope you had fun :D\n";
 	colorMaster.setcolor(DEFAULT);
 
 	exit(0);
@@ -390,6 +391,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 	} while (answer != 'N' && answer != 'Y');
 
 	if (answer == 'Y')
+	{
 		if (puzzle.boardsMatch()) //if the player won
 		{
 			colorMaster.setcolor(SYMBOL_COLOR);

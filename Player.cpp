@@ -74,7 +74,7 @@ double Player::calculateTimeSpent()
 {
 	time_t currentTime;
 	time(&currentTime);
-	timeSpent = difftime(initialTime, currentTime);
+	timeSpent = difftime(currentTime, initialTime);
 	return timeSpent; // return value is in seconds
 }
 
