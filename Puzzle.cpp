@@ -287,11 +287,69 @@ void Puzzle::insertWord(std::string word, std::string positionInput)
 }
 
 //=================================================================================================================================
-// Displays a board highlighting which words are misplaced
+// Shows the user which words he mistyped
 
 void Puzzle::showWrongAnswers()
 {
+	vector<pair<string, string>> horizontalErrors;
+	vector<pair<string,string>> verticalErrors;
 
+	for (int i = 0; i < playerUsedWords.size(); i++)
+	{
+		string position = playerUsedWords.at(i).first;
+		string userWord = playerUsedWords.at(i).second;
+
+		string solutionWord;
+		for (int j = 0; j < solutionUsedWords.size(); j++)
+		{
+			if (solutionUsedWords.at(j).first == position)
+				solutionWord == solutionUsedWords.at(j).second;
+		}
+
+		bool correctAnswer = (userWord == solutionWord);
+		if (!correctAnswer)
+		{
+			if (position.at(2) == 'H')
+				horizontalErrors.push_back(pair<string, string>(position, userWord));
+			else if (position.at(2) == 'V')
+				verticalErrors.push_back(pair<string, string>(position, userWord));
+		}
+	}
+
+	//HORIZONTAL
+	if ((int)horizontalErrors.size() > 0)
+	{
+		colorMaster.setcolor(BLACK, WHITE);
+		cout << "\nHORIZONTAL ERRORS\n";
+		colorMaster.setcolor(WHITE, BLACK);
+		for (size_t i = 0; i < horizontalErrors.size(); i++)
+		{
+			string position = horizontalErrors.at(i).first;
+			cout << position.at(0) << tolower(position.at(1)) << " - " << horizontalErrors.at(i).second << endl;
+		}
+		cout << endl;
+	}
+
+	//VERTICAL
+	if ((int)verticalErrors.size() > 0)
+	{
+		colorMaster.setcolor(BLACK, WHITE);
+		cout << "\nVERTICAL ERRORS\n";
+		colorMaster.setcolor(WHITE, BLACK);
+		for (size_t i = 0; i < verticalErrors.size(); i++)
+		{
+			string position = verticalErrors.at(i).first;
+			cout << position.at(0) << tolower(position.at(1)) << " - " << verticalErrors.at(i).second << endl;
+		}
+	}
+}
+
+//==================================================================================================================================
+// Displays the solutions for the puzzle
+
+void Puzzle::showSolutions()
+{
+	
 }
 
 //=================================================================================================================================

@@ -18,6 +18,7 @@ void Instructions();
 string askBoardName();
 string askPlayerName();
 void solveCurrentPuzzle(Puzzle&);
+bool CheckPlayerWon(Puzzle&);
 
 ColorMaster colorMaster;
 
@@ -350,38 +351,42 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 		if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
 		{
-			char answer;
-			do
-			{
-				if (cin.fail())
-				{
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-				colorMaster.setcolor(QUESTION_COLOR);
-				cout << "\nDo you wish to submit this solution (Y/N)? ";
-				colorMaster.setcolor(DEFAULT);
-				cin >> answer;
-				answer = toupper(answer);
-			} while (answer != 'N' && answer != 'Y');
-
-			if (answer == 'Y')
-			{
-				if (puzzle.boardsMatch()) //if the player won
-				{
-					//congratz message
-					//save puzzle
-				}
-				else
-				{
-					puzzle.showWrongAnswers();
-				}
-			}
+			bool playerWon = CheckPlayerWon(puzzle);
 		}
-
 
 		cout << endl;
 		puzzle.showPlayerBoard();
 		cout << endl;
 	} while (!finishedPuzzle);
+}
+
+bool CheckPlayerWon(Puzzle& puzzle)
+{
+	char answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		colorMaster.setcolor(QUESTION_COLOR);
+		cout << "\nDo you wish to submit this solution (Y/N)? ";
+		colorMaster.setcolor(DEFAULT);
+		cin >> answer;
+		answer = toupper(answer);
+	} while (answer != 'N' && answer != 'Y');
+
+	if (answer == 'Y')
+	{
+		if (puzzle.boardsMatch()) //if the player won
+		{
+			//congratz message
+			//save puzzle
+		}
+		else
+		{
+			puzzle.showWrongAnswers();
+		}
+	}
 }
