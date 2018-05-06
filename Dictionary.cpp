@@ -4,7 +4,8 @@
 #include <vector>
 #include <map>
 #include <fstream>
-#include <random>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -22,7 +23,16 @@ string Dictionary::getName()
 }
 
 //=================================================================================================================================
+// Returns the synonym list for a given word
+
+vector<string> Dictionary::getWordSynonyms(string word)
+{
+	return wordList[word];
+}
+
+//=================================================================================================================================
 // Verifies if dictionary exists and processes it, storing all word entries
+// All words kept in uppercase
 
 bool Dictionary::ProcessDictionary()
 {
@@ -48,7 +58,7 @@ bool Dictionary::ProcessDictionary()
 		{
 			endPos = line.find_first_of(',');
 			synonym = line.substr(0, endPos);
-			synonyms.push_back(synonym); //Assume all synonyms are valid
+			synonyms.push_back(toUpper(synonym)); //Assume all synonyms are valid
 			line.erase(0, endPos + 2);
 		}
 		synonym = line; //at this point only the last word remains
@@ -131,8 +141,9 @@ vector<string> Dictionary::fittingWords(int availableSpace)
 
 string Dictionary::GetWordSynonym(string word)
 {
-	vector<string> synonyms = wordList[word];
-	return synonyms.at(rand() % synonyms.size()); // returns a random synonym from the vector of synonyms
+	vector<string> synonyms = wordList[toUpper(word)];
+	int randomN = rand() % synonyms.size();
+	return toUpper(synonyms.at(randomN)); // returns a random synonym from the vector of synonyms
 }
 
 //=================================================================================================================================

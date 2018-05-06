@@ -14,15 +14,14 @@ public:
 
 	//Getters
 	std::string getName();
+	std::vector<std::string> getWordSynonyms(std::string word);
+	std::string GetWordSynonym(std::string word);
+	std::vector<std::string> fittingWords(int availableSpace);
 
 	bool ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented
 	bool isInWordList(std::string word); // checks if word exists in word list
 	bool existsWildcardMatchingWord(std::string word);
-
-	std::vector<std::string> fittingWords(int availableSpace);
-	std::string GetWordSynonym(std::string word);
-
 
 private:
 	std::map<std::string, std::vector<std::string>> wordList; // Key = word ; Value = vector of all synonyms

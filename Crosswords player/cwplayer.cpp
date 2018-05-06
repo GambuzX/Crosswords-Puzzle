@@ -2,7 +2,8 @@
 #include <string>
 #include <map>
 #include <conio.h>
-#include <random>
+#include <stdlib.h>
+#include <time.h>
 
 #include "ColorMaster.h"
 #include "Dictionary.h"
@@ -50,7 +51,7 @@ ColorMaster colorMaster;
 
 int main()
 {
-	srand(time_t(NULL));
+	srand(time(NULL));
 
 	Introduction();
 	cout << endl;

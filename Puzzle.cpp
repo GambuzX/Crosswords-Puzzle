@@ -8,6 +8,8 @@
 #include <vector>
 #include <map>
 #include <conio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -170,6 +172,45 @@ void Puzzle::showClueList()
 
 void Puzzle::showDifferentSynonym(std::string position)
 {
+	string word;
+	for (int i = 0; i < solutionUsedWords.size(); i++)
+		if (toUpperString(solutionUsedWords.at(i).first) == toUpperString(position))
+		{
+			word = solutionUsedWords.at(i).second;
+			break;
+		}
+
+	string usedSynonym;
+	for (int i = 0; i < clueList.size(); i++)
+		if (toUpperString(clueList.at(i).first) == toUpperString(position))
+		{
+			usedSynonym = clueList.at(i).second;
+			break;
+		}
+
+	if (dictionary.getWordSynonyms(word).size() <= 1) //if there is only one synonym, no other can be found
+	{
+		cout << "\nThis synonym is unique.\n";
+		colorMaster.setcolor(DEFAULT);
+		cout << "Hint: ";
+		colorMaster.setcolor(SYMBOL_COLOR);
+		cout << usedSynonym;
+		cout << endl;
+		colorMaster.setcolor(DEFAULT);
+	}
+	else
+	{
+		string newSynonym = dictionary.GetWordSynonym(word);
+		while (toUpperString(newSynonym) == toUpperString(usedSynonym))
+			newSynonym = dictionary.GetWordSynonym(word);
+
+		colorMaster.setcolor(DEFAULT);
+		cout << "\nNew Hint: ";
+		colorMaster.setcolor(SYMBOL_COLOR);
+		cout << newSynonym;
+		cout << endl;
+		colorMaster.setcolor(DEFAULT);
+	}	
 }
 
 //=================================================================================================================================
