@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <string>
+#include <time.h>
 
 class Player
 {
@@ -12,12 +13,16 @@ public:
 
 	// Getters
 	std::string getName();
-	double getTotalTime();
 	int getNumberOfClues();
+
+	void incrementNumberOfClues();
+	void setInitialTime();
+	double calculateTimeSpent();
 
 private:
 	std::string name;
-	double initialTime, finalTime, totalTime;
+	time_t initialTime;
+	double timeSpent;
 	int numberOfClues = 0;
 };
 

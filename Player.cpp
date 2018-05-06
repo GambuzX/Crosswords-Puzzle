@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <string>
+#include <time.h>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ using namespace std;
 
 Player::Player()
 {
-	//TODO store initial time
+	time(&initialTime); //sets initial time
 }
 
 //==========================================================================================
@@ -17,7 +18,7 @@ Player::Player()
 Player::Player(string name)
 {
 	this->name = name;
-	//TODO store initial time
+	time(&initialTime); //sets initial time
 }
 
 //==========================================================================================
@@ -29,16 +30,34 @@ std::string Player::getName()
 
 //==========================================================================================
 
-double Player::getTotalTime()
+int Player::getNumberOfClues()
 {
-	return totalTime;
+	return numberOfClues;
 }
 
 //==========================================================================================
 
-int Player::getNumberOfClues()
+void Player::incrementNumberOfClues()
 {
-	return numberOfClues;
+	numberOfClues++;
+}
+
+//==========================================================================================
+
+void Player::setInitialTime()
+{
+	time(&initialTime);
+}
+
+//==========================================================================================
+//Calculates the time in seconds it took since the player was initialized
+
+double Player::calculateTimeSpent()
+{
+	time_t currentTime;
+	time(&currentTime);
+	timeSpent = difftime(initialTime, currentTime);
+	return timeSpent; // return value is in seconds
 }
 
 //==========================================================================================

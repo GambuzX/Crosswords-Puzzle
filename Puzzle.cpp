@@ -231,7 +231,9 @@ void Puzzle::showDifferentSynonym(std::string position)
 		cout << newSynonym;
 		cout << endl;
 		colorMaster.setcolor(DEFAULT);
-	}	
+
+		currentPlayer.incrementNumberOfClues();
+	}
 }
 
 //=================================================================================================================================
