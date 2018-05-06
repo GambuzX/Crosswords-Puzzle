@@ -374,7 +374,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			cin.ignore(10000, '\n');
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "\nDo you wish to submit this solution (Y/N)? ";
+		cout << "\nSubmit solution (Y/N)? ";
 		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 		answer = toupper(answer);
@@ -412,7 +412,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 					cin.ignore(10000, '\n');
 				}
 				colorMaster.setcolor(QUESTION_COLOR);
-				cout << "\nDo you wish to continue playing (Y/N)? ";
+				cout << "\nKeep playing (Y/N)? ";
 				colorMaster.setcolor(DEFAULT);
 				cin >> answer2;
 				answer2 = toupper(answer2);
@@ -420,9 +420,27 @@ bool CheckPlayerWon(Puzzle& puzzle)
 
 			if (answer2 == 'N')
 			{
-				//Ask if player wants to see solutions
+				//Ask if player wants to see the solutions
+				char answer3;
+				do
+				{
+					if (cin.fail())
+					{
+						cin.clear();
+						cin.ignore(10000, '\n');
+					}
+					colorMaster.setcolor(QUESTION_COLOR);
+					cout << "\n Show solutions (Y/N)? ";
+					colorMaster.setcolor(DEFAULT);
+					cin >> answer3;
+					answer3 = toupper(answer3);
+				} while (answer3 != 'N' && answer3 != 'Y');
+
+				if (answer3 == 'Y')
+					puzzle.showSolutionBoard(); //TODO test this
 
 				//leave
+				return true;
 			} 
 		}
 	}

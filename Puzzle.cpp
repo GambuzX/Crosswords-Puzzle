@@ -182,6 +182,43 @@ void Puzzle::showPlayerBoard()
 	colorMaster.setcolor(WHITE, BLACK); //set to default
 }
 
+//==================================================================================================================================
+// Shows the solution board
+
+void Puzzle::showSolutionBoard()
+{
+	const int WIDTH = 2;
+
+	cout << setw(WIDTH) << " ";
+	for (size_t i = 0; i < solutionBoard.at(0).size(); i++)
+	{
+		colorMaster.setcolor(RED);
+		cout << setw(WIDTH) << (char)('a' + i);
+	}
+	cout << endl;
+
+	for (size_t i = 0; i < solutionBoard.size(); i++)
+	{
+		colorMaster.setcolor(RED);
+		cout << (char)('A' + i) << " ";
+
+		for (size_t j = 0; j < solutionBoard.at(i).size(); j++)
+		{
+			if (solutionBoard.at(i).at(j) == '#')
+			{
+				cout << "  ";
+			}
+			else
+			{
+				colorMaster.setcolor(BLACK, WHITE);
+				cout << setw(WIDTH) << solutionBoard.at(i).at(j);
+			}
+		}
+		cout << '\n';
+	}
+	colorMaster.setcolor(WHITE, BLACK); //set to default
+}
+
 //=================================================================================================================================
 // Builds an initial list of clues.
 
@@ -365,14 +402,6 @@ void Puzzle::showWrongAnswers()
 			cout << position.at(0) << tolower(position.at(1)) << " - " << verticalErrors.at(i).second << endl;
 		}
 	}
-}
-
-//==================================================================================================================================
-// Displays the solutions for the puzzle
-
-void Puzzle::showSolutions()
-{
-	
 }
 
 //=================================================================================================================================

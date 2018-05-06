@@ -25,12 +25,12 @@ public:
 	void setSolutionBoard(Board board);
 	void createPlayerBoard();
 	void showPlayerBoard();
+	void showSolutionBoard();
 	void buildClueList();
 	void showClueList();
 	void showDifferentSynonym(std::string);
 	void insertWord(std::string word, std::string position);
 	void showWrongAnswers();
-	void showSolutions();
 
 	bool hasHash(std::string position);
 	bool isValidInsertionLocation(std::string position);

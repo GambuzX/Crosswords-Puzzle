@@ -130,14 +130,14 @@ void Board::showBoard()
 	cout << setw(WIDTH) << " ";
 	for (size_t i = 0; i < board.at(0).size(); i++)
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
+		colorMaster.setcolor(RED);
 		cout << setw(WIDTH) << (char)('a' + i);
 	}
 	cout << endl;
 
 	for (size_t i = 0; i < board.size(); i++)
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
+		colorMaster.setcolor(RED);
 		cout << (char)('A' + i) << " ";
 
 		for (size_t j = 0; j < board.at(i).size(); j++)
