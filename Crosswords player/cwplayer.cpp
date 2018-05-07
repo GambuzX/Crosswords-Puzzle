@@ -363,6 +363,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 	bool finishedPuzzle = false;
 	do
 	{
+		bool midEnd = false;
 		bool skipInsertion = false;
 		string positionInput, word;
 
@@ -382,7 +383,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			{
 				if (cin.eof())
 				{
-					finishedPuzzle = true;
+					midEnd = true;
 					cin.clear(); // Clears cin so as to enable next inputs
 					break; //exits this loop
 				}
@@ -405,9 +406,34 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 					validPositionInput = true;
 					skipInsertion = true;
 				}
-
+				else if (positionInput == "S")
+				{
+					if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
+					{
+						bool endPuzzle = CheckPlayerWon(puzzle);
+						if (endPuzzle)
+						{
+							finishedPuzzle = true;
+							skipInsertion = true;
+						}
+						else
+						{
+							cout << endl;
+							puzzle.showPlayerBoard();
+							cout << endl;
+						}
+					}
+					else
+					{
+						colorMaster.setcolor(ERROR_MESSAGE);
+						cout << "\nCannot submit an incomplete board.\n";
+						colorMaster.setcolor(DEFAULT);
+						validPositionInput = true;
+						skipInsertion = true;
+					}
+				}
 				//Check validity
-				if (puzzle.validPositionInput(positionInput))
+				else if (puzzle.validPositionInput(positionInput))
 				{
 					if (puzzle.hasHash(positionInput))
 					{
@@ -429,7 +455,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 		} while (!validPositionInput); //loop until valid input
 
-		if (finishedPuzzle) //If CTRL-Z, confirm if the player wishes to leave
+		if (midEnd) //If CTRL-Z, confirm if the player wishes to leave
 		{
 			bool leave = false;
 			char answer;
@@ -550,7 +576,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			cin.ignore(10000, '\n');
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "Submit solution (Y/N)? ";
+		cout << "\nSubmit solution (Y/N)? ";
 		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 		answer = toupper(answer);
