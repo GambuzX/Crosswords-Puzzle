@@ -16,6 +16,8 @@ using namespace std;
 //TODO Operation success messages
 //TODO _getch() after instructions
 //TODO Y/N colors
+//TODO check dictionary invalid entries
+//TODO I for instructions
 
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
@@ -119,8 +121,6 @@ int main()
 	return 0;
 }
 
-// TODO Use _getch() where needed
-
 //=================================================================================================================================
 
 void Introduction()
@@ -144,8 +144,73 @@ void Introduction()
 
 void Instructions()
 {
-	cout << "Instructions: \n";
-	cout << "(...)\n";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "INSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "You will be asked successively two questions, ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "POSITION";
+	colorMaster.setcolor(DEFAULT);
+	cout << " and ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "WORD\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "Position\n";
+	colorMaster.setcolor(DEFAULT);
+	cout << "Format: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "LCD";
+	colorMaster.setcolor(DEFAULT);
+	cout << " [line, column, direction ('H' or 'V')]\n\n";
+
+	cout << "Other options: \n";
+	cout << "- "; 
+	colorMaster.setcolor(SYMBOL_COLOR); 
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "CTRL-Z";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to stop creating the board.\n";
+
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "\nWord\n";
+	colorMaster.setcolor(DEFAULT);
+	cout << "Format: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Word to be inserted in the board\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "-";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to remove a previously placed word.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "?";
+	colorMaster.setcolor(DEFAULT);
+	cout << " for a list of words that can be placed on the specified position.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "#";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to insert an Hash.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "<";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to return to the Position question.\n";
+
+	cout << "\n\nPress any key to continue";
+	_getch();
+	//TODO make more appealing
 }
 
 //=================================================================================================================================
