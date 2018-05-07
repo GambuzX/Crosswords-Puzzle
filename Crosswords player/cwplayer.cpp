@@ -314,10 +314,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		do
 		{
 			if (skipInsertion)
-			{
-				validInput = true; // Exit loop
-				cout << endl;
-			}
+				break;			
 
 			if (cin.fail())
 			{

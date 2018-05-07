@@ -78,8 +78,21 @@ int main()
 	Introduction();
 	cout << endl;
 
-	Instructions();
-	cout << endl;
+	char answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		cout << "Display instructions (Y/N)? ";
+		cin >> answer;
+		answer = toupper(answer);
+	} while (answer != 'Y' && answer != 'N');
+
+	if (answer == 'Y')
+		Instructions();
 
 	while (true) //Program only ends by user input
 	{
@@ -207,8 +220,9 @@ void Instructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << " and ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "WORD\n\n";
+	cout << "WORD";
 	colorMaster.setcolor(DEFAULT);
+	cout << ".\n\n";
 
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Position\n";
@@ -243,6 +257,11 @@ void Instructions()
 	cout << "Other options: \n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "-";
 	colorMaster.setcolor(DEFAULT);
 	cout << " to remove a previously placed word.\n";
@@ -262,7 +281,7 @@ void Instructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << " to return to the Position question.\n";
 
-	cout << "\n\nPress any key to continue";
+	cout << "\nPress any key to continue\n";
 	_getch();
 	//TODO make more appealing
 }
@@ -800,6 +819,7 @@ void EditBoard(Board board, Dictionary &dict)
 	while (!stopCreating)
 	{
 		string positionInput, word;
+		bool skipLoop = false;
 
 		////////////////////////////////
 		//      ASK FOR POSITION      //
@@ -809,15 +829,7 @@ void EditBoard(Board board, Dictionary &dict)
 		do
 		{
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Position ";
-			colorMaster.setcolor(DEFAULT);
-			cout << "(\"LCD\" / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "CTRL - Z";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = stop) ";
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "? ";
+			cout << "Position ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> positionInput;
 
@@ -841,8 +853,15 @@ void EditBoard(Board board, Dictionary &dict)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
+				if (positionInput == "I")
+				{
+					cout << endl;
+					Instructions();
+					validPositionInput = true;
+					skipLoop = true;
+				}
 				//Check validity
-				if (board.validPositionInput(positionInput))
+				else if (board.validPositionInput(positionInput))
 					validPositionInput = true;
 			}
 		} while (!validPositionInput); //loop until valid input
@@ -862,29 +881,16 @@ void EditBoard(Board board, Dictionary &dict)
 		bool validInput = false;
 		do
 		{
+			if (skipLoop)
+				break;
+
 			if (cin.fail())
 			{
 				cin.clear();
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
-			cout << "Word";
-			colorMaster.setcolor(DEFAULT);
-			cout << " (";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "<";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = return / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "-";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = remove / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "?";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = help)";
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << " ? ";
+			cout << "Word ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;
 
@@ -907,6 +913,13 @@ void EditBoard(Board board, Dictionary &dict)
 			else if (word == "?") // Ask for help
 			{
 				helpUser(board, dict, positionInput);
+				cout << endl;
+			}
+			else if (word == "I") // Ask for help
+			{
+				Instructions();
+				cout << endl << endl;
+				board.showBoard();
 				cout << endl;
 			}
 			else // default
