@@ -65,26 +65,40 @@ int main()
 	do
 	{
 		//LOAD BOARD
+		string dictName;
 		string boardName = askBoardName();
 		Board *board = new Board();
-		bool boardLoaded = board->loadBoard(boardName);
-		cout << endl;
+		bool boardLoaded = board->loadBoard(boardName, dictName);
 		if (!boardLoaded)
 		{
 			colorMaster.setcolor(ERROR_MESSAGE);
-			cout << "\nCould not locate file with that name.\n";
+			cout << "\nCould not locate board with that name.\n";
+			colorMaster.setcolor(DEFAULT);
+			exit(1);
+		}
+
+		//OPEN DICTIONARY
+		Dictionary *dictionary = new Dictionary(dictName);
+		bool dictOpen = dictionary->ProcessDictionary();
+
+		if (!dictOpen)
+		{
+			colorMaster.setcolor(ERROR_MESSAGE);
+			cout << "\nCould not locate dictionary with that name.\n";
 			colorMaster.setcolor(DEFAULT);
 			exit(1);
 		}
 
 		//CREATE PLAYER
 		cin.ignore(10000, '\n'); //needed because of remaining '\n' in the buffer
+		cout << endl;
 		string playerName = askPlayerName();
 		Player *player = new Player(playerName);
 
 		//CREATE PUZZLE TO BE SOLVED
-		Puzzle puzzle(*board, boardName, *player);
+		Puzzle puzzle(*board, *dictionary, boardName, *player);
 		delete board; //board is copied to the puzzle instance, duplicate is not needed
+		delete dictionary; // same with dictionary
 		delete player; // same with player
 		puzzle.createPlayerBoard();
 		puzzle.buildClueList();

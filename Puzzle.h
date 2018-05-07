@@ -13,9 +13,9 @@ class Puzzle
 public:
 	// Constructors
 	Puzzle() {};
-	Puzzle(Board originalBoard);
-	Puzzle(Board originalBoard, Player player);
-	Puzzle(Board originalBoard, std::string boardName, Player player);
+	Puzzle(Board &originalBoard, Dictionary &dict);
+	Puzzle(Board &originalBoard, Dictionary &dict, Player player);
+	Puzzle(Board &originalBoard, Dictionary &dict, std::string boardName, Player player);
 
 	//Getters
 	int getNumberOfSolutionWords();

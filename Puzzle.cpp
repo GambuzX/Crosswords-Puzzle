@@ -43,13 +43,13 @@ using namespace std;
 //=================================================================================================================================
 // Class constructor. Assigns a board to the Puzzle.
 
-Puzzle::Puzzle(Board board)
+Puzzle::Puzzle(Board &board, Dictionary &dict)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
-	dictionary = board.getDictionary();
+	dictionary = dict;
 	numberOfSolutionWords = solutionUsedWords.size();
 	numberOfPlayerWords = 0;
 }
@@ -57,13 +57,13 @@ Puzzle::Puzzle(Board board)
 //=================================================================================================================================
 // Class constructor. Assigns a board and a player to the Puzzle.
 
-Puzzle::Puzzle(Board board, Player player)
+Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
-	dictionary = board.getDictionary();
+	dictionary = dict;
 	currentPlayer = player; 
 	numberOfSolutionWords = solutionUsedWords.size();
 	numberOfPlayerWords = 0;
@@ -72,13 +72,13 @@ Puzzle::Puzzle(Board board, Player player)
 //=================================================================================================================================
 // Class constructor. Assigns a board and a player to the Puzzle. Also stores the board number
 
-Puzzle::Puzzle(Board board, string boardName, Player player)
+Puzzle::Puzzle(Board &board, Dictionary &dict, string boardName, Player player)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
-	dictionary = board.getDictionary();
+	dictionary = dict;
 	currentPlayer = player;
 	numberOfSolutionWords = solutionUsedWords.size();
 	numberOfPlayerWords = 0;
@@ -133,7 +133,6 @@ void Puzzle::setSolutionBoard(Board board)
 	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
-	dictionary = board.getDictionary();
 }
 
 //=================================================================================================================================

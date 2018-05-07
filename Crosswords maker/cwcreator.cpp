@@ -141,6 +141,10 @@ int main()
 			bool success; //true if successfully created dictionary
 			string dictName;
 			board = ResumeBoard(dictName);
+
+			if (!board.isInitialized())
+				break;
+
 			dictionary = CreateDictionary(dictName, success);
 
 			if (!success)
@@ -169,6 +173,7 @@ int main()
 }
 
 //=================================================================================================================================
+// Prints and introduction for the program
 
 void Introduction()
 {
@@ -187,7 +192,7 @@ void Introduction()
 }
 
 //=================================================================================================================================
-//TODO Instructions
+// Prints the program instructions
 
 void Instructions()
 {
@@ -212,7 +217,8 @@ void Instructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "LCD";
 	colorMaster.setcolor(DEFAULT);
-	cout << " [line, column, direction ('H' or 'V')]\n\n";
+	cout << " (line, column, direction).\n";
+	cout << "Can either be lower or uppercase, but must respect this order! Direction is 'H' or 'V'.\n\n";
 
 	cout << "Other options: \n";
 	cout << "- "; 
@@ -402,6 +408,9 @@ bool askToSaveBoard(Board board, string dictName)
 	return success;
 }
 
+//=================================================================================================================================
+
+
 string determineBoardName()
 {
 	string boardName = "";
@@ -458,7 +467,7 @@ Dictionary CreateDictionary(string dictName, bool &success)
 	if (!dictionaryOpened)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nCould not locate file with that name.\n";
+		cout << "\nCould not locate dictionary with that name.\n";
 		colorMaster.setcolor(DEFAULT);
 		//_getch();
 		success = false;
@@ -492,7 +501,7 @@ Board ResumeBoard(string &dictionaryName)
 	if (!boardLoaded)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nCould not locate file with that name.\n";
+		cout << "\nCould not locate board with that name.\n";
 		colorMaster.setcolor(DEFAULT);
 		return Board();
 	}
