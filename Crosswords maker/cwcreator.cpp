@@ -381,11 +381,6 @@ bool askToSaveBoard(Board board, string dictName)
 
 			//Save file
 			string fileName = determineBoardName();
-			//colorMaster.setcolor(QUESTION_COLOR);
-			//cout << "File name? ";
-			//colorMaster.setcolor(WHITE);
-			//cin.ignore(10000, '\n'); //ignore remaining chars in buffer
-			//getline(cin, fileName);
 			success = board.saveBoard(fileName, dictName);
 			if (success)
 			{
@@ -911,7 +906,6 @@ void EditBoard(Board board, Dictionary &dict)
 			}
 			else if (word == "?") // Ask for help
 			{
-				//board.helpUserComplete(positionInput);
 				helpUser(board, dict, positionInput);
 				cout << endl;
 			}

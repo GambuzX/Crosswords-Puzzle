@@ -36,18 +36,12 @@ public:
 	void reprintHashes();
 	void fillRemainingSpots();
 	void helpUser(std::string position, std::vector<std::string> fittingWords);
-	//void helpUserComplete(std::string position, std::vector<std::string> fittingWords);
 
 	bool isInitialized();
-	//bool canBeInserted(std::string word, std::string position);
-	//bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
-	//bool isBoardValid();
-	//bool isBoardValid(std::string word, std::string positionInput);
 	bool isWordUsed(std::string word);
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool hasHash(std::pair<int, int>);
-	//bool isValidHeadline(std::string);
 	bool wordFitsSpace(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
@@ -64,7 +58,6 @@ private:
 	bool initializedBoard = false;
 	int horizontalSize = 0, verticalSize = 0;
 
-	Dictionary dictionary; //dictionary to be used
 	ColorMaster colorMaster;
 
 	int mapCharToNumber(char letter);

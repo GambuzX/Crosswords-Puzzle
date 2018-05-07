@@ -73,14 +73,6 @@ bool Board::hasHash(pair<int,int> position)
 }
 
 //=================================================================================================================================
-// Changes current dictionary
-
-/*inline void Board::setDictionary(Dictionary dict)
-{
-	dictionary = dict;
-}*/
-
-//=================================================================================================================================
 // Returns current board
 
 vector<vector<char>> Board::getBoard()
@@ -137,14 +129,6 @@ char Board::getCell(int line, int column)
 }
 
 //=================================================================================================================================
-// Returns current dictionary
-
-/*Dictionary Board::getDictionary()
-{
-	return dictionary;
-}*/
-
-//=================================================================================================================================
 // Shows current board
 
 void Board::showBoard()
@@ -185,79 +169,6 @@ void Board::showBoard()
 	}
 	colorMaster.setcolor(WHITE, BLACK); //set to default
 }
-
-//=================================================================================================================================
-// Verifies if a word can be inserted in a determined location, informing why not if false
-
-/*bool Board::canBeInserted(string word, string positionInput)
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
-	char direction = positionInput.at(2);
-
-	if (hasHash(insertionPosition)) // Verify it the position has an hash
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nYou can not place a word in that location.\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	else if (!isValidHeadline(word)) // Verify word is valid
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not present in the dictionary!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	else if (!wordFitsSpace(word, positionInput)) // Verify it fits the space
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord does not fit the specified space!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	else if (isWordUsed(word))	// Verify if word was already used
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is already in use!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	else if (!matchesInterceptedPositions(word, positionInput) || !testInsertion(word,positionInput)) // Verify if the insertion can be executed while keeping the board valid
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord does not match current board!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	return true;
-}*/
-
-//=================================================================================================================================
-// Simulates an insertion and verifies if the resulting board is valid.
-
-/*bool Board::testInsertion(string word, string positionInput)
-{
-	//Backup
-	std::vector<std::vector<char>> oldboard = board;
-	std::vector<std::pair<std::string, std::string>> oldusedWords = usedWords;
-
-	insertWord(word, positionInput);
-	bool valid = isBoardValid(word, positionInput);
-
-	//Restore backup
-	board = oldboard;
-	usedWords = oldusedWords;
-
-	return valid;
-}*/
 
 //=================================================================================================================================
 // Inserts a word on the board. Assumes it is a valid insertion.
@@ -487,46 +398,6 @@ void Board::helpUser(string positionInput, vector<string> fittingWords) //TODO I
 }
 
 //=================================================================================================================================
-// Shows the user what words he can put in the specified location
-
-/*void Board::helpUserComplete(string positionInput, vector<string> fittingWords)
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
-	char direction = toupper(positionInput.at(2));
-	int availableSpace;
-	switch (direction)
-	{
-	case 'H':
-		availableSpace = horizontalSize - insertionPosition.second;
-		break;
-	case 'V':
-		availableSpace = verticalSize - insertionPosition.first;
-		break;
-	default:
-		cerr << "Invalid input!";
-	}
-
-	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nWords that fit there:\n";
-	colorMaster.setcolor(WHITE, BLACK);
-
-	int counter = 0;
-	const int WORDS_PER_LINE = 6;
-	const int WORDS_WIDTH = 18;
-	for (size_t i = 0; i < fittingWords.size(); i++)
-	{
-		string currentWord = fittingWords.at(i);
-		if (!isWordUsed(currentWord) && matchesInterceptedPositions(currentWord, positionInput) && testInsertion(currentWord, positionInput))
-		{
-			if (counter % WORDS_PER_LINE == 0) cout << endl;
-			cout << setw(WORDS_WIDTH) << currentWord;
-			counter++;
-		}
-	}
-}*/
-
-//=================================================================================================================================
 // Verifies the user position input is valid
 
 bool Board::validPositionInput(string input)
@@ -563,175 +434,6 @@ bool Board::validPositionInput(string input)
 	else
 		return true;
 }
-
-//=================================================================================================================================
-// Verifies if all words in the board in both directions are valid
-
-/*bool Board::isBoardValid()
-{
-	bool valid = true;
-
-	//HORIZONTAL
-	for (int line = 0; line < verticalSize; line++)
-	{
-		string currentWord = "";
-		for (int column = 0; column < horizontalSize; column++)
-		{
-			if (isalpha(board.at(line).at(column)))
-			{
-				currentWord += board.at(line).at(column);
-			}
-			else
-			{
-				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						valid = false;
-				currentWord = ""; //reset word
-			}
-		}
-		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				valid = false;
-	}
-
-	//VERTICAL
-	for (int column = 0; column < horizontalSize; column++)
-	{
-		string currentWord = "";
-		for (int line = 0; line < verticalSize; line++)
-		{
-			if (isalpha(board.at(line).at(column)))
-			{
-				currentWord += board.at(line).at(column);
-			}
-			else
-			{
-				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						valid = false;
-				currentWord = ""; //reset word
-			}
-		}
-		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				valid = false;
-	}
-		
-	return valid;
-}*/
-
-//=================================================================================================================================
-// Same as above, but limits verification to the places the inserted word crosses
-
-/*bool Board::isBoardValid(string word, string position)
-{
-	pair<int, int> coords = calculateInsertionCoordinates(position);
-	char dir = position.at(2);
-	int start, end;
-
-	string currentWord;
-	switch (dir)
-	{
-	case 'H':
-		start = coords.second;
-		end = start + (int) word.length() - 1;
-
-		//VERTICAL
-		for (int column = start; column <= end; column++)
-		{
-			currentWord = "";
-			for (int line = 0; line < verticalSize; line++)
-			{
-				if (isalpha(board.at(line).at(column)))
-				{
-					currentWord += board.at(line).at(column);
-				}
-				else
-				{
-					if (currentWord.length() >= 2) //only check if word size is bigger than 1
-						if (!dictionary.isInWordList(currentWord)) //if word does not exist
-							return false;
-					currentWord = ""; //reset word
-				}
-			}
-			if (currentWord.length() >= 2) //only check if word size is bigger than 1
-				if (!dictionary.isInWordList(currentWord)) //if word does not exist
-					return false;
-		}
-
-		//HORIZONTAL
-		currentWord = "";
-		for (int column = 0; column < horizontalSize; column++)
-		{
-			if (isalpha(board.at(coords.first).at(column)))
-			{
-				currentWord += board.at(coords.first).at(column);
-			}
-			else
-			{
-				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						return false;
-				currentWord = ""; //reset word
-			}
-		}
-		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				return false;
-		break;
-
-	case 'V':
-		//HORIZONTAL
-		start = coords.first;
-		end = start + (int) word.length() - 1;
-
-		for (int line = start; line <= end; line ++)
-		{
-			currentWord = "";
-			for (int column = 0; column < horizontalSize; column++)
-			{
-				if (isalpha(board.at(line).at(column)))
-				{
-					currentWord += board.at(line).at(column);
-				}
-				else
-				{
-					if (currentWord.length() >= 2) //only check if word size is bigger than 1
-						if (!dictionary.isInWordList(currentWord)) //if word does not exist
-							return false;
-					currentWord = ""; //reset word
-				}
-			}
-			if (currentWord.length() >= 2) //only check if word size is bigger than 1
-				if (!dictionary.isInWordList(currentWord)) //if word does not exist
-					return false;
-		}
-
-		//VERTICAL
-		currentWord = "";
-		for (int line = 0; line < verticalSize; line++)
-		{
-			if (isalpha(board.at(line).at(coords.second)))
-			{
-				currentWord += board.at(line).at(coords.second);
-			}
-			else
-			{
-				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						return false;
-				currentWord = ""; //reset word
-			}
-		}
-
-		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				return false;
-		break;
-	}
-	return true;
-}*/
-
 
 //=================================================================================================================================
 // Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
@@ -780,17 +482,6 @@ bool Board::loadBoard(string fileName, string& dictName)
 
 	//SETTING DICTIONARY
 	getline(file, dictName);
-
-	/*Dictionary dict(dictName);
-	bool dictionaryOpened = dict.ProcessDictionary();
-	if (!dictionaryOpened)
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nDictionary file was not found!\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}*/
-	//setDictionary(dict);
 
 	string line;
 	getline(file, line); // empty line
@@ -854,19 +545,6 @@ int Board::mapCharToNumber(char letter)
 	char upper = toupper(letter);
 	return ((int) upper - (int) 'A');
 }
-
-//=================================================================================================================================
-// Verifies the given headline is valid.
-
-/*bool Board::isValidHeadline(string word)
-{
-	for (size_t i = 0; i < word.length(); i++)
-	{
-		if (word.at(i) < 'A' || word.at(i) > 'Z')
-			return false;
-	}
-	return true;
-}*/
 
 //=================================================================================================================================
 // Checks if the given word is already on the board or not.
