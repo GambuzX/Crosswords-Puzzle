@@ -122,9 +122,11 @@ int main()
 			break;
 		case 1:
 		{
+			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
 			cout << " |          CREATE PUZZLE           |\n";
 			cout << " ====================================\n";
+			colorMaster.setcolor(DEFAULT);
 
 			bool success; //true if successfully created dictionary
 			dictionary = CreateDictionary(success);
@@ -217,6 +219,25 @@ void Instructions()
 	colorMaster.setcolor(WHITE, BLACK);
 
 	cout << "Max size for each direction is 26.\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR); 
+	cout << "Dots";
+	colorMaster.setcolor(DEFAULT);
+	cout << " (.) represent places where you ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "can";
+	colorMaster.setcolor(DEFAULT);
+	cout << " insert words\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Hashes";
+	colorMaster.setcolor(DEFAULT);
+	cout << " (#) represent places where you ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "can not";
+	colorMaster.setcolor(DEFAULT);
+	cout << " insert words.\n";
+
 	cout << "You will be asked successively two questions, ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "POSITION";
@@ -235,7 +256,11 @@ void Instructions()
 	cout << "LCD";
 	colorMaster.setcolor(DEFAULT);
 	cout << " (line, column, direction).\n";
-	cout << "Can either be lower or uppercase, but must respect this order! Direction is 'H' or 'V'.\n\n";
+	cout << "Can either be lower or uppercase, but ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "must respect this order!";
+	colorMaster.setcolor(DEFAULT);
+	cout << " Direction is 'H' or 'V'.\n\n";
 
 	cout << "Other options: \n";
 	cout << "- "; 
@@ -284,7 +309,24 @@ void Instructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << " to return to the Position question.\n";
 
-	cout << "\nPress any key to continue\n";
+	cout << "\nWhen board creation is stopped by entering CTRL-Z, you will be prompted to ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "save the board";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+
+	cout << "If you choose to save the board, you will also be asked if the board is ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "finished";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+	cout << "If the board is finished, any ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "remaining cells will be filled with #";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+
+	//cout << "\nPress any key to continue\n";
 	_getch();
 	//TODO make more appealing
 }
