@@ -584,7 +584,7 @@ Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 	if (!boardLoaded)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nCould not locate board with that name.\n";
+		cout << "\nCould not locate board file with that name.\n";
 		colorMaster.setcolor(DEFAULT);
 		operationSuccess = false;
 		return Board();

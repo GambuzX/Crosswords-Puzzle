@@ -22,8 +22,8 @@ bool CheckPlayerWon(Puzzle&);
 
 ColorMaster colorMaster;
 
-//TODO options
 //TODO test everything
+//TODO clean up code
 
 //==========================================================================================
 //COLOR CODES:
