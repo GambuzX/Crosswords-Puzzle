@@ -95,6 +95,7 @@ int main()
 
 	while (true) //Program only ends by user input
 	{
+		//SELECT OPTION
 		int answer;
 		do
 		{
@@ -105,10 +106,13 @@ int main()
 			}
 			cout << endl;
 			Options();
+			colorMaster.setcolor(QUESTION_COLOR);
+			cout << "\nOption ? ";
+			colorMaster.setcolor(DEFAULT);
 			cin >> answer;
 		} while (cin.fail() || answer < 0 || answer > 2);
 
-		//SELECT OPTION
+		cout << endl;
 		Board board;
 		Dictionary dictionary;
 		switch (answer)
@@ -118,9 +122,9 @@ int main()
 			break;
 		case 1:
 		{
-			cout << " ------------------------------------\n";
-			cout << "           CREATE BOARD              \n";
-			cout << " ------------------------------------\n";
+			cout << " ====================================\n";
+			cout << " |          CREATE PUZZLE           |\n";
+			cout << " ====================================\n";
 
 			bool success; //true if successfully created dictionary
 			dictionary = CreateDictionary(success);
@@ -146,9 +150,9 @@ int main()
 		}
 		case 2:
 		{
-			cout << " ------------------------------------\n";
-			cout << "           RESUME BOARD              \n";
-			cout << " ------------------------------------\n";
+			cout << " ====================================\n";
+			cout << " |          RESUME PUZZLE           |\n";
+			cout << " ====================================\n";
 
 			bool success; //true if successfully created dictionary
 			string dictName;
@@ -209,7 +213,7 @@ void Introduction()
 void Instructions()
 {
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "INSTRUCTIONS\n\n";
+	cout << "\nINSTRUCTIONS\n\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
 	cout << "Max size for each direction is 26.\n";
@@ -290,8 +294,24 @@ void Instructions()
 
 void Options()
 {
-	cout << "Options: \n";
-	cout << " (...)\n";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "OPTIONS\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "1";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Create puzzle\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "2";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Resume puzzle\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "0";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Exit\n";
 }
 
 //=================================================================================================================================
