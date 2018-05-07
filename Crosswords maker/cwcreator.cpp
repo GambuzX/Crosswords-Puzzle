@@ -865,7 +865,6 @@ void EditBoard(Board board, Dictionary &dict)
 		////////////////////////////////
 
 		bool validInput = false;
-		bool skipInsertion = false;
 		do
 		{
 			if (cin.fail())

@@ -279,6 +279,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 		} while (!validPositionInput); //loop until valid input
 
+		bool skipInsertion = false;
 		if (finishedPuzzle) //If CTRL-Z, confirm if the player wishes to leave
 		{
 			bool leave = false;
@@ -294,7 +295,6 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cout << "\nIf you leave all your progress will be lost. Proceed (Y/N)? ";
 				colorMaster.setcolor(DEFAULT);
 				cin >> answer;
-				cout << endl;
 				answer = toupper(answer);
 				if (answer == 'Y')
 					leave = true;
@@ -303,7 +303,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			if (leave)
 				break;
 			else
-				continue;
+				skipInsertion = true;
 		}
 
 		////////////////////////////////
@@ -311,9 +311,14 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		////////////////////////////////
 
 		bool validInput = false;
-		bool skipInsertion = false;
 		do
 		{
+			if (skipInsertion)
+			{
+				validInput = true; // Exit loop
+				cout << endl;
+			}
+
 			if (cin.fail())
 			{
 				cin.clear();
