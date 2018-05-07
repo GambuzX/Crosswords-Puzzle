@@ -2,7 +2,6 @@
 #define BOARD_H
 
 #include "Dictionary.h"
-#include "ColorMaster.h"
 #include <vector>
 #include <map>
 #include <set>
@@ -11,12 +10,8 @@ class Board
 {
 public:
 	//Constructors
-	//Board(int horizontalSize, int verticalSize);
 	Board() {};
-	Board(int horiSize, int vertSize, Dictionary dict); //TODO change this and delete comments
-	Board(int horiSize, int vertSize); //TODO change this and delete comments
-
-	//inline void setDictionary(Dictionary dict);
+	Board(int horiSize, int vertSize);
 
 	//Getters
 	std::vector<std::vector<char>> getBoard();
@@ -24,7 +19,6 @@ public:
 	int getVerticalSize();
 	int getHorizontalSize();
 	char getCell(int line, int column);
-	//Dictionary getDictionary();
 
 	void setBoard(std::vector<std::vector<char>>);
 	void setUsedWords(std::vector<std::pair<std::string, std::string>>);
@@ -57,8 +51,6 @@ private:
 
 	bool initializedBoard = false;
 	int horizontalSize = 0, verticalSize = 0;
-
-	ColorMaster colorMaster;
 
 	int mapCharToNumber(char letter);
 

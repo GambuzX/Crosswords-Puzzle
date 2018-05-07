@@ -28,7 +28,7 @@ ColorMaster colorMaster;
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2
-#define CYAN 3A
+#define CYAN 3
 #define RED 4
 #define MAGENTA 5
 #define BROWN 6

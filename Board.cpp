@@ -1,9 +1,11 @@
 #include "Board.h"
 #include "Dictionary.h"
-#include "ColorMaster.h"
 
 #include <iostream>
 #include <iomanip>
+#include <ctime>
+#include <cstdlib>
+#include <windows.h>
 #include <fstream>
 #include <vector>
 #include <map>
@@ -36,6 +38,28 @@ using namespace std;
 #define SYMBOL_COLOR 14
 #define ERROR_MESSAGE 4
 #define SUCCESS 10
+
+//=================================================================================================================================
+// Set text color
+
+void setcolor(unsigned int color)
+{
+	HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hcon, color);
+}
+
+//=================================================================================================================================
+// Set text color & background
+
+void setcolor(unsigned int color, unsigned int background_color)
+{
+	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (background_color == BLACK)
+		SetConsoleTextAttribute(hCon, color);
+	else
+		SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN |
+			BACKGROUND_RED);
+}
 
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
@@ -138,36 +162,36 @@ void Board::showBoard()
 	cout << setw(WIDTH) << " ";
 	for (size_t i = 0; i < board.at(0).size(); i++)
 	{
-		colorMaster.setcolor(RED);
+		setcolor(RED);
 		cout << setw(WIDTH) << (char)('a' + i);
 	}
 	cout << endl;
 
 	for (size_t i = 0; i < board.size(); i++)
 	{
-		colorMaster.setcolor(RED);
+		setcolor(RED);
 		cout << (char)('A' + i) << " ";
 
 		for (size_t j = 0; j < board.at(i).size(); j++)
 		{
 			if (board.at(i).at(j) == '#')
 			{
-				colorMaster.setcolor(BLACK, WHITE);
+				setcolor(BLACK, WHITE);
 				cout << " ";
-				colorMaster.setcolor(WHITE, BLACK);
+				setcolor(WHITE, BLACK);
 				cout << "#";
 			}
 			else
 			{
-				colorMaster.setcolor(BLACK, WHITE);
+				setcolor(BLACK, WHITE);
 				cout << setw(WIDTH) << board.at(i).at(j);
 			}
 		}
-		colorMaster.setcolor(BLACK, BLACK);
+		setcolor(BLACK, BLACK);
 		cout << ".";
 		cout << '\n';
 	}
-	colorMaster.setcolor(WHITE, BLACK); //set to default
+	setcolor(WHITE, BLACK); //set to default
 }
 
 //=================================================================================================================================
@@ -213,9 +237,9 @@ bool Board::removeWord(string positionInput)
 
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
+		setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in that location!\n";
-		colorMaster.setcolor(DEFAULT);
+		setcolor(DEFAULT);
 		return false;
 	}
 
@@ -263,9 +287,9 @@ bool Board::removeWord(string positionInput)
 	}
 	if (!foundWord)
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
+		setcolor(ERROR_MESSAGE);
 		cout << "\nThere is no word in the specified direction!\n";
-		colorMaster.setcolor(DEFAULT);
+		setcolor(DEFAULT);
 		return false;
 	}
 	return true;
@@ -378,9 +402,9 @@ void Board::helpUser(string positionInput, vector<string> fittingWords) //TODO I
 		cerr << "Invalid input!";
 	}
 
-	colorMaster.setcolor(BLACK, WHITE);
+	setcolor(BLACK, WHITE);
 	cout << "\nWords that fit there:\n";
-	colorMaster.setcolor(WHITE, BLACK);
+	setcolor(WHITE, BLACK);
 
 	int counter = 0;
 	const int WORDS_PER_LINE = 6;
@@ -426,9 +450,9 @@ bool Board::validPositionInput(string input)
 
 	if (!valid)
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
+		setcolor(ERROR_MESSAGE);
 		cout << "\nInvalid input!\n\n";
-		colorMaster.setcolor(DEFAULT);
+		setcolor(DEFAULT);
 		return false;
 	}
 	else

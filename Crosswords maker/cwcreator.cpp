@@ -18,7 +18,6 @@ using namespace std;
 //TODO _getch() after instructions
 //TODO Y/N colors
 //TODO check dictionary invalid entries
-//TODO I for instructions
 //TODO check position for hashes
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
