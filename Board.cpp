@@ -155,6 +155,8 @@ void Board::showBoard()
 				cout << setw(WIDTH) << board.at(i).at(j);
 			}
 		}
+		colorMaster.setcolor(BLACK, BLACK);
+		cout << ".";
 		cout << '\n';
 	}
 	colorMaster.setcolor(WHITE, BLACK); //set to default

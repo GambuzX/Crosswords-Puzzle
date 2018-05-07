@@ -18,6 +18,8 @@ using namespace std;
 //TODO Y/N colors
 //TODO check dictionary invalid entries
 //TODO I for instructions
+//TODO check position for hashes
+//TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
@@ -148,6 +150,7 @@ void Instructions()
 	cout << "INSTRUCTIONS\n\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
+	cout << "Max size for each direction is 26.\n";
 	cout << "You will be asked successively two questions, ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "POSITION";
@@ -254,7 +257,6 @@ string askBoardName()
 pair<int,int> askBoardSize()
 {
 	pair<int, int> boardSize;
-	cout << "Max size for each direction is 26.\n";
 
 	do {
 		if (cin.fail())
