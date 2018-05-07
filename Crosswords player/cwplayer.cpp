@@ -76,6 +76,12 @@ int main()
 			colorMaster.setcolor(DEFAULT);
 			exit(1);
 		}
+		else
+		{
+			colorMaster.setcolor(SUCCESS);
+			cout << "\nBoard was opened successfully.\n";
+			colorMaster.setcolor(DEFAULT);
+		}
 
 		//OPEN DICTIONARY
 		Dictionary *dictionary = new Dictionary(dictName);
@@ -87,6 +93,12 @@ int main()
 			cout << "\nCould not locate dictionary with that name.\n";
 			colorMaster.setcolor(DEFAULT);
 			exit(1);
+		}
+		else
+		{
+			colorMaster.setcolor(SUCCESS);
+			cout << "\nDictionary was opened successfully.\n";
+			colorMaster.setcolor(DEFAULT);
 		}
 
 		//CREATE PLAYER
