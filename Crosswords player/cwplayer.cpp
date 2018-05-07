@@ -123,12 +123,21 @@ int main()
 //TODO option to submit solution
 
 //=================================================================================================================================
-//TODO Ascii art with colors
 
 void Introduction()
 {
-	cout << "Crosswords Puzzle Solver\n";
-	cout << "=========================\n";
+	cout << endl << " ";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "  ____                                         _       ____        _                \n";
+	colorMaster.setcolor(WHITE, BLACK); cout << " "; colorMaster.setcolor(BLACK, WHITE);
+	cout << " / ___|_ __ ___  ___ _____      _____  _ __ __| |___  / ___|  ___ | |_   _____ _ __ \n";
+	colorMaster.setcolor(WHITE, BLACK); cout << " "; colorMaster.setcolor(BLACK, WHITE);
+	cout << "| |   | '__/ _ \\/ __/ __\\ \\ /\\ / / _ \\| '__/ _` / __| \\___ \\ / _ \\| \\ \\ / / _ \\ '__|\n";
+	colorMaster.setcolor(WHITE, BLACK); cout << " "; colorMaster.setcolor(BLACK, WHITE);
+	cout << "| |___| | | (_) \\__ \\__ \\\\ V  V / (_) | | | (_| \\__ \\  ___) | (_) | |\\ V /  __/ |   \n";
+	colorMaster.setcolor(WHITE, BLACK); cout << " "; colorMaster.setcolor(BLACK, WHITE);
+	cout << " \\____|_|  \\___/|___/___/ \\_/\\_/ \\___/|_|  \\__,_|___/ |____/ \\___/|_| \\_/ \\___|_|   \n";
+	colorMaster.setcolor(WHITE, BLACK);
 }
 
 //=================================================================================================================================
