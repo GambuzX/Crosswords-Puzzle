@@ -225,6 +225,34 @@ void Board::insertWord(string word, string positionInput)
 }
 
 //=================================================================================================================================
+// Inserts a word on the board. Assumes it is a valid insertion.
+
+void Board::insertHash(string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+
+	if (board.at(line).at(column) == '#')
+	{
+		setcolor(ERROR_MESSAGE);
+		cout << "\nThere already is an hash in that location!\n";
+		setcolor(DEFAULT);
+	}
+	else if (isalpha(board.at(line).at(column)))
+	{
+		setcolor(ERROR_MESSAGE);
+		cout << "\nYou cannot insert an hash over a word!\n";
+		setcolor(DEFAULT);
+	}
+	else
+	{
+		board.at(line).at(column) = '#';
+	}
+}
+
+//=================================================================================================================================
 // Removes an already placed word. If no word removed returns false.
 
 bool Board::removeWord(string positionInput)

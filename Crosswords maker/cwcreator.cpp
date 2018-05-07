@@ -604,7 +604,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 	else if (!dictionary.isValid(word)) // Verify word is valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
+		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z' or the ones specified in the instructions.\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -981,6 +981,12 @@ void EditBoard(Board board, Dictionary &dict)
 				Instructions();
 				cout << endl << endl;
 				board.showBoard();
+				cout << endl;
+			}
+			else if (word == "#") // Ask for help
+			{
+				board.insertHash(positionInput);
+				validInput = true;
 				cout << endl;
 			}
 			else // default

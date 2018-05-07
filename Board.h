@@ -24,12 +24,12 @@ public:
 	void setUsedWords(std::vector<std::pair<std::string, std::string>>);
 	void showBoard();
 	void insertWord(std::string word, std::string position);
+	void insertHash(std::string position);
 	bool removeWord(std::string position);
-	void InsertHashes(std::string word, std::string positionInput);
-	void RemoveHashes(std::string word, std::string positionInput);
+	void InsertWordHashes(std::string word, std::string positionInput);
+	void RemoveWordHashes(std::string word, std::string positionInput);
 	void reprintHashes();
 	void fillRemainingSpots();
-	void helpUser(std::string position, std::vector<std::string> fittingWords);
 
 	bool isInitialized();
 	bool validPositionInput(std::string);
