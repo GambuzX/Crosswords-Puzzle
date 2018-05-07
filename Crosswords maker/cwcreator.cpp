@@ -80,7 +80,9 @@ int main()
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
+		colorMaster.setcolor(QUESTION_COLOR);
 		cout << "Display instructions (Y/N)? ";
+		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 		answer = toupper(answer);
 	} while (answer != 'Y' && answer != 'N');

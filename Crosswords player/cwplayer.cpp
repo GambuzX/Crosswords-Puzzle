@@ -60,9 +60,24 @@ int main()
 	Introduction();
 	cout << endl;
 
-	Instructions();
-	cout << endl;
+	char answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		colorMaster.setcolor(QUESTION_COLOR);
+		cout << "Display instructions (Y/N)? ";
+		colorMaster.setcolor(DEFAULT);
+		cin >> answer;
+		answer = toupper(answer);
+	} while (answer != 'Y' && answer != 'N');
 
+	if (answer == 'Y')
+		Instructions();
+	cout << endl;
 	
 	bool finishedProgram = false;
 	do
@@ -75,14 +90,14 @@ int main()
 		if (!boardLoaded)
 		{
 			colorMaster.setcolor(ERROR_MESSAGE);
-			cout << "\nCould not locate board with that name.\n";
+			cout << "\nCould not locate board file with that name.\n";
 			colorMaster.setcolor(DEFAULT);
 			exit(1);
 		}
 		else
 		{
 			colorMaster.setcolor(SUCCESS);
-			cout << "\nBoard was opened successfully.\n";
+			cout << "\nBoard file was opened successfully.\n";
 			colorMaster.setcolor(DEFAULT);
 		}
 
@@ -152,6 +167,7 @@ int main()
 //TODO option to submit solution
 
 //=================================================================================================================================
+// Displays the introduction
 
 void Introduction()
 {
@@ -170,16 +186,134 @@ void Introduction()
 }
 
 //=================================================================================================================================
-//TODO Instructions
+// Displays the instructions
 
 void Instructions()
 {
-	cout << "Instructions: \n";
-	cout << "(...)\n";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nINSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
 
-	//TODO Implement these ideas
-	// C for clues at anytime
-	// 
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "White cells";
+	colorMaster.setcolor(DEFAULT);
+	cout << " represent places where you ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "can";
+	colorMaster.setcolor(DEFAULT);
+	cout << " insert words\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Black cells";
+	colorMaster.setcolor(DEFAULT);
+	cout << " represent places where you ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "can not";
+	colorMaster.setcolor(DEFAULT);
+	cout << " insert words.\n";
+
+	cout << "You will be asked successively two questions, ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "POSITION";
+	colorMaster.setcolor(DEFAULT);
+	cout << " and ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "WORD";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n\n";
+
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "Position\n";
+	colorMaster.setcolor(DEFAULT);
+	cout << "Format: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "LCD";
+	colorMaster.setcolor(DEFAULT);
+	cout << " (line, column, direction).\n";
+	cout << "Can either be lower or uppercase, but ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "must respect this order!";
+	colorMaster.setcolor(DEFAULT);
+	cout << " Direction is 'H' or 'V'.\n\n";
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "S";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to submit current board, if board is full.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "CTRL-Z";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to stop playing.\n";
+
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "\nWord\n";
+	colorMaster.setcolor(DEFAULT);
+	cout << "Format: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Word to be inserted in the board\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "-";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to remove a previously placed word.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "?";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to ask for an hint about the word in the specified position.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "<";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to return to the Position question.\n";
+
+	cout << "\nWhen there are no more empty spaces to fill, you will be prompted to ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "submit your solution";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+
+	cout << "You will then get ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "feedback";
+	colorMaster.setcolor(DEFAULT);
+	cout << " on your submission.\n";
+
+	cout << "If you guess all the words, ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "statistics on your performance";
+	colorMaster.setcolor(DEFAULT);
+	cout << " will be shown and ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "saved to a file";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+
+	cout << "If your guess is incorrect and you decide to leave, you can choose to see the ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "solutions";
+	colorMaster.setcolor(DEFAULT);
+	cout << ".\n";
+
+	//cout << "\nPress any key to continue\n";
+	_getch();
+	//TODO make more appealing
 }
 
 //=================================================================================================================================
@@ -239,15 +373,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		do
 		{
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Position ";
-			colorMaster.setcolor(DEFAULT);
-			cout << "(\"LCD\" / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "CTRL - Z";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = stop) ";
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "? ";
+			cout << "Position ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> positionInput;
 
@@ -340,23 +466,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
-			cout << "Word";
-			colorMaster.setcolor(DEFAULT);
-			cout << " (";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "<";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = return / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "-";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = remove / ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "?";
-			colorMaster.setcolor(DEFAULT);
-			cout << " = help)";
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << " ? ";
+			cout << "Word ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;
 
