@@ -76,16 +76,6 @@ Board::Board(int horizontalSize, int verticalSize) //, Dictionary dict)
 	for (size_t i = 0; i < board.size(); i++)
 		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
-	//dictionary = dict;
-	initializedBoard = true;
-}
-
-//=================================================================================================================================
-// Checks if the board was already initialized. The board has a bool that is updated whenever it's initialized.
-
-bool Board::isInitialized()
-{
-	return initializedBoard;
 }
 
 //=================================================================================================================================
@@ -221,7 +211,7 @@ void Board::insertWord(string word, string positionInput)
 	default:
 		cerr << "Invalid input!";
 	}
-	InsertHashes(word, positionInput);
+	InsertWordHashes(word, positionInput);
 }
 
 //=================================================================================================================================
@@ -293,7 +283,7 @@ bool Board::removeWord(string positionInput)
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
-				RemoveHashes(word, position);
+				RemoveWordHashes(word, position);
 				reprintHashes();
 				break;
 			case 'V':
@@ -303,7 +293,7 @@ bool Board::removeWord(string positionInput)
 						board.at(startLine + i).at(startColumn) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
-				RemoveHashes(word, position);
+				RemoveWordHashes(word, position);
 				reprintHashes();
 				break;
 			default:
@@ -326,7 +316,7 @@ bool Board::removeWord(string positionInput)
 //=================================================================================================================================
 // Places hashes before and after word
 
-void Board::InsertHashes(string word, string positionInput)
+void Board::InsertWordHashes(string word, string positionInput)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
 	int line = coords.first;
@@ -359,7 +349,7 @@ void Board::InsertHashes(string word, string positionInput)
 //=================================================================================================================================
 // Removes hashes associated with the word from the given position
 
-void Board::RemoveHashes(string word, string positionInput)
+void Board::RemoveWordHashes(string word, string positionInput)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
 	int line = coords.first;
@@ -395,7 +385,7 @@ void Board::RemoveHashes(string word, string positionInput)
 void Board::reprintHashes()
 {
 	for (size_t i = 0; i < usedWords.size(); i++)
-		InsertHashes(usedWords.at(i).second, usedWords.at(i).first);
+		InsertWordHashes(usedWords.at(i).second, usedWords.at(i).first);
 }
 
 //=================================================================================================================================
@@ -407,46 +397,6 @@ void Board::fillRemainingSpots()
 		for (int j = 0; j < horizontalSize; j++)
 			if (board.at(i).at(j) == '.')
 				board.at(i).at(j) = '#';
-}
-
-//=================================================================================================================================
-// Shows the user what words he can put in the specified location. Brute force everything.
-
-void Board::helpUser(string positionInput, vector<string> fittingWords) //TODO Is this ever used?
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
-	char direction = toupper(positionInput.at(2));
-	int availableSpace;
-	switch (direction)
-	{
-	case 'H':
-		availableSpace = horizontalSize - insertionPosition.second;
-		break;
-	case 'V':
-		availableSpace = verticalSize - insertionPosition.first;
-		break;
-	default:
-		cerr << "Invalid input!";
-	}
-
-	setcolor(BLACK, WHITE);
-	cout << "\nWords that fit there:\n";
-	setcolor(WHITE, BLACK);
-
-	int counter = 0;
-	const int WORDS_PER_LINE = 6;
-	const int WORDS_WIDTH = 18;
-	for (size_t i = 0; i < fittingWords.size(); i++)
-	{
-		string currentWord = fittingWords.at(i);
-		if (!isWordUsed(currentWord) && matchesInterceptedPositions(currentWord, positionInput))
-		{
-			if (counter % WORDS_PER_LINE == 0) cout << endl;
-			cout << setw(WORDS_WIDTH) << currentWord;
-			counter++;
-		}
-	}
 }
 
 //=================================================================================================================================
@@ -572,7 +522,6 @@ bool Board::loadBoard(string fileName, string& dictName)
 		string word = line.substr(4); //from index 4 to the end
 		insertWord(word, position);
 	}	
-	initializedBoard = true;
 	if (!foundDot)
 		fillRemainingSpots();
 	return true;

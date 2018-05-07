@@ -31,7 +31,6 @@ public:
 	void reprintHashes();
 	void fillRemainingSpots();
 
-	bool isInitialized();
 	bool validPositionInput(std::string);
 	bool isWordUsed(std::string word);
 	bool matchesInterceptedPositions(std::string word, std::string position);
@@ -49,7 +48,6 @@ private:
 	std::vector<std::vector<char>> board;
 	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
 
-	bool initializedBoard = false;
 	int horizontalSize = 0, verticalSize = 0;
 
 	int mapCharToNumber(char letter);

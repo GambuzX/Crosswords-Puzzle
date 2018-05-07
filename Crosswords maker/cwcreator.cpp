@@ -12,15 +12,12 @@ using namespace std;
 
 //TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
 
-//TODO Project specification + operation
-//TODO Option of adding hashes
 //TODO Operation success messages
-//TODO _getch() after instructions
-//TODO Y/N colors
 //TODO check dictionary invalid entries
-//TODO check position for hashes
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
+//TODO _getch() after instructions
+//TODO Clean up code
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
 
@@ -61,7 +58,7 @@ pair<int, int> askBoardSize();
 Dictionary CreateDictionary(bool &success);
 Dictionary CreateDictionary(string dictName, bool &success);
 Board CreateBoard();
-Board ResumeBoard(string &dictName);
+Board ResumeBoard(string &dictName, bool &operationSuccess);
 void EditBoard(Board board, Dictionary &dict);
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
@@ -137,17 +134,17 @@ int main()
 				colorMaster.setcolor(DEFAULT);
 				break;
 			}
+			else
+			{
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nDictionary was opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+			}
 
 			cout << endl;
 			board = CreateBoard();
-			if (board.isInitialized())
-				EditBoard(board, dictionary);
-			else
-			{
-				colorMaster.setcolor(ERROR_MESSAGE);
-				cout << "\nBoard was not opened successfully.\n";
-				colorMaster.setcolor(DEFAULT);
-			}
+			EditBoard(board, dictionary);
+
 			break;
 		}
 		case 2:
@@ -156,31 +153,42 @@ int main()
 			cout << " |          RESUME PUZZLE           |\n";
 			cout << " ====================================\n";
 
-			bool success; //true if successfully created dictionary
+			bool dictSuccess; //true if successfully created dictionary
+			bool boardSuccess;
 			string dictName;
-			board = ResumeBoard(dictName);
+			board = ResumeBoard(dictName, boardSuccess);
 
-			if (!board.isInitialized())
+			if (!boardSuccess)
+			{
+				colorMaster.setcolor(ERROR_MESSAGE);
+				cout << "\nBoard was not opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
 				break;
+			}
+			else
+			{
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nBoard was opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+			}
 
-			dictionary = CreateDictionary(dictName, success);
+			dictionary = CreateDictionary(dictName, dictSuccess);
 
-			if (!success)
+			if (!dictSuccess)
 			{
 				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nDictionary was not opened successfully.\n";
 				colorMaster.setcolor(DEFAULT);
 				break;
 			}
-
-			if (board.isInitialized())
-				EditBoard(board, dictionary);
 			else
 			{
-				colorMaster.setcolor(ERROR_MESSAGE);
-				cout << "\nBoard was not opened successfully.\n";
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nDictionary was opened successfully.\n";
 				colorMaster.setcolor(DEFAULT);
 			}
+
+			EditBoard(board, dictionary);
 			break;
 		}
 		default:
@@ -298,11 +306,11 @@ void Instructions()
 	cout << "?";
 	colorMaster.setcolor(DEFAULT);
 	cout << " for a list of words that can be placed on the specified position.\n";
-	cout << "- ";
+	/*cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "#";
 	colorMaster.setcolor(DEFAULT);
-	cout << " to insert an Hash.\n";
+	cout << " to insert an Hash.\n";*/
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "<";
@@ -565,7 +573,7 @@ Board CreateBoard()
 //=================================================================================================================================
 // Resumes an already existing puzzle from a file
 
-Board ResumeBoard(string &dictionaryName)
+Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 {
 	cout << endl;
 	string boardName = askBoardName();
@@ -578,9 +586,11 @@ Board ResumeBoard(string &dictionaryName)
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate board with that name.\n";
 		colorMaster.setcolor(DEFAULT);
+		operationSuccess = false;
 		return Board();
 	}
 
+	operationSuccess = true;
 	dictionaryName = dictName;
 	return board;
 }
@@ -914,6 +924,8 @@ void EditBoard(Board board, Dictionary &dict)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
+				pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
+
 				if (positionInput == "I")
 				{
 					cout << endl;
@@ -923,7 +935,18 @@ void EditBoard(Board board, Dictionary &dict)
 				}
 				//Check validity
 				else if (board.validPositionInput(positionInput))
-					validPositionInput = true;
+				{
+					if (board.getCell(coordinates.first, coordinates.second) == '#')
+					{
+						colorMaster.setcolor(ERROR_MESSAGE);
+						cout << "\nYou cannot insert any word there.\n\n"; //TODO think about this
+						colorMaster.setcolor(DEFAULT);
+					}
+					else
+					{
+						validPositionInput = true;
+					}
+				}
 			}
 		} while (!validPositionInput); //loop until valid input
 
@@ -983,12 +1006,12 @@ void EditBoard(Board board, Dictionary &dict)
 				board.showBoard();
 				cout << endl;
 			}
-			else if (word == "#") // Ask for help
+			/*else if (word == "#") // Ask for help
 			{
 				board.insertHash(positionInput);
 				validInput = true;
 				cout << endl;
-			}
+			}*/
 			else // default
 				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
 				{
