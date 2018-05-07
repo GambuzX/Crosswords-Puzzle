@@ -23,6 +23,14 @@ string Dictionary::getName()
 }
 
 //=================================================================================================================================
+// Sets the name of the dictionary
+
+void Dictionary::setName(string name)
+{
+	dictionaryName = name;
+}
+
+//=================================================================================================================================
 // Returns the synonym list for a given word
 
 vector<string> Dictionary::getWordSynonyms(string word)

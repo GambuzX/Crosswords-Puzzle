@@ -40,7 +40,7 @@ using namespace std;
 //=================================================================================================================================
 // Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
 
-Board::Board(int horizontalSize, int verticalSize, Dictionary dict)
+Board::Board(int horizontalSize, int verticalSize) //, Dictionary dict)
 {
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
@@ -52,7 +52,7 @@ Board::Board(int horizontalSize, int verticalSize, Dictionary dict)
 	for (size_t i = 0; i < board.size(); i++)
 		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
-	dictionary = dict;
+	//dictionary = dict;
 	initializedBoard = true;
 }
 
@@ -75,10 +75,10 @@ bool Board::hasHash(pair<int,int> position)
 //=================================================================================================================================
 // Changes current dictionary
 
-inline void Board::setDictionary(Dictionary dict)
+/*inline void Board::setDictionary(Dictionary dict)
 {
 	dictionary = dict;
-}
+}*/
 
 //=================================================================================================================================
 // Returns current board
@@ -94,6 +94,22 @@ vector<vector<char>> Board::getBoard()
 vector<pair<string, string>> Board::getUsedWords()
 {
 	return usedWords;
+}
+
+//=================================================================================================================================
+// Changes current board
+
+void Board::setBoard(vector<vector<char>> newBoard)
+{
+	board = newBoard;
+}
+
+//=================================================================================================================================
+// Changes current used words vector
+
+void Board::setUsedWords(vector<pair<string, string>> newUsedWords)
+{
+	usedWords = newUsedWords;
 }
 
 //=================================================================================================================================
@@ -113,12 +129,20 @@ int Board::getHorizontalSize()
 }
 
 //=================================================================================================================================
+// Returns a cell of the board
+
+char Board::getCell(int line, int column)
+{
+	return board.at(line).at(column);
+}
+
+//=================================================================================================================================
 // Returns current dictionary
 
-Dictionary Board::getDictionary()
+/*Dictionary Board::getDictionary()
 {
 	return dictionary;
-}
+}*/
 
 //=================================================================================================================================
 // Shows current board
@@ -165,7 +189,7 @@ void Board::showBoard()
 //=================================================================================================================================
 // Verifies if a word can be inserted in a determined location, informing why not if false
 
-bool Board::canBeInserted(string word, string positionInput)
+/*bool Board::canBeInserted(string word, string positionInput)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -214,12 +238,12 @@ bool Board::canBeInserted(string word, string positionInput)
 		return false;
 	}
 	return true;
-}
+}*/
 
 //=================================================================================================================================
 // Simulates an insertion and verifies if the resulting board is valid.
 
-bool Board::testInsertion(string word, string positionInput)
+/*bool Board::testInsertion(string word, string positionInput)
 {
 	//Backup
 	std::vector<std::vector<char>> oldboard = board;
@@ -233,7 +257,7 @@ bool Board::testInsertion(string word, string positionInput)
 	usedWords = oldusedWords;
 
 	return valid;
-}
+}*/
 
 //=================================================================================================================================
 // Inserts a word on the board. Assumes it is a valid insertion.
@@ -423,9 +447,9 @@ void Board::fillRemainingSpots()
 }
 
 //=================================================================================================================================
-// Shows the user what words he can put in the specified location
+// Shows the user what words he can put in the specified location. Brute force everything.
 
-void Board::helpUser(string positionInput)
+void Board::helpUser(string positionInput, vector<string> fittingWords) //TODO Is this ever used?
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -447,7 +471,6 @@ void Board::helpUser(string positionInput)
 	cout << "\nWords that fit there:\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
-	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 	int counter = 0;
 	const int WORDS_PER_LINE = 6;
 	const int WORDS_WIDTH = 18;
@@ -466,7 +489,7 @@ void Board::helpUser(string positionInput)
 //=================================================================================================================================
 // Shows the user what words he can put in the specified location
 
-void Board::helpUserComplete(string positionInput)
+/*void Board::helpUserComplete(string positionInput, vector<string> fittingWords)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
@@ -488,7 +511,6 @@ void Board::helpUserComplete(string positionInput)
 	cout << "\nWords that fit there:\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
-	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 	int counter = 0;
 	const int WORDS_PER_LINE = 6;
 	const int WORDS_WIDTH = 18;
@@ -502,7 +524,7 @@ void Board::helpUserComplete(string positionInput)
 			counter++;
 		}
 	}
-}
+}*/
 
 //=================================================================================================================================
 // Verifies the user position input is valid
@@ -545,7 +567,7 @@ bool Board::validPositionInput(string input)
 //=================================================================================================================================
 // Verifies if all words in the board in both directions are valid
 
-bool Board::isBoardValid()
+/*bool Board::isBoardValid()
 {
 	bool valid = true;
 
@@ -596,12 +618,12 @@ bool Board::isBoardValid()
 	}
 		
 	return valid;
-}
+}*/
 
 //=================================================================================================================================
 // Same as above, but limits verification to the places the inserted word crosses
 
-bool Board::isBoardValid(string word, string position)
+/*bool Board::isBoardValid(string word, string position)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(position);
 	char dir = position.at(2);
@@ -708,21 +730,23 @@ bool Board::isBoardValid(string word, string position)
 		break;
 	}
 	return true;
-}
+}*/
 
 
 //=================================================================================================================================
 // Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
 
-bool Board::saveBoard(string fileName)
+bool Board::saveBoard(string fileName, string dictName)
 {
-	if (!isBoardValid()) //FINAL CHECK
-		return false;
+	//if (!isBoardValid()) //FINAL CHECK
+		//return false;
+
+	//TODO ADD FINAL CHECK
 
 	// Organize it well
 	ofstream file(fileName);
 	
-	file << dictionary.getName() << endl << endl;
+	file << dictName << endl << endl;
 
 	for (int i = 0; i < verticalSize; i++)
 	{
@@ -747,7 +771,7 @@ bool Board::saveBoard(string fileName)
 //=================================================================================================================================
 // Loads a board from a file
 
-bool Board::loadBoard(string fileName)
+bool Board::loadBoard(string fileName, string& dictName)
 {
 	ifstream file(fileName);
 	
@@ -755,9 +779,9 @@ bool Board::loadBoard(string fileName)
 		return false;
 
 	//SETTING DICTIONARY
-	string dictName;
 	getline(file, dictName);
-	Dictionary dict(dictName);
+
+	/*Dictionary dict(dictName);
 	bool dictionaryOpened = dict.ProcessDictionary();
 	if (!dictionaryOpened)
 	{
@@ -765,8 +789,8 @@ bool Board::loadBoard(string fileName)
 		cout << "\nDictionary file was not found!\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
-	}
-	setDictionary(dict);
+	}*/
+	//setDictionary(dict);
 
 	string line;
 	getline(file, line); // empty line
@@ -834,7 +858,7 @@ int Board::mapCharToNumber(char letter)
 //=================================================================================================================================
 // Verifies the given headline is valid.
 
-bool Board::isValidHeadline(string word)
+/*bool Board::isValidHeadline(string word)
 {
 	for (size_t i = 0; i < word.length(); i++)
 	{
@@ -842,7 +866,7 @@ bool Board::isValidHeadline(string word)
 			return false;
 	}
 	return true;
-}
+}*/
 
 //=================================================================================================================================
 // Checks if the given word is already on the board or not.

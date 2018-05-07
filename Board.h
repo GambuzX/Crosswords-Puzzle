@@ -13,17 +13,21 @@ public:
 	//Constructors
 	//Board(int horizontalSize, int verticalSize);
 	Board() {};
-	Board(int horiSize, int vertSize, Dictionary dict);
+	Board(int horiSize, int vertSize, Dictionary dict); //TODO change this and delete comments
+	Board(int horiSize, int vertSize); //TODO change this and delete comments
 
-	inline void setDictionary(Dictionary dict);
+	//inline void setDictionary(Dictionary dict);
 
 	//Getters
 	std::vector<std::vector<char>> getBoard();
 	std::vector<std::pair<std::string, std::string>> getUsedWords();
 	int getVerticalSize();
 	int getHorizontalSize();
-	Dictionary getDictionary();
+	char getCell(int line, int column);
+	//Dictionary getDictionary();
 
+	void setBoard(std::vector<std::vector<char>>);
+	void setUsedWords(std::vector<std::pair<std::string, std::string>>);
 	void showBoard();
 	void insertWord(std::string word, std::string position);
 	bool removeWord(std::string position);
@@ -31,18 +35,27 @@ public:
 	void RemoveHashes(std::string word, std::string positionInput);
 	void reprintHashes();
 	void fillRemainingSpots();
-	void helpUser(std::string position);
-	void helpUserComplete(std::string position);
+	void helpUser(std::string position, std::vector<std::string> fittingWords);
+	//void helpUserComplete(std::string position, std::vector<std::string> fittingWords);
 
 	bool isInitialized();
-	bool canBeInserted(std::string word, std::string position);
-	bool testInsertion(std::string word, std::string position);
+	//bool canBeInserted(std::string word, std::string position);
+	//bool testInsertion(std::string word, std::string position);
 	bool validPositionInput(std::string);
-	bool isBoardValid();
-	bool isBoardValid(std::string word, std::string positionInput);
+	//bool isBoardValid();
+	//bool isBoardValid(std::string word, std::string positionInput);
+	bool isWordUsed(std::string word);
+	bool matchesInterceptedPositions(std::string word, std::string position);
+	bool hasHash(std::pair<int, int>);
+	//bool isValidHeadline(std::string);
+	bool wordFitsSpace(std::string word, std::string position);
+	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
+	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
 
-	bool saveBoard(std::string name);
-	bool loadBoard(std::string name);
+	bool saveBoard(std::string name, std::string dictName);
+	bool loadBoard(std::string name, std::string& dictName);
+
+	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 
 private:
 	std::vector<std::vector<char>> board;
@@ -54,16 +67,8 @@ private:
 	Dictionary dictionary; //dictionary to be used
 	ColorMaster colorMaster;
 
-	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	int mapCharToNumber(char letter);
 
-	bool hasHash(std::pair<int, int>);
-	bool isValidHeadline(std::string);
-	bool isWordUsed(std::string word);
-	bool wordFitsSpace(std::string word, std::string position);
-	bool matchesInterceptedPositions(std::string word, std::string position);
-	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
-	bool adjacentSpacesEmpty(std::pair<int,int> coordinates, char direction);
 };
 
 #endif
