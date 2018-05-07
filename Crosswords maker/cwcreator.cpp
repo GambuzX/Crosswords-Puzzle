@@ -933,6 +933,7 @@ void EditBoard(Board board, Dictionary &dict)
 					validPositionInput = true;
 					skipLoop = true;
 				}
+
 				//Check validity
 				else if (board.validPositionInput(positionInput))
 				{

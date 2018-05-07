@@ -363,6 +363,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 	bool finishedPuzzle = false;
 	do
 	{
+		bool skipInsertion = false;
 		string positionInput, word;
 
 		////////////////////////////////
@@ -397,6 +398,14 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
+				if (positionInput == "I")
+				{
+					cout << endl;
+					Instructions();
+					validPositionInput = true;
+					skipInsertion = true;
+				}
+
 				//Check validity
 				if (puzzle.validPositionInput(positionInput))
 				{
@@ -420,7 +429,6 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 		} while (!validPositionInput); //loop until valid input
 
-		bool skipInsertion = false;
 		if (finishedPuzzle) //If CTRL-Z, confirm if the player wishes to leave
 		{
 			bool leave = false;
@@ -489,6 +497,13 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			else if (word == "?") // Ask for help
 			{
 				puzzle.showDifferentSynonym(positionInput);
+				cout << endl;
+			}
+			else if (word == "I") // Ask for help
+			{
+				Instructions();
+				cout << endl << endl;
+				puzzle.showPlayerBoard();
 				cout << endl;
 			}
 			else // default
