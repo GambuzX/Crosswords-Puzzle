@@ -12,7 +12,6 @@ using namespace std;
 
 //TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
 
-//TODO Operation success messages
 //TODO check dictionary invalid entries
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
@@ -611,7 +610,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (!dictionary.isValid(word)) // Verify word is valid
+	else if (!dictionary.isValidHeadline(word)) // Verify word is valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z' or the ones specified in the instructions.\n\n";

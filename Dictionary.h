@@ -23,7 +23,8 @@ public:
 	bool ProcessDictionary();
 	void showWordList(); //To check if word list is well implemented
 	bool isInWordList(std::string word); // checks if word exists in word list
-	bool isValid(std::string);
+	bool isValidHeadline(std::string);
+	bool isValidSynonym(std::string);
 	bool existsWildcardMatchingWord(std::string word);
 
 private:

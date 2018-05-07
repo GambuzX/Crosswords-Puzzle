@@ -66,12 +66,14 @@ bool Dictionary::ProcessDictionary()
 		{
 			endPos = line.find_first_of(',');
 			synonym = line.substr(0, endPos);
-			synonyms.push_back(toUpper(synonym)); //Assume all synonyms are valid
+			if (isValidSynonym(synonym))
+				synonyms.push_back(toUpper(synonym));
 			line.erase(0, endPos + 2);
 		}
 		synonym = line; //at this point only the last word remains
-		synonyms.push_back(synonym);
-		if (isValid(word))
+		if (isValidSynonym(synonym))
+			synonyms.push_back(toUpper(synonym));
+		if (isValidHeadline(word))
 		{
 			pair<map<string, vector<string>>::iterator, bool> ret; //return type variable of map::insert
 			ret = wordList.insert(pair<string, vector<string>>(word, synonyms));
@@ -157,11 +159,25 @@ string Dictionary::GetWordSynonym(string word)
 //=================================================================================================================================
 // Verifies the given headline is valid
 
-bool Dictionary::isValid(string word)
+bool Dictionary::isValidHeadline(string word)
 {
 	for (size_t i = 0; i < word.length(); i++)
 	{
 		if (word.at(i) < 'A' || word.at(i) > 'Z')
+			return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Verifies the given headline is valid
+
+bool Dictionary::isValidSynonym(string word)
+{
+	word = toUpper(word);
+	for (size_t i = 0; i < word.length(); i++)
+	{
+		if ((word.at(i) < 'A' || word.at(i) > 'Z') && word.at(i) != ' ' && word.at(i) != '-' && word.at(i) != '\'')
 			return false;
 	}
 	return true;
