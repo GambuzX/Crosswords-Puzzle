@@ -4,3 +4,8 @@ Opted for player input to be valid either lowercase or uppercase. Better interac
 
 I for instructions
 < for return
+
+
+2nd
+
+Keeps track of wrong submissions

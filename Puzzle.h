@@ -7,6 +7,7 @@
 
 #include <Board.h>
 #include <Player.h>
+#include <ColorMaster.h>
 
 class Puzzle
 {

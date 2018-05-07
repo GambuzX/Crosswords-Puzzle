@@ -12,7 +12,6 @@ using namespace std;
 
 //TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
 
-//TODO check dictionary invalid entries
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
 //TODO _getch() after instructions

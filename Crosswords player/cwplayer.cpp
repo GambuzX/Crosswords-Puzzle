@@ -22,6 +22,9 @@ bool CheckPlayerWon(Puzzle&);
 
 ColorMaster colorMaster;
 
+//TODO options
+//TODO test everything
+
 //==========================================================================================
 //COLOR CODES:
 
@@ -315,7 +318,10 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			if (leave)
 				break;
 			else
+			{
 				skipInsertion = true;
+				finishedPuzzle = false;
+			}
 		}
 
 		////////////////////////////////
