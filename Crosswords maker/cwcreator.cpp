@@ -19,7 +19,7 @@ using namespace std;
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
 
-//==========================================================================================
+//=================================================================================================================================
 //COLOR CODES:
 
 #define BLACK 0
@@ -45,28 +45,38 @@ using namespace std;
 #define ERROR_MESSAGE 4
 #define SUCCESS 10
 
-//==========================================================================================
+//=================================================================================================================================
 
 void Introduction();
 void Instructions();
 void Options();
+
 char YesNoQuestion(string question);
+
 string askDictionaryName();
+string askBoardName();
 string determineBoardName();
+
 pair<int, int> askBoardSize();
+
 Dictionary CreateDictionary(bool &success);
 Dictionary CreateDictionary(string dictName, bool &success);
+
 Board CreateBoard();
 Board ResumeBoard(string &dictName, bool &operationSuccess);
-void EditBoard(Board board, Dictionary &dict);
 
-void helpUser(Board &board, Dictionary &dictionary, string positionInput);
+bool askToSaveBoard(Board board, string dictName);
+bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
-bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
+
+void helpUser(Board &board, Dictionary &dictionary, string positionInput);
+void EditBoard(Board board, Dictionary &dict);
 
 ColorMaster colorMaster;
+
+//=================================================================================================================================
 
 int main()
 {
@@ -469,7 +479,7 @@ bool askToSaveBoard(Board board, string dictName)
 }
 
 //=================================================================================================================================
-
+// Returns the name of the board to be saved, based on already existing files
 
 string determineBoardName()
 {

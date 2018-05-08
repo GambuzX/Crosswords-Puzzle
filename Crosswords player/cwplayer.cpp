@@ -13,21 +13,10 @@
 
 using namespace std;
 
-void Introduction();
-void Instructions();
-void Options();
-char YesNoQuestion(string question);
-string askBoardName();
-string askPlayerName();
-void solveCurrentPuzzle(Puzzle&);
-bool CheckPlayerWon(Puzzle&);
-
-ColorMaster colorMaster;
-
 //TODO test everything
 //TODO clean up code
 
-//==========================================================================================
+//=================================================================================================================================
 //COLOR CODES:
 
 #define BLACK 0
@@ -53,7 +42,20 @@ ColorMaster colorMaster;
 #define ERROR_MESSAGE 4
 #define SUCCESS 10
 
-//==========================================================================================
+//=================================================================================================================================
+
+void Introduction();
+void Instructions();
+void Options();
+char YesNoQuestion(string question);
+string askBoardName();
+string askPlayerName();
+void solveCurrentPuzzle(Puzzle&);
+bool CheckPlayerWon(Puzzle&);
+
+ColorMaster colorMaster;
+
+//=================================================================================================================================
 
 int main()
 {
