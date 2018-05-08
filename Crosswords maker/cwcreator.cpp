@@ -115,7 +115,7 @@ int main()
 			cout << "\nOption ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> answer;
-		} while (cin.fail() || answer < 0 || answer > 2);
+		} while (cin.fail() || (answer != 0 && answer != 1 && answer != 2 && answer != 3));
 
 		cout << endl;
 		Board board;
@@ -208,8 +208,7 @@ int main()
 			cout << endl;
 			board = CreateBoard();
 
-
-
+			EditBoardFreeMode(board);
 			break;
 		}
 		default:
@@ -378,6 +377,11 @@ void Options()
 	cout << "2";
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Resume puzzle\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "3";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Create puzzle FREE MODE\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
@@ -1078,9 +1082,9 @@ bool canBeInsertedFreeMode(Board &board, string word, string positionInput)
 //=================================================================================================================================
 // Asks the user if he wants to save the current board in FREE MODE.
 
-bool AskToSaveBoardFreeMode(Board &board)
+bool askToSaveBoardFreeMode(Board &board)
 {
-
+	return true;
 }
 
 //=================================================================================================================================
@@ -1212,6 +1216,7 @@ void EditBoardFreeMode(Board &board)
 					board.insertWord(word, positionInput);
 					//TODO ask synonym list
 					//TODO check in the end for automatically formed words
+					validInput = true;
 				}
 		} while (!validInput); //loop until valid input
 

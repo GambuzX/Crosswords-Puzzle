@@ -211,7 +211,6 @@ void Board::insertWord(string word, string positionInput)
 	default:
 		cerr << "Invalid input!";
 	}
-	InsertWordHashes(word, positionInput);
 }
 
 //=================================================================================================================================
@@ -359,8 +358,6 @@ bool Board::removeWordOrHash(string positionInput)
 							board.at(startLine).at(startColumn + i) = '.';
 					}
 					usedWords.erase(it); //iterator is pointing to the element to be removed
-					RemoveWordHashes(word, position);
-					reprintHashes();
 					break;
 				case 'V':
 					for (size_t i = 0; i < word.length(); i++)
