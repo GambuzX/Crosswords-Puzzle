@@ -17,14 +17,13 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
-//TODO New mode -> Less restrictive board creation, with words not from the dictionary. Completely up to the user -> may add synonyms by hand
-
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
+//TODO decide if I want free mode
 
 //=================================================================================================================================
 //COLOR CODES:
@@ -81,10 +80,10 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void EditBoard(Board &board, Dictionary &dict);
 
-bool canBeInsertedFreeMode(Board &board, string word, string positionInput);
-bool askToSaveBoardFreeMode(Board &board);
-vector<string> askForSynonyms(string);
-void EditBoardFreeMode(Board &board);
+// canBeInsertedFreeMode(Board &board, string word, string positionInput);
+//bool askToSaveBoardFreeMode(Board &board);
+//vector<string> askForSynonyms(string);
+//void EditBoardFreeMode(Board &board);
 
 ColorMaster colorMaster;
 
@@ -200,7 +199,7 @@ int main()
 			EditBoard(board, dictionary);
 			break;
 		}
-		case 3: 
+		/*case 3: 
 		{
 			cout << " ====================================\n";
 			cout << " |           FREE CREATION          |\n";
@@ -211,7 +210,7 @@ int main()
 
 			EditBoardFreeMode(board);
 			break;
-		}
+		}*/
 		default:
 			cerr << "Should not be able to get here!";
 		}
@@ -379,10 +378,10 @@ void Options()
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Resume puzzle\n";
 
-	colorMaster.setcolor(SYMBOL_COLOR);
+	/*colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "3";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Create puzzle FREE MODE\n";
+	cout << " - Create puzzle FREE MODE\n";*/
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
@@ -391,7 +390,7 @@ void Options()
 }
 
 //=================================================================================================================================
-//Asks a Yes / No question and returns the answer char
+//Asks a Yes / No question and returns the answer
 
 char YesNoQuestion(string question)
 {
@@ -536,7 +535,7 @@ string determineBoardName()
 }
 
 //=================================================================================================================================
-// Creates a new dictionary
+// Creates a new dictionary, asking the user the name. Returns it and changes the argument boolean to indicate success or not
 
 Dictionary CreateDictionary(bool &success)
 {
@@ -557,7 +556,7 @@ Dictionary CreateDictionary(bool &success)
 }
 
 //=================================================================================================================================
-// Creates a new dictionary
+// Creates a new dictionary with specified name. Returns it and changes the argument boolean to indicate success or not
 
 Dictionary CreateDictionary(string dictName, bool &success)
 {
@@ -577,7 +576,7 @@ Dictionary CreateDictionary(string dictName, bool &success)
 }
 
 //=================================================================================================================================
-// Creates a new puzzle from scratch
+// Creates a new board from scratch
 
 Board CreateBoard()
 {
@@ -587,7 +586,7 @@ Board CreateBoard()
 }
 
 //=================================================================================================================================
-// Resumes an already existing puzzle from a file
+// Resumes an already existing board from a file
 
 Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 {
@@ -666,7 +665,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 }
 
 //=================================================================================================================================
-// Verifies if all words in the board in both directions are valid
+// Verifies if all words in the board in both directions are valid according to the dictionary
 
 bool isBoardValid(Board &board, Dictionary &dictionary)
 {
@@ -722,7 +721,8 @@ bool isBoardValid(Board &board, Dictionary &dictionary)
 }
 
 //=================================================================================================================================
-// Verifies if all words in the board in both directions are valid, but limited to positions the word occupies
+// Verifies if all words in the board in both directions are valid according to the dictionary
+// However, is limited to the positions the word occupies
 
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position)
 {
@@ -834,7 +834,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 }
 
 //=================================================================================================================================
-// Simulates an insertion and verifies if the resulting board is valid.
+// Simulates an insertion and verifies if the resulting board is valid according to the dictionary
 
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput)
 {
@@ -853,6 +853,7 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 }
 
 //=================================================================================================================================
+// Helps the user by showing which words can be placed on specified location
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 {

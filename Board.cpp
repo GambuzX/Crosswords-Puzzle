@@ -40,7 +40,7 @@ using namespace std;
 #define SUCCESS 10
 
 //=================================================================================================================================
-// Set text color
+// Set text color. CREDITS TO JAS
 
 void setcolor(unsigned int color)
 {
@@ -49,7 +49,7 @@ void setcolor(unsigned int color)
 }
 
 //=================================================================================================================================
-// Set text color & background
+// Set text color & background. CREDITS TO JAS
 
 void setcolor(unsigned int color, unsigned int background_color)
 {
@@ -62,9 +62,9 @@ void setcolor(unsigned int color, unsigned int background_color)
 }
 
 //=================================================================================================================================
-// Constructor with sizes and dictionary to be used. Assumes board size does not exceed 26.
+// Constructor with board sizes. Assumes board size does not exceed 26.
 
-Board::Board(int horizontalSize, int verticalSize) //, Dictionary dict)
+Board::Board(int horizontalSize, int verticalSize)
 {
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
@@ -87,7 +87,7 @@ bool Board::hasHash(pair<int,int> position)
 }
 
 //=================================================================================================================================
-// Returns current board
+// Returns the current board
 
 vector<vector<char>> Board::getBoard()
 {
@@ -95,7 +95,7 @@ vector<vector<char>> Board::getBoard()
 }
 
 //=================================================================================================================================
-// Returns used words vector
+// Returns the used words vector
 
 vector<pair<string, string>> Board::getUsedWords()
 {
@@ -103,7 +103,7 @@ vector<pair<string, string>> Board::getUsedWords()
 }
 
 //=================================================================================================================================
-// Changes current board
+// Changes current board to the specified one
 
 void Board::setBoard(vector<vector<char>> newBoard)
 {
@@ -111,7 +111,7 @@ void Board::setBoard(vector<vector<char>> newBoard)
 }
 
 //=================================================================================================================================
-// Changes current used words vector
+// Changes current used words vector to the specified one
 
 void Board::setUsedWords(vector<pair<string, string>> newUsedWords)
 {
@@ -119,7 +119,7 @@ void Board::setUsedWords(vector<pair<string, string>> newUsedWords)
 }
 
 //=================================================================================================================================
-// Returns vertical size
+// Returns board vertical size
 
 int Board::getVerticalSize()
 {
@@ -127,7 +127,7 @@ int Board::getVerticalSize()
 }
 
 //=================================================================================================================================
-// Returns horizontal size
+// Returns board horizontal size
 
 int Board::getHorizontalSize()
 {
@@ -143,7 +143,7 @@ char Board::getCell(int line, int column)
 }
 
 //=================================================================================================================================
-// Shows current board
+// Shows current board on the console
 
 void Board::showBoard()
 {
@@ -214,7 +214,7 @@ void Board::insertWord(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Inserts a word on the board. Assumes it is a valid insertion.
+// Inserts an hash on the board.
 
 void Board::insertHash(string positionInput)
 {
@@ -471,7 +471,7 @@ void Board::fillRemainingSpots()
 }
 
 //=================================================================================================================================
-// Verifies the user position input is valid
+// Verifies the user position input is valid, i.e., respects the format LCD (line, column, direction)
 
 bool Board::validPositionInput(string input)
 {
@@ -544,7 +544,7 @@ bool Board::saveBoard(string fileName, string dictName)
 }
 
 //=================================================================================================================================
-// Loads a board from a file
+// Loads a board from a file and changes the dictName argument for the name of the dictionary that was used
 
 bool Board::loadBoard(string fileName, string& dictName)
 {
