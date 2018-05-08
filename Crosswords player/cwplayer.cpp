@@ -15,6 +15,8 @@ using namespace std;
 
 void Introduction();
 void Instructions();
+void Options();
+char YesNoQuestion(string question);
 string askBoardName();
 string askPlayerName();
 void solveCurrentPuzzle(Puzzle&);
@@ -60,21 +62,7 @@ int main()
 	Introduction();
 	cout << endl;
 
-	char answer;
-	do
-	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "Display instructions (Y/N)? ";
-		colorMaster.setcolor(DEFAULT);
-		cin >> answer;
-		answer = toupper(answer);
-	} while (answer != 'Y' && answer != 'N');
-
+	char answer = YesNoQuestion("Display instructions (Y/N)? ");
 	if (answer == 'Y')
 		Instructions();
 	cout << endl;
@@ -135,22 +123,7 @@ int main()
 
 		solveCurrentPuzzle(puzzle);
 
-		char answer;
-		do
-		{
-			if (cin.fail())
-			{
-				cin.clear();
-				cin.ignore(10000, '\n');
-			}
-			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "\nDo you wish to play again (Y/N) ? ";
-			colorMaster.setcolor(DEFAULT);
-			cin >> answer;
-			cout << endl;
-			answer = toupper(answer);
-		} while (answer != 'N' && answer != 'Y');
-
+		char answer = YesNoQuestion("\nDo you wish to play again (Y/N) ? ");
 		if (answer == 'N') //Leave program
 			finishedProgram = true;
 
@@ -163,8 +136,6 @@ int main()
 	exit(0);
 	return 0;
 }
-
-//TODO option to submit solution
 
 //=================================================================================================================================
 // Displays the introduction
@@ -326,6 +297,28 @@ void Options()
 }
 
 //=================================================================================================================================
+//Asks a Yes / No question and returns the answer char
+
+char YesNoQuestion(string question)
+{
+	char answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		colorMaster.setcolor(QUESTION_COLOR);
+		cout << question;
+		colorMaster.setcolor(DEFAULT);
+		cin >> answer;
+		answer = toupper(answer);
+	} while (answer != 'Y' && answer != 'N');
+	return answer;
+}
+
+//=================================================================================================================================
 // Asks for the name of the board
 
 string askBoardName()
@@ -457,25 +450,8 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 		if (midEnd) //If CTRL-Z, confirm if the player wishes to leave
 		{
-			bool leave = false;
-			char answer;
-			do
-			{
-				if (cin.fail())
-				{
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-				colorMaster.setcolor(QUESTION_COLOR);
-				cout << "\nIf you leave all your progress will be lost. Proceed (Y/N)? ";
-				colorMaster.setcolor(DEFAULT);
-				cin >> answer;
-				answer = toupper(answer);
-				if (answer == 'Y')
-					leave = true;
-			} while (answer != 'Y' && answer != 'N');
-
-			if (leave)
+			char answer = YesNoQuestion("\nIf you leave all your progress will be lost. Proceed (Y/N)? ");
+			if (answer == 'Y')
 				break;
 			else
 			{
@@ -567,20 +543,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 bool CheckPlayerWon(Puzzle& puzzle)
 {
-	char answer;
-	do
-	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "\nSubmit solution (Y/N)? ";
-		colorMaster.setcolor(DEFAULT);
-		cin >> answer;
-		answer = toupper(answer);
-	} while (answer != 'N' && answer != 'Y');
+	char answer = YesNoQuestion("\nSubmit solution (Y/N)? ");
 
 	if (answer == 'Y')
 	{
@@ -615,39 +578,11 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			puzzle.showWrongAnswers();
 
 			//Ask if player wants to keep trying
-			char answer2;
-			do
-			{
-				if (cin.fail())
-				{
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-				colorMaster.setcolor(QUESTION_COLOR);
-				cout << "\nKeep playing (Y/N)? ";
-				colorMaster.setcolor(DEFAULT);
-				cin >> answer2;
-				answer2 = toupper(answer2);
-			} while (answer2 != 'N' && answer2 != 'Y');
-
+			char answer2 = YesNoQuestion("\nKeep playing (Y/N)? ");
 			if (answer2 == 'N')
 			{
 				//Ask if player wants to see the solutions
-				char answer3;
-				do
-				{
-					if (cin.fail())
-					{
-						cin.clear();
-						cin.ignore(10000, '\n');
-					}
-					colorMaster.setcolor(QUESTION_COLOR);
-					cout << "\nShow solutions (Y/N)? ";
-					colorMaster.setcolor(DEFAULT);
-					cin >> answer3;
-					answer3 = toupper(answer3);
-				} while (answer3 != 'N' && answer3 != 'Y');
-
+				char answer3 = YesNoQuestion("\nShow solutions (Y/N)? ");
 				if (answer3 == 'Y')
 					puzzle.showSolutionBoard();
 

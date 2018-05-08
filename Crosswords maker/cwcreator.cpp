@@ -50,6 +50,7 @@ using namespace std;
 void Introduction();
 void Instructions();
 void Options();
+char YesNoQuestion(string question);
 string askDictionaryName();
 string determineBoardName();
 pair<int, int> askBoardSize();
@@ -72,21 +73,7 @@ int main()
 	Introduction();
 	cout << endl;
 
-	char answer;
-	do
-	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "Display instructions (Y/N)? ";
-		colorMaster.setcolor(DEFAULT);
-		cin >> answer;
-		answer = toupper(answer);
-	} while (answer != 'Y' && answer != 'N');
-
+	char answer = YesNoQuestion("Display instructions (Y/N)? ");
 	if (answer == 'Y')
 		Instructions();
 
@@ -340,7 +327,7 @@ void Instructions()
 }
 
 //=================================================================================================================================
-//TODO Show options
+// Shows the options
 
 void Options()
 {
@@ -362,6 +349,28 @@ void Options()
 	cout << "0";
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Exit\n";
+}
+
+//=================================================================================================================================
+//Asks a Yes / No question and returns the answer char
+
+char YesNoQuestion(string question)
+{
+	char answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		colorMaster.setcolor(QUESTION_COLOR);
+		cout << question;
+		colorMaster.setcolor(DEFAULT);
+		cin >> answer;
+		answer = toupper(answer);
+	} while (answer != 'Y' && answer != 'N');
+	return answer;
 }
 
 //=================================================================================================================================
@@ -431,63 +440,31 @@ pair<int,int> askBoardSize()
 bool askToSaveBoard(Board board, string dictName)
 {
 	bool success = true;
-	bool validAnswer = false;
-	do
+	char answer = YesNoQuestion("Do you wish to save the current board (Y/N) ? ");
+
+	if (answer == 'Y')
 	{
-		if (cin.fail())
+		//Check if board is finished or not
+		char answer2 = YesNoQuestion("Is the board finished (Y/N) ? ");
+		if (answer2 == 'Y')
+			board.fillRemainingSpots();
+
+		//Save file
+		string fileName = determineBoardName();
+		success = board.saveBoard(fileName, dictName);
+		if (success)
 		{
-			cin.clear();
-			cin.ignore(10000, '\n');
+			colorMaster.setcolor(SUCCESS);
+			cout << "\nBoard was saved successfully.\n";
+			colorMaster.setcolor(DEFAULT);
 		}
-		char answer;
-		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "Do you wish to save the current board (Y/N) ? ";
-		colorMaster.setcolor(DEFAULT);
-		cin >> answer;
-		answer = toupper(answer);
-
-		if (answer == 'Y')
+		else
 		{
-			//Check if board is finished or not
-			char answer2;
-			do
-			{
-				if (cin.fail())
-				{
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-				colorMaster.setcolor(QUESTION_COLOR);
-				cout << "Is the board finished (Y/N) ? ";
-				colorMaster.setcolor(DEFAULT);
-				cin >> answer2;
-				answer2 = toupper(answer2);
-
-				if (answer2 == 'Y')
-					board.fillRemainingSpots();
-			} while (answer2 != 'Y' && answer2 != 'N');
-
-			//Save file
-			string fileName = determineBoardName();
-			success = board.saveBoard(fileName, dictName);
-			if (success)
-			{
-				colorMaster.setcolor(SUCCESS);
-				cout << "\nBoard was saved successfully.\n";
-				colorMaster.setcolor(DEFAULT);
-			}
-			else
-			{
-				colorMaster.setcolor(ERROR_MESSAGE);
-				cout << "\nThe final board is not valid.\n";
-				colorMaster.setcolor(DEFAULT);
-			}
-			validAnswer = true;
+			colorMaster.setcolor(ERROR_MESSAGE);
+			cout << "\nThe final board is not valid.\n";
+			colorMaster.setcolor(DEFAULT);
 		}
-		else if (answer == 'N')
-			validAnswer = true;
-
-	} while (!validAnswer);
+	}
 	return success;
 }
 
