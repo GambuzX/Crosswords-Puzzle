@@ -149,7 +149,7 @@ int main()
 //=================================================================================================================================
 // Displays the introduction
 
-void Introduction()
+void Introduction() //TODO show starting hints at anytime
 {
 	cout << endl << " ";
 	colorMaster.setcolor(BLACK, WHITE);

@@ -39,8 +39,8 @@ vector<string> Dictionary::getWordSynonyms(string word)
 }
 
 //=================================================================================================================================
-// Verifies if dictionary exists and processes it, storing all word entries
-// All words kept in uppercase
+// Verifies if dictionary with the name attribute exists and processes it, storing all word entries with its synonyms.
+// All words kept in uppercase.
 
 bool Dictionary::ProcessDictionary()
 {
@@ -170,7 +170,7 @@ bool Dictionary::isValidHeadline(string word)
 }
 
 //=================================================================================================================================
-// Verifies the given headline is valid
+// Verifies the given synonym is valid
 
 bool Dictionary::isValidSynonym(string word)
 {
@@ -216,6 +216,7 @@ string Dictionary::toUpper(const string &word)
 //
 // ADAPTED FROM:
 // https://www.codeproject.com/Articles/188256/A-Simple-Wildcard-Matching-Function
+
 bool Dictionary::wildcardMatch(const char *str, const char *strWild)
 {
 	// We have a special case where string is empty ("") and the mask is "*".

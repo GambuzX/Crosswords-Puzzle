@@ -41,7 +41,7 @@ using namespace std;
 #define SUCCESS 10
 
 //=================================================================================================================================
-// Class constructor. Assigns a board to the Puzzle.
+// Class constructor. Assigns a board and a dictionary to the Puzzle.
 
 Puzzle::Puzzle(Board &board, Dictionary &dict)
 {
@@ -55,7 +55,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict)
 }
 
 //=================================================================================================================================
-// Class constructor. Assigns a board and a player to the Puzzle.
+// Class constructor. Assigns a board, a dictionary and a player to the Puzzle.
 
 Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 {
@@ -70,7 +70,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 }
 
 //=================================================================================================================================
-// Class constructor. Assigns a board and a player to the Puzzle. Also stores the board number
+// Class constructor. Assigns a board, a dictionary and a player to the Puzzle. Also stores the board number
 
 Puzzle::Puzzle(Board &board, Dictionary &dict, string boardName, Player player)
 {
@@ -101,7 +101,7 @@ int Puzzle::getNumberOfPlayerWords()
 	return numberOfPlayerWords;
 }
 //=================================================================================================================================
-// Returns number of correct words.
+// Returns number of well placed words in the player board.
 
 int Puzzle::calculateNumberOfCorrectWords()
 {
@@ -136,7 +136,7 @@ void Puzzle::setSolutionBoard(Board board)
 }
 
 //=================================================================================================================================
-// Stores the board number
+// Stores the board number given a board with the name format: bXXX.txt
 
 void Puzzle::setLoadedBoardNumber(string name)
 {
@@ -152,7 +152,7 @@ void Puzzle::setPlayer(Player player)
 }
 
 //=================================================================================================================================
-// Creates a dummy board for the player to add words. Created from the original board by replacing letters with dots.
+// Creates a board for the player to add words. Created from the original board by replacing letters with dots.
 
 void Puzzle::createPlayerBoard()
 {
@@ -164,7 +164,7 @@ void Puzzle::createPlayerBoard()
 }
 
 //=================================================================================================================================
-// Shows an "empty board", only white and black cells.
+// Shows an "empty board", only white and black cells, in the console.
 
 void Puzzle::showPlayerBoard()
 {
@@ -207,7 +207,7 @@ void Puzzle::showPlayerBoard()
 }
 
 //==================================================================================================================================
-// Shows the solution board
+// Shows the solution board in the console.
 
 void Puzzle::showSolutionBoard()
 {
@@ -245,7 +245,7 @@ void Puzzle::showSolutionBoard()
 }
 
 //=================================================================================================================================
-// Builds an initial list of clues.
+// Builds an initial list of clues selected randomly from the list of available clues for each word.
 
 void Puzzle::buildClueList()
 {
@@ -260,7 +260,7 @@ void Puzzle::buildClueList()
 }
 
 //=================================================================================================================================
-// Shows the list of clues to the user.
+// Shows the built list of clues to the user. Assumes that it has been build already.
 
 void Puzzle::showClueList()
 {
@@ -294,7 +294,7 @@ void Puzzle::showClueList()
 }
 
 //=================================================================================================================================
-// Shows a different synonym for the specified word
+// Shows a different synonym for the specified word than the one in the initial hints.
 
 void Puzzle::showDifferentSynonym(std::string position)
 {
@@ -372,7 +372,7 @@ void Puzzle::insertWord(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Shows the user which words he mistyped
+// Shows the user which words he misplaced
 
 void Puzzle::showWrongAnswers()
 {
@@ -429,7 +429,7 @@ void Puzzle::showWrongAnswers()
 }
 
 //=================================================================================================================================
-// Displays player stats
+// Displays player stats: name, time to solve, hints asked and wrong submissions.
 
 void Puzzle::showPlayerStats()
 {
@@ -463,7 +463,7 @@ void Puzzle::showPlayerStats()
 }
 
 //=================================================================================================================================
-// Increments wrong submission counter of the player
+// Increments wrong submission counter of the player.
 
 void Puzzle::addWrongSubmission()
 {
@@ -471,7 +471,7 @@ void Puzzle::addWrongSubmission()
 }
 
 //=================================================================================================================================
-// Saves the player stats to a file 
+// Saves the player stats to a file on the format bXXX_p.txt.
 
 void Puzzle::saveStats()
 {
@@ -645,7 +645,7 @@ bool Puzzle::removeWord(std::string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if a given position has an hash ('#')
+// Checks if a given position is a position where there is a word beggining.
 
 bool Puzzle::isValidInsertionLocation(string positionInput)
 {
@@ -754,7 +754,7 @@ bool Puzzle::wordFitsSpace(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if the given word is already on the board or not
+// Checks if the given word is already on the player board or not
 
 bool Puzzle::isWordUsed(string word)
 {

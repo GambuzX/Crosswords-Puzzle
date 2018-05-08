@@ -18,6 +18,7 @@ Has functions to deal with the UI, user interaction and the interaction between 
 using namespace std;
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
+//TODO wildcard match?
 
 //TODO Credits to me only
 //TODO Clean up code

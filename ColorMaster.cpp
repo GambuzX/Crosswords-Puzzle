@@ -25,6 +25,8 @@ using namespace std;
 #define WHITE 15
 
 //==========================================================================================
+// Clears the screen
+
 void ColorMaster::clrscr(void)
 {
 	COORD coordScreen = { 0, 0 }; // upper left corner
@@ -44,6 +46,7 @@ void ColorMaster::clrscr(void)
 //==========================================================================================
 // Position the cursor at column 'x', line 'y'
 // The coodinates of upper left corner of the screen are (x,y)=(0,0)
+
 void ColorMaster::gotoxy(int x, int y)
 {
 	COORD coord;
@@ -53,6 +56,7 @@ void ColorMaster::gotoxy(int x, int y)
 }
 //==========================================================================================
 // Set text color
+
 void ColorMaster::setcolor(unsigned int color)
 {
 	HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -60,6 +64,7 @@ void ColorMaster::setcolor(unsigned int color)
 }
 //==========================================================================================
 // Set text color & background
+
 void ColorMaster::setcolor(unsigned int color, unsigned int background_color)
 {
 	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
