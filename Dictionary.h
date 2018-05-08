@@ -1,3 +1,9 @@
+/*
+Class that represents a dictionary. 
+To use it, associate the name of the dictionary and process it. The dictionary file lines must be in the format [Headline]: [synonym1], [synonym2], ... [synonymN].
+This will create a word list with all the headlines and synonyms, allowing you to use all the remaining methods.
+*/
+
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
@@ -19,9 +25,9 @@ public:
 	std::vector<std::string> fittingWords(int availableSpace);
 
 	void setName(std::string);
+	void showWordList(); //To check if word list is well implemented
 
 	bool ProcessDictionary();
-	void showWordList(); //To check if word list is well implemented
 	bool isInWordList(std::string word); // checks if word exists in word list
 	bool isValidHeadline(std::string);
 	bool isValidSynonym(std::string);

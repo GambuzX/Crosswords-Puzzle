@@ -1,3 +1,8 @@
+/*
+Class to implement console color changing.
+Credits to JAS.
+*/
+
 #ifndef COLOR_MASTER_H
 #define COLOR_MASTER_H
 

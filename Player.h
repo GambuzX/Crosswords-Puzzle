@@ -1,3 +1,8 @@
+/*
+Class that represents a Player, adapted to a Crosswords Game.
+Is initialized with the player name. Keeps track of the time since game started, number of extra clues asked and wrong submissions.
+*/
+
 #ifndef PLAYER_H
 #define PLAYER_H
 

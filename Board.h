@@ -1,3 +1,9 @@
+/*
+Class that represents a Board where words can be inserted / removed.
+The word board itself is represented as a 2D char vector.
+Also keeps track of the words in the board in a vector of pairs of strings (position, word).
+*/
+
 #ifndef BOARD_H
 #define BOARD_H
 

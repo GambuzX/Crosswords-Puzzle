@@ -1,3 +1,11 @@
+/*
+Class that represents a Crosswords Puzzle.
+Manages the interaction between a Board, a Player and a Dictionary.
+Stores a solution board and a board for the player to interact with. 
+Also keeps track of the player used words, as well as a list of synonyms for each word in the solution board.
+Has many methods to deal with and control the game flow.
+*/
+
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
