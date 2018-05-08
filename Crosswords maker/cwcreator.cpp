@@ -619,7 +619,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (board.isWordUsed(word))	// Verify if word was already used
+	else if (board.isWordUsed(word)) // Verify if word was already used
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is already in use!\n\n";
@@ -693,7 +693,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary)
 }
 
 //=================================================================================================================================
-// Same as above, but limits verification to the places the inserted word crosses
+// Verifies if all words in the board in both directions are valid, but limited to positions the word occupies
 
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position)
 {
@@ -927,7 +927,7 @@ void EditBoard(Board board, Dictionary &dict)
 					if (board.getCell(coordinates.first, coordinates.second) == '#')
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
-						cout << "\nYou cannot insert any word there.\n\n"; //TODO think about this
+						cout << "\nYou cannot insert any word there.\n\n";
 						colorMaster.setcolor(DEFAULT);
 					}
 					else
@@ -961,7 +961,7 @@ void EditBoard(Board board, Dictionary &dict)
 				cin.clear();
 				cin.ignore(10000, '\n');
 			}
-			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
+			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "Word ? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;
@@ -994,12 +994,6 @@ void EditBoard(Board board, Dictionary &dict)
 				board.showBoard();
 				cout << endl;
 			}
-			/*else if (word == "#") // Ask for help
-			{
-				board.insertHash(positionInput);
-				validInput = true;
-				cout << endl;
-			}*/
 			else // default
 				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
 				{

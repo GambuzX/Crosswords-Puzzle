@@ -19,12 +19,16 @@ public:
 	void incrementNumberOfClues();
 	void incrementWrongSubmissions();
 	void setInitialTime();
+
 	double calculateTimeSpent();
 
 private:
 	std::string name;
+
 	time_t initialTime;
+
 	double timeSpent;
+
 	int clues = 0, wrongSubmissions = 0;
 };
 

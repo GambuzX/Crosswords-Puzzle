@@ -5,7 +5,7 @@
 using namespace std;
 
 //==========================================================================================
-//
+// Constructor with no parameters
 
 Player::Player()
 {
@@ -26,46 +26,34 @@ Player::Player(string name)
 }
 
 //==========================================================================================
+// Returns player name
 
-std::string Player::getName()
-{
-	return name;
-}
+std::string Player::getName() {	return name; }
 
 //==========================================================================================
+// Returns number of clues the player asked for
 
-int Player::getNumberOfClues()
-{
-	return clues;
-}
+int Player::getNumberOfClues(){	return clues;}
 
 //==========================================================================================
+// Returns number of wrong submissions
 
-int Player::getNumberOfWrongSubmissions()
-{
-	return wrongSubmissions;
-}
+int Player::getNumberOfWrongSubmissions(){	return wrongSubmissions;}
 
 //==========================================================================================
+// Increments number of clues
 
-void Player::incrementNumberOfClues()
-{
-	clues++;
-}
+void Player::incrementNumberOfClues(){	clues++;}
 
 //==========================================================================================
+// Increments number of wrong submission
 
-void Player::incrementWrongSubmissions()
-{
-	wrongSubmissions++;
-}
+void Player::incrementWrongSubmissions(){	wrongSubmissions++;}
 
 //==========================================================================================
+// Sets the initial time
 
-void Player::setInitialTime()
-{
-	time(&initialTime);
-}
+void Player::setInitialTime(){	time(&initialTime);}
 
 //==========================================================================================
 //Calculates the time in seconds it took since the player was initialized
@@ -77,8 +65,6 @@ double Player::calculateTimeSpent()
 	timeSpent = difftime(currentTime, initialTime);
 	return timeSpent; // return value is in seconds
 }
-
-//==========================================================================================
 
 
 
