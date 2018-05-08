@@ -21,6 +21,7 @@ using namespace std;
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
+//TODO Credits to me only
 //TODO Clean up code
 //TODO Specify objectives of each file and function
 //TODO Clear all warnings
@@ -78,7 +79,11 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
-void EditBoard(Board board, Dictionary &dict);
+void EditBoard(Board &board, Dictionary &dict);
+
+bool canBeInsertedFreeMode(Board &board, string word, string positionInput);
+bool askToSaveBoardFreeMode(Board &board);
+void EditBoardFreeMode(Board &board);
 
 ColorMaster colorMaster;
 
@@ -885,7 +890,7 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 //=================================================================================================================================
 // Allows to make changes to an existing board
 
-void EditBoard(Board board, Dictionary &dict)
+void EditBoard(Board &board, Dictionary &dict)
 {
 	cout << endl;
 	board.showBoard();
@@ -1017,6 +1022,7 @@ void EditBoard(Board board, Dictionary &dict)
 				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
 				{
 					board.insertWord(word, positionInput);
+					board.InsertWordHashes(word, positionInput); //TODO test still works
 					validInput = true;
 				}
 		} while (!validInput); //loop until valid input
@@ -1028,9 +1034,59 @@ void EditBoard(Board board, Dictionary &dict)
 }
 
 //=================================================================================================================================
-// Allows to make changes to an existing board
+//														FREE MODE
+//=================================================================================================================================
 
-void FreeModeEdit(Board board)
+
+bool canBeInsertedFreeMode(Board &board, string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+
+	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou can not place a word in that location.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!board.wordFitsSpace(word, positionInput)) // Verify it fits the space
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not fit the specified space!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (board.isWordUsed(word)) // Verify if word was already used
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!board.matchesInterceptedPositions(word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not match current board!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Asks the user if he wants to save the current board in FREE MODE.
+
+bool AskToSaveBoardFreeMode(Board &board)
+{
+
+}
+
+//=================================================================================================================================
+// Allows to make changes to an existing board in FREE MODE.
+
+void EditBoardFreeMode(Board &board)
 {
 	cout << endl;
 	board.showBoard();
@@ -1088,16 +1144,7 @@ void FreeModeEdit(Board board)
 				//Check validity
 				else if (board.validPositionInput(positionInput))
 				{
-					if (board.getCell(coordinates.first, coordinates.second) == '#')
-					{
-						colorMaster.setcolor(ERROR_MESSAGE);
-						cout << "\nYou cannot insert any word there.\n\n";
-						colorMaster.setcolor(DEFAULT);
-					}
-					else
-					{
-						validPositionInput = true;
-					}
+					validPositionInput = true;
 				}
 			}
 		} while (!validPositionInput); //loop until valid input
@@ -1141,9 +1188,15 @@ void FreeModeEdit(Board board)
 			}
 			else if (word == "-") // Remove word
 			{
-				bool wordRemoved = board.removeWord(positionInput);
+				bool wordRemoved = board.removeWordFreeMode(positionInput); //TODO can remove hashes
 				if (wordRemoved)
 					validInput = true; // exit loop
+				cout << endl;
+			}
+			else if (word == "#") // Remove word
+			{
+				board.insertHash(positionInput);
+				validInput = true; // exit loop
 				cout << endl;
 			}
 			else if (word == "I") // Ask for help
@@ -1154,7 +1207,12 @@ void FreeModeEdit(Board board)
 				cout << endl;
 			}
 			else // default
-				board.insertWordFreeMode(word);
+				if (canBeInsertedFreeMode(board, word, positionInput))
+				{
+					board.insertWord(word, positionInput);
+					//TODO ask synonym list
+					//TODO check in the end for automatically formed words
+				}
 		} while (!validInput); //loop until valid input
 
 		cout << endl;
