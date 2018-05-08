@@ -242,7 +242,7 @@ void Introduction()
 // Prints the program instructions
 
 void Instructions()
-{ //TODO specify options. Freemode is different
+{ //TODO specify options. Freemode is different. Automatically formed words checked in the end.
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nINSTRUCTIONS\n\n";
 	colorMaster.setcolor(WHITE, BLACK);
@@ -1188,7 +1188,7 @@ void EditBoardFreeMode(Board &board)
 			}
 			else if (word == "-") // Remove word
 			{
-				bool wordRemoved = board.removeWordFreeMode(positionInput); //TODO can remove hashes
+				bool wordRemoved = board.removeWordOrHash(positionInput); //TODO can remove hashes
 				if (wordRemoved)
 					validInput = true; // exit loop
 				cout << endl;

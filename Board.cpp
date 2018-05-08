@@ -314,6 +314,80 @@ bool Board::removeWord(string positionInput)
 }
 
 //=================================================================================================================================
+// Removes an already placed word or an hash. If no word removed returns false.
+
+bool Board::removeWordOrHash(string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	char direction = positionInput.at(2);
+
+	if (board.at(line).at(column) == '.')
+	{
+		setcolor(ERROR_MESSAGE);
+		cout << "\nThere is nothing to remove in that location!\n";
+		setcolor(DEFAULT);
+		return false;
+	}
+	else if (board.at(line).at(column) == '#')
+	{
+		board.at(line).at(column) = '.';
+	}
+	else
+	{
+		bool foundWord = false;
+		vector<pair<string, string>>::iterator it;
+		for (it = usedWords.begin(); it != usedWords.end(); it++)
+		{
+			string position = it->first;
+			string word = it->second;
+			if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+			{
+				pair<int, int> wordPos = calculateInsertionCoordinates(position);
+				int startLine = wordPos.first;
+				int startColumn = wordPos.second;
+				char dir = position.at(2);
+
+				switch (dir)
+				{
+				case 'H':
+					for (size_t i = 0; i < word.length(); i++)
+					{
+						if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
+							board.at(startLine).at(startColumn + i) = '.';
+					}
+					usedWords.erase(it); //iterator is pointing to the element to be removed
+					RemoveWordHashes(word, position);
+					reprintHashes();
+					break;
+				case 'V':
+					for (size_t i = 0; i < word.length(); i++)
+					{
+						if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+							board.at(startLine + i).at(startColumn) = '.';
+					}
+					usedWords.erase(it); //iterator is pointing to the element to be removed
+					break;
+				default:
+					cerr << "Invalid direction!";
+				}
+				foundWord = true;
+				break; //can only remove one word, stops after it
+			}
+		}
+		if (!foundWord)
+		{
+			setcolor(ERROR_MESSAGE);
+			cout << "\nThere is no word in the specified direction!\n";
+			setcolor(DEFAULT);
+			return false;
+		}
+	}
+	return true;
+}
+//=================================================================================================================================
 // Places hashes before and after word
 
 void Board::InsertWordHashes(string word, string positionInput)

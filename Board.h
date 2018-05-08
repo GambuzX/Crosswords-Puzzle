@@ -32,6 +32,7 @@ public:
 	void insertWord(std::string word, std::string position);
 	void insertHash(std::string position);
 	bool removeWord(std::string position);
+	bool removeWordOrHash(std::string position);
 	void InsertWordHashes(std::string word, std::string positionInput);
 	void RemoveWordHashes(std::string word, std::string positionInput);
 	void reprintHashes();
