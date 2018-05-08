@@ -1,3 +1,10 @@
+/*
+Starting point for the Crosswords Creator program.
+Allows the user to start (or resume) the creation of a board which can be used in a crosswords game.
+Built by the interaction between user, Board and Dictionary classes.
+Has functions to deal with the UI, user interaction and the interaction between board and dictionary classes.
+*/
+
 #include <iostream>
 #include <iomanip>
 #include <string>

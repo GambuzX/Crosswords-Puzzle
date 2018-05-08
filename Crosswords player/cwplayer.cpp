@@ -1,3 +1,10 @@
+/*
+Starting point for the Crosswords Player program.
+Allows the user to load a previously created Board using the cwcreator program, and try to solve the Crosswords Puzzle.
+Built by the interaction between user and Puzzle classes.
+Has functions to deal with the UI and user interaction.
+*/
+
 #include <iostream>
 #include <string>
 #include <map>
