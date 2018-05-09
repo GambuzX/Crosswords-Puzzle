@@ -66,7 +66,7 @@ void Options();
 char YesNoQuestion(string question);
 
 string askDictionaryName();
-string askBoardName();
+string askBoardNumber();
 string determineBoardName();
 
 pair<int, int> askBoardSize();
@@ -498,16 +498,16 @@ string askDictionaryName()
 }
 
 //=================================================================================================================================
-// Asks for the name of the board
+// Asks for the number of the board
 
-string askBoardName()
+string askBoardNumber()
 {
-	string boardName;
+	string boardNumber;
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "Board file name? ";
+	cout << "Board number? ";
 	colorMaster.setcolor(DEFAULT);
-	cin >> boardName;
-	return boardName;
+	cin >> boardNumber;
+	return boardNumber;
 }
 
 //=================================================================================================================================
@@ -664,15 +664,15 @@ Board CreateBoard()
 Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 {
 	cout << endl;
-	string boardName = askBoardName();
+	string boardNumber = askBoardNumber();
 	Board board;
 	string dictName;
-	bool boardLoaded = board.loadBoard(boardName, dictName);
+	bool boardLoaded = board.loadBoard(boardNumber, dictName);
 
 	if (!boardLoaded)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nCould not locate board file with that name.\n";
+		cout << "\nCould not locate board file.\n";
 		colorMaster.setcolor(DEFAULT);
 		operationSuccess = false;
 		return Board();

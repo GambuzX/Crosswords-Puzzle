@@ -546,8 +546,18 @@ bool Board::saveBoard(string fileName, string dictName)
 //=================================================================================================================================
 // Loads a board from a file and changes the dictName argument for the name of the dictionary that was used
 
-bool Board::loadBoard(string fileName, string& dictName)
+bool Board::loadBoard(string boardNumber, string& dictName)
 {
+	string fileName;
+	if (boardNumber.length() == 1)
+		fileName = "b00" + boardNumber + ".txt";
+	else if (boardNumber.length() == 2)
+		fileName = "b0" + boardNumber + ".txt";
+	else if (boardNumber.length() == 3)
+		fileName = "b" + boardNumber + ".txt";
+	else
+		return false;
+
 	ifstream file(fileName);
 	
 	if (!file.is_open())

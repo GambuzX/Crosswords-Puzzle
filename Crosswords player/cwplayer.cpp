@@ -58,9 +58,8 @@ void Introduction();
 void FullInstructions(); 
 void PositionInstructions();
 void WordInstructions();
-void Options();
 char YesNoQuestion(string question);
-string askBoardName();
+string askBoardNumber();
 string askPlayerName();
 void solveCurrentPuzzle(Puzzle&);
 bool CheckPlayerWon(Puzzle&);
@@ -86,13 +85,13 @@ int main()
 	{
 		//LOAD BOARD
 		string dictName;
-		string boardName = askBoardName();
+		string boardName = askBoardNumber();
 		Board *board = new Board();
 		bool boardLoaded = board->loadBoard(boardName, dictName);
 		if (!boardLoaded)
 		{
 			colorMaster.setcolor(ERROR_MESSAGE);
-			cout << "\nCould not locate board file with that name.\n";
+			cout << "\nCould not locate board file.\n";
 			colorMaster.setcolor(DEFAULT);
 			exit(1);
 		}
@@ -125,6 +124,7 @@ int main()
 		cin.ignore(10000, '\n'); //needed because of remaining '\n' in the buffer
 		cout << endl;
 		string playerName = askPlayerName();
+		cout << endl;
 		Player *player = new Player(playerName);
 
 		//CREATE PUZZLE TO BE SOLVED
@@ -147,6 +147,7 @@ int main()
 	cout << "\nThanks for playing! Hope you had fun :D\n";
 	colorMaster.setcolor(DEFAULT);
 
+	_getch();
 	exit(0);
 	return 0;
 }
@@ -296,18 +297,82 @@ void FullInstructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << ".\n";
 
-	//cout << "\nPress any key to continue\n";
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "\nPress any key to continue"; //TODO check this out
+	colorMaster.setcolor(DEFAULT);
 	_getch();
+	cout << endl;
 	//TODO make more appealing
 }
 
 //=================================================================================================================================
-//TODO Show options
+// Prints simplified instructions for the Position? question
 
-void Options()
+void PositionInstructions() //TODO implement
 {
-	cout << "Options: \n";
-	cout << " (...)\n";
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nPOSITION INSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "Input: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "LCD";
+	colorMaster.setcolor(DEFAULT);
+	cout << " (line, column, direction).\n";
+	cout << "Can either be lower or uppercase, but ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "must respect this order!";
+	colorMaster.setcolor(DEFAULT);
+	cout << " Direction is 'H' or 'V'.\n\n";
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "CTRL-Z";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to stop creating the board.\n";
+}
+
+//=================================================================================================================================
+// Prints simplified instructions for the Word? question
+
+void WordInstructions() //TODO implement
+{
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nWORD INSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "Input: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Word to be inserted in the board\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "-";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to remove a previously placed word.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "?";
+	colorMaster.setcolor(DEFAULT);
+	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "<";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to return to the Position question.\n";
 }
 
 //=================================================================================================================================
@@ -333,16 +398,16 @@ char YesNoQuestion(string question)
 }
 
 //=================================================================================================================================
-// Asks for the name of the board
+// Asks for the number of the board
 
-string askBoardName()
+string askBoardNumber()
 {
-	string boardName;
+	string boardNumber;
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "Board file name? ";
+	cout << "Board number? ";
 	colorMaster.setcolor(DEFAULT);
-	cin >> boardName;
-	return boardName;
+	cin >> boardNumber;
+	return boardNumber;
 }
 
 //=================================================================================================================================
