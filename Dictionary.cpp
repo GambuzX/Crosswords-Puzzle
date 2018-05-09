@@ -112,7 +112,7 @@ bool Dictionary::isInWordList(string word)
 //=================================================================================================================================
 // Verifies if any word matches the given one using wildcard match
 
-bool Dictionary::existsWildcardMatchingWord(string word)
+/*bool Dictionary::existsWildcardMatchingWord(string word)
 {
 	map<string, vector<string>>::iterator it;
 	string matchingWord = word + '*'; //Add wildcard operator
@@ -122,7 +122,7 @@ bool Dictionary::existsWildcardMatchingWord(string word)
 			return true;
 	}
 	return false;
-}
+}*/
 
 //=================================================================================================================================
 // Returns a vector with all of the words that fit a determined space

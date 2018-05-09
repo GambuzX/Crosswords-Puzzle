@@ -31,7 +31,7 @@ public:
 	bool isInWordList(std::string word); // checks if word exists in word list
 	bool isValidHeadline(std::string);
 	bool isValidSynonym(std::string);
-	bool existsWildcardMatchingWord(std::string word);
+	//bool existsWildcardMatchingWord(std::string word);
 
 private:
 	std::map<std::string, std::vector<std::string>> wordList; // Key = word ; Value = vector of all synonyms

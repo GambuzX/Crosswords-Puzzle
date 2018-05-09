@@ -152,7 +152,7 @@ int main()
 //=================================================================================================================================
 // Displays the introduction
 
-void Introduction() //TODO show starting hints at anytime
+void Introduction()
 {
 	cout << endl << " ";
 	colorMaster.setcolor(BLACK, WHITE);
@@ -261,7 +261,7 @@ void FullInstructions()
 	cout << ".\n";
 
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "\nPress any key to continue"; //TODO check this out
+	cout << "\nPress any key to continue";
 	colorMaster.setcolor(DEFAULT);
 	_getch();
 	cout << endl;

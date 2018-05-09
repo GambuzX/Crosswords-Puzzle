@@ -20,7 +20,6 @@ using namespace std;
 //TODO random mode
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
-//TODO wildcard match?
 
 
 //TODO Credits to me only
@@ -993,10 +992,20 @@ void EditBoard(Board &board, Dictionary &dict)
 
 		if (stopCreating) //exit loop if CTRL-Z
 		{
-			bool successfulSave = askToSaveBoard(board, dict.getName());
-			if (!successfulSave) //if there was a problem saving board, continue with the loop
-				continue;
-			break; //if successful save of the board, end loop
+			if (isBoardValid(board, dict)) //FINAL CHECK
+			{
+				bool successfulSave = askToSaveBoard(board, dict.getName());
+				if (!successfulSave) //if there was a problem saving board, continue with the loop
+					continue;
+				break; //if successful save of the board, end loop
+			}
+			else
+			{
+				colorMaster.setcolor(ERROR_MESSAGE);
+				cout << "\nBoard has invalid words and cannot be saved.\n\n";
+				colorMaster.setcolor(DEFAULT);
+				break;
+			}
 		}
 
 		////////////////////////////////
