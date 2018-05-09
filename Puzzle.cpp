@@ -266,7 +266,7 @@ void Puzzle::showClueList()
 {
 	//HORIZONTAL
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nHORIZONTAL WORDS\n";
+	cout << "\nHORIZONTAL WORDS CLUES\n";
 	colorMaster.setcolor(WHITE, BLACK);
 	for (size_t i = 0; i < clueList.size(); i++)
 	{
@@ -283,7 +283,7 @@ void Puzzle::showClueList()
 
 	//VERTICAL
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nVERTICAL WORDS\n";
+	cout << "\nVERTICAL WORDS CLUES\n";
 	colorMaster.setcolor(WHITE, BLACK);
 	for (size_t i = 0; i < clueList.size(); i++)
 	{

@@ -26,7 +26,6 @@ using namespace std;
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
-//TODO decide if I want free mode
 
 //=================================================================================================================================
 //COLOR CODES:

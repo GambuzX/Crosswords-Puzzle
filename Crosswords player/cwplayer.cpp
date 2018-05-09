@@ -174,7 +174,7 @@ void Introduction() //TODO show starting hints at anytime
 void FullInstructions()
 {
 	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nINSTRUCTIONS\n\n";
+	cout << "\nINSTRUCTIONS\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
 	colorMaster.setcolor(SYMBOL_COLOR);
@@ -195,20 +195,10 @@ void FullInstructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << " insert words.\n";
 
-	cout << "You will be asked successively two questions, ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "POSITION";
-	colorMaster.setcolor(DEFAULT);
-	cout << " and ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "WORD";
-	colorMaster.setcolor(DEFAULT);
-	cout << ".\n\n";
-
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "Position\n";
+	cout << "\nPosition Question\n";
 	colorMaster.setcolor(DEFAULT);
-	cout << "Format: ";
+	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "LCD";
 	colorMaster.setcolor(DEFAULT);
@@ -217,54 +207,30 @@ void FullInstructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "must respect this order!";
 	colorMaster.setcolor(DEFAULT);
-	cout << " Direction is 'H' or 'V'.\n\n";
+	cout << " Direction is 'H' or 'V'.\n";
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "S";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to submit current board, if board is full.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "CTRL-Z";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to stop playing.\n";
+	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "S";	colorMaster.setcolor(DEFAULT);	cout << " to submit current board, if board is full.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop playing.\n";
 
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "\nWord\n";
+	cout << "\nWord Question\n";
 	colorMaster.setcolor(DEFAULT);
-	cout << "Format: ";
+	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "Word to be inserted in the board\n\n";
+	cout << "Word to be inserted in the board\n";
 	colorMaster.setcolor(DEFAULT);
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "-";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to remove a previously placed word.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "?";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to ask for an hint about the word in the specified position.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "<";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to return to the Position question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to ask for an hint about the word in the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 
 	cout << "\nWhen there are no more empty spaces to fill, you will be prompted to ";
 	colorMaster.setcolor(SYMBOL_COLOR);
@@ -320,24 +286,14 @@ void PositionInstructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "must respect this order!";
 	colorMaster.setcolor(DEFAULT);
-	cout << " Direction is 'H' or 'V'.\n\n";
+	cout << " Direction is 'H' or 'V'.\n";
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "S";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to submit current board, if board is full.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "CTRL-Z";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to stop playing.\n";
+	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "S";	colorMaster.setcolor(DEFAULT);	cout << " to submit current board, if board is full.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop playing.\n";
 }
 
 //=================================================================================================================================
@@ -351,30 +307,16 @@ void WordInstructions()
 
 	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "Word to be inserted in the board\n\n";
+	cout << "Word to be inserted in the board\n";
 	colorMaster.setcolor(DEFAULT);
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "-";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to remove a previously placed word.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "?";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to ask for an hint about the word in the specified position.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "<";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to return to the Position question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to ask for an hint about the word in the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 }
 
 //=================================================================================================================================
@@ -488,22 +430,26 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 						{
 							finishedPuzzle = true;
 							skipInsertion = true;
-						}
-						else
-						{
-							cout << endl;
-							puzzle.showPlayerBoard();
-							cout << endl;
+							validPositionInput = true;
 						}
 					}
 					else
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
-						cout << "\nCannot submit an incomplete board.\n";
+						cout << "\nCannot submit an incomplete board.\n\n";
 						colorMaster.setcolor(DEFAULT);
-						validPositionInput = true;
-						skipInsertion = true;
 					}
+				}
+				else if (positionInput == "B")
+				{
+					cout << endl;
+					puzzle.showPlayerBoard();
+					cout << endl;
+				}
+				else if (positionInput == "?")
+				{
+					puzzle.showClueList();
+					cout << endl;
 				}
 				//Check validity
 				else if (puzzle.validPositionInput(positionInput))
@@ -578,12 +524,23 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 			else if (word == "?") // Ask for help
 			{
+				puzzle.showClueList();
+				cout << endl;
+			}
+			else if (word == "+") // Ask for help
+			{
 				puzzle.showDifferentSynonym(positionInput);
 				cout << endl;
 			}
 			else if (word == "I") // Ask for help
 			{
 				WordInstructions();
+				cout << endl;
+			}
+			else if (word == "B") // Ask for help
+			{
+				cout << endl;
+				puzzle.showPlayerBoard();
 				cout << endl;
 			}
 			else // default
