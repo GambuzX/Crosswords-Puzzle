@@ -23,7 +23,6 @@ using namespace std;
 //TODO wildcard match?
 //TODO only ask number
 
-//TODO instructions specific for each question
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -159,9 +158,11 @@ int main()
 		}
 		case 2:
 		{
+			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
 			cout << " |          RESUME PUZZLE           |\n";
-			cout << " ====================================\n\n";
+			cout << " ====================================\n";
+			colorMaster.setcolor(DEFAULT);
 
 			bool dictSuccess; //true if successfully created dictionary
 			bool boardSuccess;
@@ -203,9 +204,11 @@ int main()
 		}
 		/*case 3: 
 		{
+			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
 			cout << " |         RANDOM GENERATOR         |\n";
 			cout << " ====================================\n";
+			colorMaster.setcolor(DEFAULT);
 
 			cout << endl;
 			board = CreateBoard();
@@ -243,7 +246,7 @@ void Introduction()
 // Prints the program instructions
 
 void FullInstructions()
-{ //TODO specify options. Freemode is different. Automatically formed words checked in the end.
+{
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nINSTRUCTIONS\n\n";
 	colorMaster.setcolor(WHITE, BLACK);
@@ -993,7 +996,7 @@ void EditBoard(Board &board, Dictionary &dict)
 		do
 		{
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Position ? ";
+			cout << "Board position? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> positionInput;
 
@@ -1066,7 +1069,7 @@ void EditBoard(Board &board, Dictionary &dict)
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Word ? ";
+			cout << "Word to insert? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;
 

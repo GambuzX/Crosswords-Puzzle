@@ -23,6 +23,9 @@ using namespace std;
 //TODO test everything
 //TODO clean up code
 
+//TODO instructions specific for each question
+//TODO only ask number
+
 //=================================================================================================================================
 //COLOR CODES:
 
@@ -377,7 +380,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		do
 		{
 			colorMaster.setcolor(QUESTION_COLOR);
-			cout << "Position ? ";
+			cout << "Board position? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> positionInput;
 
@@ -485,7 +488,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cin.ignore(10000, '\n');
 			}
 			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
-			cout << "Word ? ";
+			cout << "Word to insert? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;
 
