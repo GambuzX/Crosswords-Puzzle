@@ -23,6 +23,8 @@ using namespace std;
 //TODO wildcard match?
 //TODO only ask number
 
+//TODO instructions specific for each question
+
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings

@@ -264,8 +264,6 @@ void Puzzle::buildClueList()
 
 void Puzzle::showClueList()
 {
-	//TODO add colors
-
 	//HORIZONTAL
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nHORIZONTAL WORDS\n";
@@ -274,7 +272,10 @@ void Puzzle::showClueList()
 	{
 		if (clueList.at(i).first.at(2) == 'H')
 		{
-			cout << clueList.at(i).first.substr(0, 2) << " - " << clueList.at(i).second << endl;
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << clueList.at(i).first.substr(0, 2);
+			colorMaster.setcolor(DEFAULT); 
+			cout << " - " << clueList.at(i).second << endl;
 		}
 	}
 
@@ -288,7 +289,10 @@ void Puzzle::showClueList()
 	{
 		if (clueList.at(i).first.at(2) == 'V')
 		{
-			cout << clueList.at(i).first.substr(0, 2) << " - " << clueList.at(i).second << endl;
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << clueList.at(i).first.substr(0, 2);
+			colorMaster.setcolor(DEFAULT); 
+			cout << " - " << clueList.at(i).second << endl;
 		}
 	}
 }
@@ -410,7 +414,10 @@ void Puzzle::showWrongAnswers()
 		for (size_t i = 0; i < horizontalErrors.size(); i++)
 		{
 			string position = horizontalErrors.at(i).first;
-			cout << position.at(0) << (char) tolower(position.at(1)) << " - " << horizontalErrors.at(i).second << endl;
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << position.at(0) << (char) tolower(position.at(1));
+			colorMaster.setcolor(DEFAULT); 
+			cout << " - " << horizontalErrors.at(i).second << endl;
 		}
 	}
 
@@ -423,7 +430,10 @@ void Puzzle::showWrongAnswers()
 		for (size_t i = 0; i < verticalErrors.size(); i++)
 		{
 			string position = verticalErrors.at(i).first;
-			cout << position.at(0) << (char) tolower(position.at(1)) << " - " << verticalErrors.at(i).second << endl;
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << position.at(0) << (char) tolower(position.at(1));
+			colorMaster.setcolor(DEFAULT); 
+			cout << " - " << verticalErrors.at(i).second << endl;
 		}
 	}
 }
