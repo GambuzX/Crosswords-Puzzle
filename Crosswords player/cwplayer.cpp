@@ -23,9 +23,6 @@ using namespace std;
 //TODO test everything
 //TODO clean up code
 
-//TODO instructions specific for each question
-//TODO only ask number
-
 //=================================================================================================================================
 //COLOR CODES:
 
@@ -308,7 +305,7 @@ void FullInstructions()
 //=================================================================================================================================
 // Prints simplified instructions for the Position? question
 
-void PositionInstructions() //TODO implement
+void PositionInstructions()
 {
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nPOSITION INSTRUCTIONS\n\n";
@@ -333,15 +330,20 @@ void PositionInstructions() //TODO implement
 	cout << " to display these instructions.\n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "S";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to submit current board, if board is full.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "CTRL-Z";
 	colorMaster.setcolor(DEFAULT);
-	cout << " to stop creating the board.\n";
+	cout << " to stop playing.\n";
 }
 
 //=================================================================================================================================
 // Prints simplified instructions for the Word? question
 
-void WordInstructions() //TODO implement
+void WordInstructions()
 {
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nWORD INSTRUCTIONS\n\n";
@@ -367,7 +369,7 @@ void WordInstructions() //TODO implement
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "?";
 	colorMaster.setcolor(DEFAULT);
-	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << " to ask for an hint about the word in the specified position.\n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "<";
@@ -480,6 +482,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				{
 					if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
 					{
+						cout << endl;
 						bool endPuzzle = CheckPlayerWon(puzzle);
 						if (endPuzzle)
 						{
@@ -618,7 +621,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 bool CheckPlayerWon(Puzzle& puzzle)
 {
-	char answer = YesNoQuestion("\nSubmit solution (Y/N)? ");
+	char answer = YesNoQuestion("Submit solution (Y/N)? ");
 
 	if (answer == 'Y')
 	{
@@ -648,7 +651,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << correctWords;
 			colorMaster.setcolor(DEFAULT);
-			cout << " words!\nTake a better look at these ones:\n";
+			cout << " words!\nTake a better look at the following:\n";
 
 			puzzle.showWrongAnswers();
 

@@ -21,7 +21,6 @@ using namespace std;
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 //TODO wildcard match?
-//TODO only ask number
 
 
 //TODO Credits to me only
