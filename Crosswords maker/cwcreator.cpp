@@ -269,18 +269,8 @@ void FullInstructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << " insert words.\n";
 
-	cout << "You will be asked successively two questions, ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "POSITION";
-	colorMaster.setcolor(DEFAULT);
-	cout << " and ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "WORD";
-	colorMaster.setcolor(DEFAULT);
-	cout << ".\n\n";
-
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "Position\n";
+	cout << "\nPosition Question\n";
 	colorMaster.setcolor(DEFAULT);
 	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
@@ -291,49 +281,27 @@ void FullInstructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "must respect this order!";
 	colorMaster.setcolor(DEFAULT);
-	cout << " Direction is 'H' or 'V'.\n\n";
+	cout << " Direction is 'H' or 'V'.\n";
 
 	cout << "Other options: \n";
-	cout << "- "; 
-	colorMaster.setcolor(SYMBOL_COLOR); 
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display simplified instructions for this question.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "CTRL-Z";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to stop creating the board.\n";
+	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop creating the board.\n";
 
 	colorMaster.setcolor(QUESTION_COLOR);
-	cout << "\nWord\n";
+	cout << "\nWord Question\n";
 	colorMaster.setcolor(DEFAULT);
 	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "Word to be inserted in the board\n\n";
+	cout << "Word to be inserted in the board\n";
 	colorMaster.setcolor(DEFAULT);
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display simplified instructions for this question.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "-";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to remove a previously placed word.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "?";
-	colorMaster.setcolor(DEFAULT);
-	cout << " for a list of words that can be placed starting on the specified position.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "<";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to return to the Position question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 
 	cout << "\nWhen board creation is stopped by entering CTRL-Z, you will be prompted to ";
 	colorMaster.setcolor(SYMBOL_COLOR);
@@ -378,19 +346,12 @@ void PositionInstructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "must respect this order!";
 	colorMaster.setcolor(DEFAULT);
-	cout << " Direction is 'H' or 'V'.\n\n";
+	cout << " Direction is 'H' or 'V'.\n";
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "CTRL-Z";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to stop creating the board.\n";
+	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop creating the board.\n";
 }
 
 //=================================================================================================================================
@@ -404,30 +365,15 @@ void WordInstructions()
 
 	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "Word to be inserted in the board\n\n";
+	cout << "Word to be inserted in the board\n";
 	colorMaster.setcolor(DEFAULT);
 
 	cout << "Other options: \n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "I";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "-";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to remove a previously placed word.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "?";
-	colorMaster.setcolor(DEFAULT);
-	cout << " for a list of words that can be placed starting on the specified position.\n";
-	cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "<";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to return to the Position question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 }
 
 //=================================================================================================================================
@@ -1023,6 +969,12 @@ void EditBoard(Board &board, Dictionary &dict)
 					PositionInstructions();
 					cout << endl;
 				}
+				else if (positionInput == "B")
+				{
+					cout << endl;
+					board.showBoard();
+					cout << endl;
+				}
 				//Check validity
 				else if (board.validPositionInput(positionInput))
 				{
@@ -1090,16 +1042,22 @@ void EditBoard(Board &board, Dictionary &dict)
 				helpUser(board, dict, positionInput);
 				cout << endl;
 			}
-			else if (word == "I") // Ask for help
+			else if (word == "I") // Ask for instructions
 			{
 				WordInstructions();
 				cout << endl;
 			}
-			else // default
+			else if (word == "B") // Show board
+			{
+				cout << endl;
+				board.showBoard();
+				cout << endl;
+			}
+			else // normal word insertion
 				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
 				{
 					board.insertWord(word, positionInput);
-					board.InsertWordHashes(word, positionInput); //TODO test still works
+					board.InsertWordHashes(word, positionInput);
 					validInput = true;
 				}
 		} while (!validInput); //loop until valid input

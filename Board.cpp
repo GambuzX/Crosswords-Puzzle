@@ -740,7 +740,7 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 
 	switch (direction)
 	{
-	case 'H':
+	case 'H': //TODO does not work when size is exactly 1
 		if (line == 0) //special case: only check downwards
 		{
 			if (isalpha(board.at(line + 1).at(column)))
