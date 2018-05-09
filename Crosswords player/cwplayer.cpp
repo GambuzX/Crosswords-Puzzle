@@ -52,7 +52,7 @@ using namespace std;
 //=================================================================================================================================
 
 void Introduction();
-void Instructions();
+void FullInstructions();
 void Options();
 char YesNoQuestion(string question);
 string askBoardName();
@@ -73,7 +73,7 @@ int main()
 
 	char answer = YesNoQuestion("Display instructions (Y/N)? ");
 	if (answer == 'Y')
-		Instructions();
+		FullInstructions();
 	cout << endl;
 	
 	bool finishedProgram = false;
@@ -168,7 +168,7 @@ void Introduction() //TODO show starting hints at anytime
 //=================================================================================================================================
 // Displays the instructions
 
-void Instructions()
+void FullInstructions()
 {
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nINSTRUCTIONS\n\n";
@@ -404,7 +404,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				if (positionInput == "I")
 				{
 					cout << endl;
-					Instructions();
+					FullInstructions();
 					validPositionInput = true;
 					skipInsertion = true;
 				}
@@ -512,7 +512,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 			else if (word == "I") // Ask for help
 			{
-				Instructions();
+				FullInstructions();
 				cout << endl << endl;
 				puzzle.showPlayerBoard();
 				cout << endl;

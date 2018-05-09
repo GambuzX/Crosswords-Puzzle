@@ -59,7 +59,9 @@ using namespace std;
 //=================================================================================================================================
 
 void Introduction();
-void Instructions();
+void FullInstructions();
+void PositionInstructions(); //TODO implement
+void WordInstructions(); //TODO implement
 void Options();
 
 char YesNoQuestion(string question);
@@ -96,7 +98,7 @@ int main()
 
 	char answer = YesNoQuestion("Display instructions (Y/N)? ");
 	if (answer == 'Y')
-		Instructions();
+		FullInstructions();
 
 	while (true) //Program only ends by user input
 	{
@@ -130,7 +132,7 @@ int main()
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
 			cout << " |          CREATE PUZZLE           |\n";
-			cout << " ====================================\n";
+			cout << " ====================================\n\n";
 			colorMaster.setcolor(DEFAULT);
 
 			bool success; //true if successfully created dictionary
@@ -159,7 +161,7 @@ int main()
 		{
 			cout << " ====================================\n";
 			cout << " |          RESUME PUZZLE           |\n";
-			cout << " ====================================\n";
+			cout << " ====================================\n\n";
 
 			bool dictSuccess; //true if successfully created dictionary
 			bool boardSuccess;
@@ -240,7 +242,7 @@ void Introduction()
 //=================================================================================================================================
 // Prints the program instructions
 
-void Instructions()
+void FullInstructions()
 { //TODO specify options. Freemode is different. Automatically formed words checked in the end.
 	colorMaster.setcolor(BLACK, WHITE);
 	cout << "\nINSTRUCTIONS\n\n";
@@ -279,7 +281,7 @@ void Instructions()
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "Position\n";
 	colorMaster.setcolor(DEFAULT);
-	cout << "Format: ";
+	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "LCD";
 	colorMaster.setcolor(DEFAULT);
@@ -295,7 +297,7 @@ void Instructions()
 	colorMaster.setcolor(SYMBOL_COLOR); 
 	cout << "I";
 	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
+	cout << " to display simplified instructions for this question.\n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "CTRL-Z";
@@ -305,7 +307,7 @@ void Instructions()
 	colorMaster.setcolor(QUESTION_COLOR);
 	cout << "\nWord\n";
 	colorMaster.setcolor(DEFAULT);
-	cout << "Format: ";
+	cout << "Input: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "Word to be inserted in the board\n\n";
 	colorMaster.setcolor(DEFAULT);
@@ -315,7 +317,7 @@ void Instructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "I";
 	colorMaster.setcolor(DEFAULT);
-	cout << " to display these instructions.\n";
+	cout << " to display simplified instructions for this question.\n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "-";
@@ -325,7 +327,7 @@ void Instructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "?";
 	colorMaster.setcolor(DEFAULT);
-	cout << " for a list of words that can be placed on the specified position.\n";
+	cout << " for a list of words that can be placed starting on the specified position.\n";
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "<";
@@ -349,9 +351,82 @@ void Instructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << ".\n";
 
-	//cout << "\nPress any key to continue\n"; TODO check this out
+	colorMaster.setcolor(QUESTION_COLOR);
+	cout << "\nPress any key to continue"; //TODO check this out
+	colorMaster.setcolor(DEFAULT);
 	_getch();
+	cout << endl;
 	//TODO make more appealing
+}
+
+//=================================================================================================================================
+// Prints simplified instructions for the Position? question
+
+void PositionInstructions()
+{
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nPOSITION INSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "Input: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "LCD";
+	colorMaster.setcolor(DEFAULT);
+	cout << " (line, column, direction).\n";
+	cout << "Can either be lower or uppercase, but ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "must respect this order!";
+	colorMaster.setcolor(DEFAULT);
+	cout << " Direction is 'H' or 'V'.\n\n";
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "CTRL-Z";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to stop creating the board.\n";
+}
+
+//=================================================================================================================================
+// Prints simplified instructions for the Word? question
+
+void WordInstructions()
+{
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nWORD INSTRUCTIONS\n\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	cout << "Input: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "Word to be inserted in the board\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	cout << "Other options: \n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "I";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to display these instructions.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "-";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to remove a previously placed word.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "?";
+	colorMaster.setcolor(DEFAULT);
+	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "<";
+	colorMaster.setcolor(DEFAULT);
+	cout << " to return to the Position question.\n";
 }
 
 //=================================================================================================================================
@@ -942,19 +1017,17 @@ void EditBoard(Board &board, Dictionary &dict)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
-				pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
-
 				if (positionInput == "I")
 				{
 					cout << endl;
-					Instructions();
+					PositionInstructions();
 					validPositionInput = true;
 					skipLoop = true;
 				}
-
 				//Check validity
 				else if (board.validPositionInput(positionInput))
 				{
+					pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
 					if (board.getCell(coordinates.first, coordinates.second) == '#')
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
@@ -1020,7 +1093,7 @@ void EditBoard(Board &board, Dictionary &dict)
 			}
 			else if (word == "I") // Ask for help
 			{
-				Instructions();
+				WordInstructions();
 				cout << endl << endl;
 				board.showBoard();
 				cout << endl;
