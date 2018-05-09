@@ -1,1 +1,2 @@
 Player name: potato man; Time: 27s; Hints: 0; Wrong submissions: 0
+Player name: Potato man; Time: 36s; Hints: 0; Wrong submissions: 0

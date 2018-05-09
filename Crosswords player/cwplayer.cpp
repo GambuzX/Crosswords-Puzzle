@@ -139,7 +139,7 @@ int main()
 	} while (!finishedProgram);
 
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "Thanks for playing! Hope you had fun :D\n";
+	cout << "\nThanks for playing! Hope you had fun :D\n";
 	colorMaster.setcolor(DEFAULT);
 
 	exit(0);

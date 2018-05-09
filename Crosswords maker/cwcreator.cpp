@@ -17,12 +17,14 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
+//TODO random mode
+
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 //TODO wildcard match?
+//TODO only ask number
 
 //TODO Credits to me only
 //TODO Clean up code
-//TODO Specify objectives of each file and function
 //TODO Clear all warnings
 //TODO decide if I want free mode
 
@@ -80,11 +82,6 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void EditBoard(Board &board, Dictionary &dict);
-
-// canBeInsertedFreeMode(Board &board, string word, string positionInput);
-//bool askToSaveBoardFreeMode(Board &board);
-//vector<string> askForSynonyms(string);
-//void EditBoardFreeMode(Board &board);
 
 ColorMaster colorMaster;
 
@@ -203,7 +200,7 @@ int main()
 		/*case 3: 
 		{
 			cout << " ====================================\n";
-			cout << " |           FREE CREATION          |\n";
+			cout << " |         RANDOM GENERATOR         |\n";
 			cout << " ====================================\n";
 
 			cout << endl;
@@ -327,11 +324,6 @@ void Instructions()
 	cout << "?";
 	colorMaster.setcolor(DEFAULT);
 	cout << " for a list of words that can be placed on the specified position.\n";
-	/*cout << "- ";
-	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "#";
-	colorMaster.setcolor(DEFAULT);
-	cout << " to insert an Hash.\n";*/
 	cout << "- ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "<";
@@ -355,7 +347,7 @@ void Instructions()
 	colorMaster.setcolor(DEFAULT);
 	cout << ".\n";
 
-	//cout << "\nPress any key to continue\n";
+	//cout << "\nPress any key to continue\n"; TODO check this out
 	_getch();
 	//TODO make more appealing
 }
@@ -372,17 +364,17 @@ void Options()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "1";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Create puzzle\n";
+	cout << " - Create board\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "2";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Resume puzzle\n";
+	cout << " - Resume board\n";
 
 	/*colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "3";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Create puzzle FREE MODE\n";*/
+	cout << " - Randomly generate puzzle\n";*/
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
@@ -455,7 +447,7 @@ pair<int,int> askBoardSize()
 		cout << "Horizontal board size? ";	
 		colorMaster.setcolor(DEFAULT);
 		cin >> boardSize.first;
-	} while (!cin || boardSize.first <= 0 || boardSize.first > 26);
+	} while (!cin || boardSize.first <= 0 || boardSize.first > 26); //board size is limited
 
 	do
 	{
@@ -627,7 +619,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (!dictionary.isValidHeadline(word)) // Verify word is valid
+	else if (!dictionary.isValidHeadline(word)) // Verify word is a valid headline
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z' or the ones specified in the instructions.\n\n";
@@ -843,6 +835,7 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 	std::vector<std::vector<char>> oldboard = board.getBoard();
 	std::vector<std::pair<std::string, std::string>> oldUsedWords = board.getUsedWords();
 
+	//Insert word a verify if the board is valid
 	board.insertWord(word, positionInput);
 	bool valid = isBoardValid(board, dictionary, word, positionInput);
 
@@ -861,6 +854,8 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
 	char direction = toupper(positionInput.at(2));
+
+	//Calculate available space
 	int availableSpace;
 	switch (direction)
 	{
@@ -878,7 +873,10 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 	cout << "\nWords that fit there:\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
+	//Gets the words that may fit there from the dictionary
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+	//Displays the words that are valid insertions in the board
 	int counter = 0;
 	const int WORDS_PER_LINE = 6;
 	const int WORDS_WIDTH = 18;
@@ -1039,224 +1037,3 @@ void EditBoard(Board &board, Dictionary &dict)
 		cout << endl;
 	}
 }
-
-//=================================================================================================================================
-//														FREE MODE
-//=================================================================================================================================
-
-
-//bool canBeInsertedFreeMode(Board &board, string word, string positionInput)
-//{
-//	// insertionPos = (line, column)
-//	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
-//	char direction = positionInput.at(2);
-//
-//	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
-//	{
-//		colorMaster.setcolor(ERROR_MESSAGE);
-//		cout << "\nYou can not place a word in that location.\n\n";
-//		colorMaster.setcolor(DEFAULT);
-//		return false;
-//	}
-//	else if (!board.wordFitsSpace(word, positionInput)) // Verify it fits the space
-//	{
-//		colorMaster.setcolor(ERROR_MESSAGE);
-//		cout << "\nWord does not fit the specified space!\n\n";
-//		colorMaster.setcolor(DEFAULT);
-//		return false;
-//	}
-//	else if (board.isWordUsed(word)) // Verify if word was already used
-//	{
-//		colorMaster.setcolor(ERROR_MESSAGE);
-//		cout << "\nWord is already in use!\n\n";
-//		colorMaster.setcolor(DEFAULT);
-//		return false;
-//	}
-//	else if (!board.matchesInterceptedPositions(word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
-//	{
-//		colorMaster.setcolor(ERROR_MESSAGE);
-//		cout << "\nWord does not match current board!\n\n";
-//		colorMaster.setcolor(DEFAULT);
-//		return false;
-//	}
-//	return true;
-//}
-//
-////=================================================================================================================================
-//// Asks the user if he wants to save the current board in FREE MODE.
-//
-//bool askToSaveBoardFreeMode(Board &board)
-//{
-//	return true;
-//}
-//
-////=================================================================================================================================
-//// Asks the user for the synonyms of a given word and returns a vector with them
-//
-//vector<string> askForSynonyms(string word)
-//{
-//	vector<string> synonyms;
-//
-//	int nSynonyms;
-//	do
-//	{
-//		if (cin.fail())
-//		{
-//			cin.clear();
-//			cin.ignore(10000, '\n');
-//		}
-//		colorMaster.setcolor(QUESTION_COLOR);
-//		cout << "Number of synonyms? ";
-//		colorMaster.setcolor(DEFAULT);
-//		cin >> nSynonyms;
-//	} while (cin.fail());
-//
-//	for (int i = 1; i <= nSynonyms; i++)
-//	{
-//		cout << 
-//
-//
-//	}
-//
-//
-//	return synonyms;
-//}
-//
-////=================================================================================================================================
-//// Allows to make changes to an existing board in FREE MODE.
-//
-//void EditBoardFreeMode(Board &board)
-//{
-//	cout << endl;
-//	board.showBoard();
-//	cout << endl;
-//
-//	// Input loop
-//	bool stopCreating = false;
-//	while (!stopCreating)
-//	{
-//		string positionInput, word;
-//		bool skipLoop = false;
-//
-//		////////////////////////////////
-//		//      ASK FOR POSITION      //
-//		////////////////////////////////
-//
-//		bool validPositionInput = false;
-//		do
-//		{
-//			colorMaster.setcolor(QUESTION_COLOR);
-//			cout << "Position ? ";
-//			colorMaster.setcolor(DEFAULT);
-//			cin >> positionInput;
-//
-//			if (cin.fail())
-//			{
-//				if (cin.eof())
-//				{
-//					stopCreating = true;
-//					cin.clear(); // Clears cin so as to enable next inputs
-//					break; //exits this loop
-//				}
-//				else
-//				{
-//					cin.clear();
-//					cin.ignore(10000, '\n');
-//				}
-//			}
-//			else //if good input
-//			{
-//				//Convert to uppercase
-//				for (size_t i = 0; i < positionInput.length(); i++)
-//					positionInput.at(i) = toupper(positionInput.at(i));
-//
-//				pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
-//
-//				if (positionInput == "I")
-//				{
-//					cout << endl;
-//					Instructions();
-//					validPositionInput = true;
-//					skipLoop = true;
-//				}
-//
-//				//Check validity
-//				else if (board.validPositionInput(positionInput))
-//				{
-//					validPositionInput = true;
-//				}
-//			}
-//		} while (!validPositionInput); //loop until valid input
-//
-//		if (stopCreating) //exit loop if CTRL-Z
-//		{
-//			bool successfulSave = askToSaveBoardFreeMode(board);
-//			if (!successfulSave) //if there was a problem saving board, continue with the loop
-//				continue;
-//			break; //if successful save of the board, end loop
-//		}
-//
-//		////////////////////////////////
-//		//        ASK FOR WORD        //
-//		////////////////////////////////
-//
-//		bool validInput = false;
-//		do
-//		{
-//			if (skipLoop)
-//				break;
-//
-//			if (cin.fail())
-//			{
-//				cin.clear();
-//				cin.ignore(10000, '\n');
-//			}
-//			colorMaster.setcolor(QUESTION_COLOR);
-//			cout << "Word ? ";
-//			colorMaster.setcolor(DEFAULT);
-//			cin >> word;
-//
-//			//Convert to uppercase
-//			for (size_t i = 0; i < word.length(); i++)
-//				word.at(i) = toupper(word.at(i));
-//
-//			if (word == "<") // Skip loop
-//			{
-//				validInput = true; // Exit loop
-//				cout << endl;
-//			}
-//			else if (word == "-") // Remove word
-//			{
-//				bool wordRemoved = board.removeWordOrHash(positionInput);
-//				if (wordRemoved)
-//					validInput = true; // exit loop
-//				cout << endl;
-//			}
-//			else if (word == "#") // Remove word
-//			{
-//				board.insertHash(positionInput);
-//				validInput = true; // exit loop
-//				cout << endl;
-//			}
-//			else if (word == "I") // Ask for help
-//			{
-//				Instructions();
-//				cout << endl << endl;
-//				board.showBoard();
-//				cout << endl;
-//			}
-//			else // default
-//				if (canBeInsertedFreeMode(board, word, positionInput))
-//				{
-//					board.insertWord(word, positionInput);
-//					vector<string> synonyms = askForSynonyms(word);
-//					//TODO check in the end for automatically formed words
-//					validInput = true;
-//				}
-//		} while (!validInput); //loop until valid input
-//
-//		cout << endl;
-//		board.showBoard();
-//		cout << endl;
-//	}
-//}
