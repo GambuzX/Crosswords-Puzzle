@@ -55,7 +55,9 @@ using namespace std;
 //=================================================================================================================================
 
 void Introduction();
-void FullInstructions();
+void FullInstructions(); 
+void PositionInstructions();
+void WordInstructions();
 void Options();
 char YesNoQuestion(string question);
 string askBoardName();
@@ -406,10 +408,8 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 
 				if (positionInput == "I")
 				{
+					PositionInstructions();
 					cout << endl;
-					FullInstructions();
-					validPositionInput = true;
-					skipInsertion = true;
 				}
 				else if (positionInput == "S")
 				{
@@ -515,9 +515,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 			else if (word == "I") // Ask for help
 			{
-				FullInstructions();
-				cout << endl << endl;
-				puzzle.showPlayerBoard();
+				WordInstructions();
 				cout << endl;
 			}
 			else // default

@@ -59,8 +59,8 @@ using namespace std;
 
 void Introduction();
 void FullInstructions();
-void PositionInstructions(); //TODO implement
-void WordInstructions(); //TODO implement
+void PositionInstructions();
+void WordInstructions();
 void Options();
 
 char YesNoQuestion(string question);
@@ -1022,10 +1022,8 @@ void EditBoard(Board &board, Dictionary &dict)
 
 				if (positionInput == "I")
 				{
-					cout << endl;
 					PositionInstructions();
-					validPositionInput = true;
-					skipLoop = true;
+					cout << endl;
 				}
 				//Check validity
 				else if (board.validPositionInput(positionInput))
@@ -1097,8 +1095,6 @@ void EditBoard(Board &board, Dictionary &dict)
 			else if (word == "I") // Ask for help
 			{
 				WordInstructions();
-				cout << endl << endl;
-				board.showBoard();
 				cout << endl;
 			}
 			else // default
