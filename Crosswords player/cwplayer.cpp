@@ -265,7 +265,6 @@ void FullInstructions()
 	colorMaster.setcolor(DEFAULT);
 	_getch();
 	cout << endl;
-	//TODO make more appealing
 }
 
 //=================================================================================================================================
@@ -501,7 +500,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cin.clear();
 				cin.ignore(10000, '\n');
 			}
-			colorMaster.setcolor(QUESTION_COLOR); //TODO button for instructions instead of displaying all things
+			colorMaster.setcolor(QUESTION_COLOR);
 			cout << "Word to insert? ";
 			colorMaster.setcolor(DEFAULT);
 			cin >> word;

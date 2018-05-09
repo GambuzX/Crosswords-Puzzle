@@ -564,7 +564,6 @@ Dictionary CreateDictionary(bool &success)
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate file with that name.\n";
 		colorMaster.setcolor(DEFAULT);
-		//_getch();
 		success = false;
 		return Dictionary();
 	}
@@ -584,7 +583,6 @@ Dictionary CreateDictionary(string dictName, bool &success)
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nCould not locate dictionary with that name.\n";
 		colorMaster.setcolor(DEFAULT);
-		//_getch();
 		success = false;
 		return Dictionary();
 	}

@@ -81,66 +81,42 @@ Board::Board(int horizontalSize, int verticalSize)
 //=================================================================================================================================
 // Checks if a given position has an hash ('#')
 
-bool Board::hasHash(pair<int,int> position)
-{
-	return board.at(position.first).at(position.second) == '#';
-}
+bool Board::hasHash(pair<int,int> position){	return board.at(position.first).at(position.second) == '#';}
 
 //=================================================================================================================================
 // Returns the current board
 
-vector<vector<char>> Board::getBoard()
-{
-	return board;
-}
+vector<vector<char>> Board::getBoard(){	return board;}
 
 //=================================================================================================================================
 // Returns the used words vector
 
-vector<pair<string, string>> Board::getUsedWords()
-{
-	return usedWords;
-}
+vector<pair<string, string>> Board::getUsedWords(){	return usedWords;}
 
 //=================================================================================================================================
 // Changes current board to the specified one
 
-void Board::setBoard(vector<vector<char>> newBoard)
-{
-	board = newBoard;
-}
+void Board::setBoard(vector<vector<char>> newBoard){	board = newBoard;}
 
 //=================================================================================================================================
 // Changes current used words vector to the specified one
 
-void Board::setUsedWords(vector<pair<string, string>> newUsedWords)
-{
-	usedWords = newUsedWords;
-}
+void Board::setUsedWords(vector<pair<string, string>> newUsedWords){	usedWords = newUsedWords;}
 
 //=================================================================================================================================
 // Returns board vertical size
 
-int Board::getVerticalSize()
-{
-	return verticalSize;
-}
+int Board::getVerticalSize(){	return verticalSize;}
 
 //=================================================================================================================================
 // Returns board horizontal size
 
-int Board::getHorizontalSize()
-{
-	return horizontalSize;
-}
+int Board::getHorizontalSize(){	return horizontalSize;}
 
 //=================================================================================================================================
 // Returns a cell of the board
 
-char Board::getCell(int line, int column)
-{
-	return board.at(line).at(column);
-}
+char Board::getCell(int line, int column){	return board.at(line).at(column);}
 
 //=================================================================================================================================
 // Shows current board on the console

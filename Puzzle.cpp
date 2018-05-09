@@ -88,18 +88,12 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, string boardName, Player player)
 //=================================================================================================================================
 // Returns number of words in the solution board.
 
-int Puzzle::getNumberOfSolutionWords()
-{
-	return numberOfSolutionWords;
-}
+int Puzzle::getNumberOfSolutionWords(){	return numberOfSolutionWords;}
 
 //=================================================================================================================================
 // Returns number of words in the player board.
 
-int Puzzle::getNumberOfPlayerWords()
-{
-	return numberOfPlayerWords;
-}
+int Puzzle::getNumberOfPlayerWords(){	return numberOfPlayerWords;}
 //=================================================================================================================================
 // Returns number of well placed words in the player board.
 
@@ -138,18 +132,12 @@ void Puzzle::setSolutionBoard(Board board)
 //=================================================================================================================================
 // Stores the board number given a board with the name format: bXXX.txt
 
-void Puzzle::setLoadedBoardNumber(string name)
-{
-	loadedBoardNumber = name.substr(1, 3);
-}
+void Puzzle::setLoadedBoardNumber(string name){	loadedBoardNumber = name.substr(1, 3);}
 
 //=================================================================================================================================
 // Changes current player.
 
-void Puzzle::setPlayer(Player player)
-{
-	currentPlayer = player;
-}
+void Puzzle::setPlayer(Player player){	currentPlayer = player;}
 
 //=================================================================================================================================
 // Creates a board for the player to add words. Created from the original board by replacing letters with dots.
@@ -475,10 +463,7 @@ void Puzzle::showPlayerStats()
 //=================================================================================================================================
 // Increments wrong submission counter of the player.
 
-void Puzzle::addWrongSubmission()
-{
-	currentPlayer.incrementWrongSubmissions();
-}
+void Puzzle::addWrongSubmission(){	currentPlayer.incrementWrongSubmissions();}
 
 //=================================================================================================================================
 // Saves the player stats to a file on the format bXXX_p.txt.
@@ -850,7 +835,7 @@ bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 
 	switch (direction)
 	{
-	case 'H':
+	case 'H': //TODO does not work if size is 1
 		if (line == 0) //special case: only check downwards
 		{
 			if (isalpha(playerBoard.at(line + 1).at(column)))
@@ -893,7 +878,4 @@ bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 //=================================================================================================================================
 // Checks if the player board is equal to the solution board, i.e., if the player has won
 
-bool Puzzle::boardsMatch()
-{
-	return playerBoard == solutionBoard;
-}
+bool Puzzle::boardsMatch(){	return playerBoard == solutionBoard;}

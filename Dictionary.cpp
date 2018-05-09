@@ -17,26 +17,17 @@ using namespace std;
 //=================================================================================================================================
 // Returns the name of the dictionary
 
-string Dictionary::getName()
-{
-	return dictionaryName;
-}
+string Dictionary::getName(){	return dictionaryName;}
 
 //=================================================================================================================================
 // Sets the name of the dictionary
 
-void Dictionary::setName(string name)
-{
-	dictionaryName = name;
-}
+void Dictionary::setName(string name){	dictionaryName = name;}
 
 //=================================================================================================================================
 // Returns the synonym list for a given word
 
-vector<string> Dictionary::getWordSynonyms(string word)
-{
-	return wordList[word];
-}
+vector<string> Dictionary::getWordSynonyms(string word){	return wordList[word];}
 
 //=================================================================================================================================
 // Verifies if dictionary with the name attribute exists and processes it, storing all word entries with its synonyms.

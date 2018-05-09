@@ -39,7 +39,6 @@ private:
 
 	bool isInVector(std::string, std::vector<std::string>);
 	std::string toUpper(const std::string &word);
-	bool wildcardMatch(const char *str, const char *strWild);
 };
 
 #endif
