@@ -1,6 +1,10 @@
-#include "ColorMaster.h"
+/*
+	Implementation of Color Master Class.
+	All of the class methods are functions provided by JAS.
+	AUTHOR: JAS
+*/
 
-//TODO CREDITS to JAS
+#include "ColorMaster.h"
 
 using namespace std;
 

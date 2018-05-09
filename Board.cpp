@@ -489,11 +489,6 @@ bool Board::validPositionInput(string input)
 
 bool Board::saveBoard(string fileName, string dictName)
 {
-	//if (!isBoardValid()) //FINAL CHECK
-		//return false;
-
-	//TODO ADD FINAL CHECK
-
 	// Organize it well
 	ofstream file(fileName);
 	
