@@ -21,6 +21,9 @@ Has functions to deal with the UI, user interaction and the interaction between 
 using namespace std;
 
 //TODO random mode
+//TODO clear screen
+//TODO random complete	
+
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
@@ -82,6 +85,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
+bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void EditBoard(Board &board, Dictionary &dict);
@@ -319,6 +323,7 @@ void FullInstructions()
 	cout << "Other options: \n";
 	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly complete the board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop creating the board.\n";
 
 	colorMaster.setcolor(QUESTION_COLOR);
@@ -334,6 +339,7 @@ void FullInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 
 	cout << "\nWhen board creation is stopped by entering CTRL-Z, you will be prompted to ";
@@ -383,6 +389,7 @@ void PositionInstructions()
 	cout << "Other options: \n";
 	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly complete the board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop creating the board.\n";
 }
 
@@ -405,6 +412,7 @@ void WordInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 }
 
@@ -947,7 +955,109 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 }
 
 //=================================================================================================================================
-// Allows to make changes to an existing board
+// Randomly inserts a valid word from the dictionary in the specified position.
+
+bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
+{
+	pair<int, int> coords = board.calculateInsertionCoordinates(position);
+	int line = coords.first;
+	int column = coords.second;
+	char direction = position.at(2);
+
+	//Calculate available space
+	int availableSpace;
+	switch (direction)
+	{
+	case 'H':
+		availableSpace = board.getHorizontalSize() - column;
+		break;
+	case 'V':
+		availableSpace = board.getVerticalSize() - line;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+
+	//Gets the words that fit the space
+	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+	//Filters the words that may actually be inserted
+	vector<string> validWords;
+	for (int j = 0; j < fittingWords.size(); j++)
+	{
+		if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+			validWords.push_back(fittingWords.at(j));
+	}
+
+	if (validWords.size() == 0) //if no words can be inserted, skip iteration
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nNo word in the dictionary can be inserted there.\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+
+	//Perform insertion
+	int wordIndex = rand() % validWords.size();
+	board.insertWord(validWords.at(wordIndex), position);
+	board.insertWordHashes(validWords.at(wordIndex), position);
+	return true;
+}
+
+//=================================================================================================================================
+// Randomly completes a board by inserting random words in random positions. Does not guarantee full board!
+
+bool randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts)
+{
+	cout << "\nInserting random words...\n";
+
+	for (int i = 0; i < insertionAttempts; i++)
+	{
+		//Generate random position
+		int line = rand() % board.getVerticalSize();
+		int column = rand() % board.getHorizontalSize();
+		int dir = rand() % 2;
+		char direction = (dir == 0 ? 'H' : 'V');
+		char c_position[] = { (char) 'A' + line , (char) 'A' + column, direction, '\0' };
+		string position(c_position);
+
+		//Calculate available space
+		int availableSpace;
+		switch (direction)
+		{
+		case 'H':
+			availableSpace = board.getHorizontalSize() - column;
+			break;
+		case 'V':
+			availableSpace = board.getVerticalSize() - line;
+			break;
+		default:
+			cerr << "Invalid input!";
+		}
+
+		//Gets the words that fit the space
+		vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+		//Filters the words that may actually be inserted
+		vector<string> validWords;
+		for (int j = 0; j < fittingWords.size(); j++)
+		{
+			if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+				validWords.push_back(fittingWords.at(j));
+		}
+
+		if (validWords.size() == 0) //if no words can be inserted, skip iteration
+			continue;
+
+		//Perform insertion
+		int wordIndex = rand() % validWords.size();
+		board.insertWord(validWords.at(wordIndex), position);
+		board.insertWordHashes(validWords.at(wordIndex), position);
+	}
+}
+
+//=================================================================================================================================
+// Allows to make changes to an existing board.
 
 void EditBoard(Board &board, Dictionary &dict)
 {
@@ -1000,6 +1110,12 @@ void EditBoard(Board &board, Dictionary &dict)
 					cout << endl;
 				}
 				else if (positionInput == "B")
+				{
+					cout << endl;
+					board.showBoard();
+					cout << endl;
+				}
+				else if (positionInput == "R")
 				{
 					cout << endl;
 					board.showBoard();
@@ -1091,6 +1207,13 @@ void EditBoard(Board &board, Dictionary &dict)
 			{
 				cout << endl;
 				board.showBoard();
+				cout << endl;
+			}
+			else if (word == "R") // Show board
+			{
+				bool wordInserted = randomInsertWord(board, dict, positionInput);
+				if (wordInserted)
+					validInput = true;
 				cout << endl;
 			}
 			else // normal word insertion
