@@ -980,7 +980,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
 					if (!board.isWordUsed(currentWord)) //if word does not exist
 					{
-						char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length() + 1), 'H', '\0' };
+						char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
 						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
@@ -1011,7 +1011,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
 					if (!board.isWordUsed(currentWord)) //if word does not exist
 					{
-						char pos[] = { 'A' + (char)(line - currentWord.length() + 1), 'A' + (char)column, 'V', '\0' }; //TODO check calculus is correct
+						char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' }; //TODO check calculus is correct
 						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
