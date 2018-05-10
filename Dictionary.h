@@ -20,9 +20,10 @@ public:
 
 	//Getters
 	std::string getName();
-	std::vector<std::string> getWordSynonyms(std::string word);
 	std::string GetWordSynonym(std::string word);
+	std::vector<std::string> getWordSynonyms(std::string word);
 	std::vector<std::string> fittingWords(int availableSpace);
+	std::vector<std::string> getHeadlines();
 
 	void setName(std::string);
 	void showWordList(); //To check if word list is well implemented

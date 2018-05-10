@@ -20,14 +20,10 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
-//TODO random mode
 //TODO clear screen
-//TODO random complete	
-
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
-//TODO indicate saved file name
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -978,6 +974,8 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 	default:
 		cerr << "Invalid input!";
 	}
+
+	
 
 	//Gets the words that fit the space
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);

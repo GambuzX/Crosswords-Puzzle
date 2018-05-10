@@ -20,14 +20,27 @@ using namespace std;
 string Dictionary::getName(){	return dictionaryName;}
 
 //=================================================================================================================================
+// Returns the synonym list for a given word
+
+vector<string> Dictionary::getWordSynonyms(string word) { return wordList[word]; }
+
+//=================================================================================================================================
+// Returns the headlines in the word list
+
+vector<string> Dictionary::getHeadlines()
+{ 
+	vector<string> words;
+	map<string, vector<string>>::iterator it;
+
+	for (it = wordList.begin(); it != wordList.end(); it++)
+		words.push_back(it->first);	
+	return words; 
+}
+
+//=================================================================================================================================
 // Sets the name of the dictionary
 
 void Dictionary::setName(string name){	dictionaryName = name;}
-
-//=================================================================================================================================
-// Returns the synonym list for a given word
-
-vector<string> Dictionary::getWordSynonyms(string word){	return wordList[word];}
 
 //=================================================================================================================================
 // Verifies if dictionary with the name attribute exists and processes it, storing all word entries with its synonyms.
