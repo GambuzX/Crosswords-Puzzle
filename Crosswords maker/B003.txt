@@ -1,0 +1,43 @@
+dictionary.txt
+
+D R Y # G R E E D # # # 
+I # # C # U # # # L A Y 
+N # # H U D D L E # P # 
+# # # I # E # O # # P # 
+I D L E # # S U P P L Y 
+N # # F E W # T # # Y # 
+L I S T # A # # C O # P 
+E # # A # G # # U # # I 
+T R A I N # W I D E # T 
+# I # N # # A # G # # Y 
+A C E # C O N T E X T # 
+# H # # # # E # L # # # 
+
+CDH HUDDLE
+EAV INLET
+BDV CHIEFTAIN
+KEH CONTEXT
+EGH SUPPLY
+IGV WANE
+BJH LAY
+BKV APPLY
+AAH DRY
+AAV DIN
+AEH GREED
+AFH RE
+AFV RUDE
+CDV HIE
+CHV LOUT
+DKV PLY
+EAH IDLE
+FDH FEW
+FFV WAG
+GAH LIST
+GAV LET
+GIH CO
+GIV CUDGEL
+GLV PITY
+IAH TRAIN
+IBV RICH
+IGH WIDE
+KAH ACE

@@ -86,6 +86,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
+void bruteForceInsertion(Board &board, Dictionary &dictionary);
 void EditBoard(Board &board, Dictionary &dict);
 
 bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
@@ -240,6 +241,7 @@ int main()
 
 			//Generate board
 			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS);
+			bruteForceInsertion(board, dictionary);
 
 			//Show generated board
 			cout << endl;
@@ -980,7 +982,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 					{
 						char pos[] = { 'A' + (char)line, 'A' + (char)column, 'H', '\0' };
 						string position(pos);
-						autoWords.push_back(pair<string, string>(currentWord, position));
+						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
 				currentWord = ""; //reset word
 			}
@@ -990,7 +992,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			{
 				char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - 1) , 'H', '\0' };
 				string position(pos);
-				autoWords.push_back(pair<string, string>(currentWord, position));
+				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
 	}
 
@@ -1011,7 +1013,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 					{
 						char pos[] = { 'A' + (char)line, 'A' + (char)column, 'V', '\0' };
 						string position(pos);
-						autoWords.push_back(pair<string, string>(currentWord, position));
+						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
 				currentWord = ""; //reset word
 			}
@@ -1021,7 +1023,7 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			{
 				char pos[] = { 'A' + (char)(board.getVerticalSize() - 1), 'A' + (char)column, 'V', '\0' };
 				string position(pos);
-				autoWords.push_back(pair<string, string>(currentWord, position));
+				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
 	}
 
@@ -1171,7 +1173,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 	{
 		for (int column = 0; column < board.getHorizontalSize(); column++)
 		{
-			if (board.getCell(line, column) != '#')
+			if (board.getCell(line, column) == '.')
 			{
 				//========================
 				//    First direction   //
