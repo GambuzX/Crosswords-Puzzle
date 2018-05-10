@@ -21,6 +21,7 @@ Has functions to deal with the UI, user interaction and the interaction between 
 using namespace std;
 
 //TODO clear screen
+//TODO algoritmo que completa board sequencialmente
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
@@ -211,7 +212,7 @@ int main()
 		}
 		case 3: 
 		{
-			const int NUMBER_INSERTION_ATTEMPTS = 50;
+			const int NUMBER_INSERTION_ATTEMPTS = 12;
 
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
@@ -1147,8 +1148,8 @@ void EditBoard(Board &board, Dictionary &dict)
 				}
 				else if (positionInput == "R")
 				{
-					const int NUMBER_OF_INSERTION_ATTEMPTS = 50;
-					randomCompleteBoard(board, dict, 50);
+					const int NUMBER_OF_INSERTION_ATTEMPTS = 12;
+					randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
 					validPositionInput = true; //leave loop
 					skipLoop = true;
 				}
