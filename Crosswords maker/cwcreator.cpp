@@ -84,6 +84,8 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary);
+
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void EditBoard(Board &board, Dictionary &dict);

@@ -489,11 +489,17 @@ bool Board::validPositionInput(string input)
 
 bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> autoFormedWords)
 {
+	//Add automatically formed words to the used words vector
+	for (int i = 0; i < autoFormedWords.size(); i++) //TODO assure it is working
+		usedWords.push_back(autoFormedWords.at(i));
+
 	// Organize it well
 	ofstream file(fileName);
 	
+	//Write dictionary name
 	file << dictName << endl << endl;
 
+	//Write board
 	for (int i = 0; i < verticalSize; i++)
 	{
 		for (int j = 0; j < horizontalSize; j++)
@@ -504,6 +510,7 @@ bool Board::saveBoard(string fileName, string dictName, vector<pair<string,strin
 	}
 	file << endl;
 
+	//Write used words
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
