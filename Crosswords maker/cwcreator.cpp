@@ -88,6 +88,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 void EditBoard(Board &board, Dictionary &dict);
 
 bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
+bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, string positionInput);
 Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts);
 
 ColorMaster colorMaster;
@@ -975,8 +976,6 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 		cerr << "Invalid input!";
 	}
 
-	
-
 	//Gets the words that fit the space
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
@@ -1023,6 +1022,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 	cout << "\nInserting random words...\n";
 
+	vector<string> headlines = dictionary.getHeadlines();
 	for (int i = 0; i < insertionAttempts; i++)
 	{
 		//Generate random position
@@ -1046,6 +1046,24 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 		default:
 			cerr << "Invalid input!";
 		}
+
+		//Try to insert some random words to increase efficiency
+		const int RANDOM_TRIES = 12;
+		bool insertedWord = false;
+		for (int j = 0; j < RANDOM_TRIES; j++)
+		{
+			int randomN = rand() % headlines.size();
+
+			if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+			{
+				board.insertWord(headlines.at(randomN), position);
+				board.insertWordHashes(headlines.at(randomN), position);
+				insertedWord = true;
+				break;
+			}
+		}
+		if (insertedWord) //if successfully inserted a random word, go to next iteration
+			continue;
 
 		//Gets the words that fit the space
 		vector<string> fittingWords = dictionary.fittingWords(availableSpace);
@@ -1267,10 +1285,31 @@ bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string 
 }
 
 //=================================================================================================================================
+// Verifies if a word can be inserted in a determined location, with one more test than above, returning a bool. No messages are displayed.
+
+bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+
+	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+		return false;
+	else if (!board.wordFitsSpace(word, positionInput))
+		return false;
+	else if (board.isWordUsed(word)) // Verify if word was already used
+		return false;
+	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
+		return false;
+	return true;
+}
+
+//=================================================================================================================================
 // Asks for the dimensions of a board and randomly fills it, returning it
 
 Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 {
+	//TODO put some something interactable like dots moving
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second);
 
@@ -1278,6 +1317,7 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 
 	cout << "\nGenerating random puzzle...\n";
 
+	vector<string> headlines = dictionary.getHeadlines();
 	for (int i = 0; i < insertionAttempts; i++)
 	{
 		//Generate random position
@@ -1302,6 +1342,24 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 			cerr << "Invalid input!";
 		}
 
+		//Try to insert some random words to increase efficiency
+		const int RANDOM_TRIES = 12;
+		bool insertedWord = false;
+		for (int j = 0; j < RANDOM_TRIES; j++)
+		{
+			int randomN = rand() % headlines.size();
+			
+			if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+			{
+				board.insertWord(headlines.at(randomN), position);
+				board.insertWordHashes(headlines.at(randomN), position);
+				insertedWord = true;
+				break;
+			}
+		}
+		if (insertedWord) //if successfully inserted a random word, go to next iteration
+			continue;
+		
 		//Gets the words that fit the space
 		vector<string> fittingWords = dictionary.fittingWords(availableSpace); 
 
