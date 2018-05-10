@@ -47,7 +47,7 @@ public:
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
 
-	bool saveBoard(std::string name, std::string dictName);
+	bool saveBoard(std::string name, std::string dictName, std::vector<std::pair<std::string, std::string>> autoFormedWords);
 	bool loadBoard(std::string name, std::string& dictName);
 
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);

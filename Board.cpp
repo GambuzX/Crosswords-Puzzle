@@ -487,7 +487,7 @@ bool Board::validPositionInput(string input)
 //=================================================================================================================================
 // Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
 
-bool Board::saveBoard(string fileName, string dictName)
+bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> autoFormedWords)
 {
 	// Organize it well
 	ofstream file(fileName);
@@ -711,8 +711,13 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 
 	switch (direction)
 	{
-	case 'H': //TODO does not work when size is exactly 1
-		if (line == 0) //special case: only check downwards
+	case 'H':
+		
+		if (verticalSize == 1)
+		{
+			return true;
+		}
+		else if (line == 0) //special case: only check downwards
 		{
 			if (isalpha(board.at(line + 1).at(column)))
 				return false;
@@ -729,7 +734,11 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		}
 		break;
 	case 'V':
-		if (column == 0) //special case: only check right
+		if (horizontalSize == 1)
+		{
+			return true;
+		}
+		else if (column == 0) //special case: only check right
 		{
 			if (isalpha(board.at(line).at(column + 1)))
 				return false;

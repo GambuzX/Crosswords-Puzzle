@@ -77,7 +77,7 @@ Dictionary CreateDictionary(string dictName, bool &success);
 Board CreateBoard();
 Board ResumeBoard(string &dictName, bool &operationSuccess);
 
-bool askToSaveBoard(Board &board, string dictName);
+bool askToSaveBoard(Board &board, Dictionary &dict);
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
@@ -239,7 +239,7 @@ int main()
 			cout << endl;
 
 			//Generate board
-			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS); //TODO more efficient algorithm
+			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS);
 
 			//Show generated board
 			cout << endl;
@@ -247,7 +247,7 @@ int main()
 			cout << endl;
 
 			//Save board
-			askToSaveBoard(board, dictionary.getName());
+			askToSaveBoard(board, dictionary);
 			break;
 		}
 		default:
@@ -386,7 +386,7 @@ void PositionInstructions()
 	cout << " Direction is 'H' or 'V'.\n";
 
 	cout << "Other options: \n";
-	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- "; 	colorMaster.setcolor(SYMBOL_COLOR); 	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly complete the board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);		cout << "CTRL-Z";	colorMaster.setcolor(DEFAULT);	cout << " to stop creating the board.\n";
@@ -407,7 +407,7 @@ void WordInstructions()
 	colorMaster.setcolor(DEFAULT);
 
 	cout << "Other options: \n";
-	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
@@ -531,7 +531,7 @@ pair<int,int> askBoardSize()
 //=================================================================================================================================
 // Asks if the user wishes to save the current board. Boolean to indicate operation success or not
 
-bool askToSaveBoard(Board &board, string dictName)
+bool askToSaveBoard(Board &board, Dictionary &dict)
 {
 	bool success = true;
 	char answer = YesNoQuestion("Save the current board (Y/N) ? ");
@@ -543,9 +543,12 @@ bool askToSaveBoard(Board &board, string dictName)
 		if (answer2 == 'Y')
 			board.fillRemainingSpots();
 
+		//Search for automatically formed words
+		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict);
+
 		//Save file
 		string fileName = determineBoardName();
-		success = board.saveBoard(fileName, dictName);
+		success = board.saveBoard(fileName, dict.getName(), autoWords);
 		if (success)
 		{
 			colorMaster.setcolor(SUCCESS);
@@ -954,6 +957,78 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 }
 
 //=================================================================================================================================
+// Searches the board for words that were formed automatically.
+
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary)
+{
+	vector<pair<string, string>> autoWords;
+
+	//HORIZONTAL
+	for (int line = 0; line < board.getVerticalSize(); line++)
+	{
+		string currentWord = "";
+		for (int column = 0; column < board.getHorizontalSize(); column++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					if (!board.isWordUsed(currentWord)) //if word does not exist
+					{
+						char pos[] = { 'A' + (char)line, 'A' + (char)column, 'H', '\0' };
+						string position(pos);
+						autoWords.push_back(pair<string, string>(currentWord, position));
+					}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			if (!board.isWordUsed(currentWord)) //if word does not exist
+			{
+				char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - 1) , 'H', '\0' };
+				string position(pos);
+				autoWords.push_back(pair<string, string>(currentWord, position));
+			}
+	}
+
+	//VERTICAL
+	for (int column = 0; column < board.getHorizontalSize(); column++)
+	{
+		string currentWord = "";
+		for (int line = 0; line < board.getVerticalSize(); line++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					if (!board.isWordUsed(currentWord)) //if word does not exist
+					{
+						char pos[] = { 'A' + (char)line, 'A' + (char)column, 'V', '\0' };
+						string position(pos);
+						autoWords.push_back(pair<string, string>(currentWord, position));
+					}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			if (!board.isWordUsed(currentWord)) //if word does not exist
+			{
+				char pos[] = { 'A' + (char)(board.getVerticalSize() - 1), 'A' + (char)column, 'V', '\0' };
+				string position(pos);
+				autoWords.push_back(pair<string, string>(currentWord, position));
+			}
+	}
+
+	return autoWords;
+}
+
+//=================================================================================================================================
 // Randomly inserts a valid word from the dictionary in the specified position.
 
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
@@ -982,7 +1057,7 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 
 	//Filters the words that may actually be inserted
 	vector<string> validWords;
-	for (int j = 0; j < fittingWords.size(); j++)
+	for (size_t j = 0; j < fittingWords.size(); j++)
 	{
 		if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
 			validWords.push_back(fittingWords.at(j));
@@ -1031,7 +1106,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 		int column = rand() % board.getHorizontalSize();
 		int dir = rand() % 2;
 		char direction = (dir == 0 ? 'H' : 'V');
-		char c_position[] = { (char) 'A' + line , (char) 'A' + column, direction, '\0' };
+		char c_position[] = { 'A' + (char) line , 'A' + (char) column, direction, '\0' };
 		string position(c_position);
 
 		//Calculate available space
@@ -1071,7 +1146,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 		//Filters the words that may actually be inserted
 		vector<string> validWords;
-		for (int j = 0; j < fittingWords.size(); j++)
+		for (size_t j = 0; j < fittingWords.size(); j++)
 		{
 			if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
 				validWords.push_back(fittingWords.at(j));
@@ -1175,7 +1250,7 @@ void EditBoard(Board &board, Dictionary &dict)
 		{
 			if (isBoardValid(board, dict)) //FINAL CHECK
 			{
-				bool successfulSave = askToSaveBoard(board, dict.getName());
+				bool successfulSave = askToSaveBoard(board, dict);
 				if (!successfulSave) //if there was a problem saving board, continue with the loop
 					continue;
 				break; //if successful save of the board, end loop
@@ -1326,7 +1401,7 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 		int column = rand() % board.getHorizontalSize();
 		int dir = rand() % 2;
 		char direction = (dir == 0 ? 'H' : 'V');
-		char c_position[] = { (char) 'A' + line , (char) 'A' + column, direction, '\0' };
+		char c_position[] = {'A' + (char) line , 'A' + (char) column, direction, '\0' };
 		string position(c_position);
 
 		//Calculate available space
@@ -1366,7 +1441,7 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 
 		//Filters the words that may actually be inserted
 		vector<string> validWords;
-		for (int j = 0; j < fittingWords.size(); j++)
+		for (size_t j = 0; j < fittingWords.size(); j++)
 		{
 			if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
 				validWords.push_back(fittingWords.at(j));
