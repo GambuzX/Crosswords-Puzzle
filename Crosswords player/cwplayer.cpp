@@ -67,7 +67,7 @@ ColorMaster colorMaster;
 
 int main()
 {
-	srand(time_t(NULL));
+	srand((unsigned int) time(NULL));
 
 	Introduction();
 	cout << endl;
