@@ -88,6 +88,7 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
+void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void EditBoard(Board &board, Dictionary &dict);
 
 bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
@@ -1007,8 +1008,21 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 //=================================================================================================================================
 // Randomly completes a board by inserting random words in random positions. Does not guarantee full board!
 
-bool randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts)
+void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts)
 {
+	bool hasDot = false;
+	for (int i = 0; i < board.getVerticalSize(); i++)
+		for (int j = 0; j < board.getHorizontalSize(); j++)
+			if (board.getCell(i, j) == '.')
+				hasDot = true;
+	if (!hasDot)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThe board is already complete.\n";
+		colorMaster.setcolor(DEFAULT);
+		return ;
+	}
+
 	cout << "\nInserting random words...\n";
 
 	for (int i = 0; i < insertionAttempts; i++)
@@ -1117,9 +1131,10 @@ void EditBoard(Board &board, Dictionary &dict)
 				}
 				else if (positionInput == "R")
 				{
-					cout << endl;
-					board.showBoard();
-					cout << endl;
+					const int NUMBER_OF_INSERTION_ATTEMPTS = 50;
+					randomCompleteBoard(board, dict, 50);
+					validPositionInput = true; //leave loop
+					skipLoop = true;
 				}
 				//Check validity
 				else if (board.validPositionInput(positionInput))
