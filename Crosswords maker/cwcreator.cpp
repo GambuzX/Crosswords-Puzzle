@@ -23,8 +23,6 @@ using namespace std;
 //TODO clear screen
 //TODO algoritmo que completa board sequencialmente
 
-//TODO varrer tabuleiro e procurar palavras automaticamente formadas
-
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -1162,6 +1160,113 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 		board.insertWord(validWords.at(wordIndex), position);
 		board.insertWordHashes(validWords.at(wordIndex), position);
 	}
+}
+
+//=================================================================================================================================
+// Brute force word insertion. Goes through the entire board and tries to insert words in every position.
+
+void bruteForceInsertion(Board &board, Dictionary &dictionary)
+{
+	for (int line = 0; line < board.getVerticalSize(); line++) //For all cells in the board
+	{
+		for (int column = 0; column < board.getHorizontalSize(); column++)
+		{
+			if (board.getCell(line, column) != '#')
+			{
+				//========================
+				//    First direction   //
+				//========================
+
+				int dir = rand() % 2;
+				char direction = (dir == 0 ? 'H' : 'V');
+				char c_position[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
+				string position(c_position);
+
+				//Calculate available space
+				int availableSpace;
+				switch (direction)
+				{
+				case 'H':
+					availableSpace = board.getHorizontalSize() - column;
+					break;
+				case 'V':
+					availableSpace = board.getVerticalSize() - line;
+					break;
+				default:
+					cerr << "Invalid input!";
+				}
+
+				if (availableSpace > 1)
+				{
+					//Gets the words that fit the space
+					vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+					//Filters the words that may actually be inserted
+					vector<string> validWords;
+					for (size_t j = 0; j < fittingWords.size(); j++)
+					{
+						if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+							validWords.push_back(fittingWords.at(j));
+					}
+
+					if (validWords.size() != 0) //if no words can be inserted, skip iteration
+					{
+						//Perform insertion
+						int wordIndex = rand() % validWords.size();
+						board.insertWord(validWords.at(wordIndex), position);
+						board.insertWordHashes(validWords.at(wordIndex), position);
+					}
+				}				
+
+				//========================
+				//   Second direction   //
+				//========================
+
+				direction = (direction == 'V'? 'H' : 'V');
+				char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
+				position = string(c_position2);
+
+				//Calculate available space
+				switch (direction)
+				{
+				case 'H':
+					availableSpace = board.getHorizontalSize() - column;
+					break;
+				case 'V':
+					availableSpace = board.getVerticalSize() - line;
+					break;
+				default:
+					cerr << "Invalid input!";
+				}
+
+				if (availableSpace <= 1)
+					continue;
+
+				//Gets the words that fit the space
+				vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+				//Filters the words that may actually be inserted
+				vector<string> validWords;
+				for (size_t j = 0; j < fittingWords.size(); j++)
+				{
+					if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+						validWords.push_back(fittingWords.at(j));
+				}
+
+				if (validWords.size() != 0) //if no words can be inserted, skip iteration
+				{
+					//Perform insertion
+					int wordIndex = rand() % validWords.size();
+					board.insertWord(validWords.at(wordIndex), position);
+					board.insertWordHashes(validWords.at(wordIndex), position);
+				}
+			}
+		}
+	}
+
+
+
+
 }
 
 //=================================================================================================================================
