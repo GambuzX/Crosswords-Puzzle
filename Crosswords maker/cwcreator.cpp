@@ -11,6 +11,9 @@ Has functions to deal with the UI, user interaction and the interaction between 
 #include <map>
 #include <fstream>
 #include <conio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "ColorMaster.h"
 #include "Dictionary.h"
 #include "Board.h"
@@ -21,7 +24,7 @@ using namespace std;
 
 //TODO varrer tabuleiro e procurar palavras automaticamente formadas
 
-
+//TODO indicate saved file name
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -74,7 +77,7 @@ Dictionary CreateDictionary(string dictName, bool &success);
 Board CreateBoard();
 Board ResumeBoard(string &dictName, bool &operationSuccess);
 
-bool askToSaveBoard(Board board, string dictName);
+bool askToSaveBoard(Board &board, string dictName);
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
@@ -83,12 +86,17 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void EditBoard(Board &board, Dictionary &dict);
 
+bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
+Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts);
+
 ColorMaster colorMaster;
 
 //=================================================================================================================================
 
 int main()
 {
+	srand(time_t(NULL));
+
 	Introduction();
 	cout << endl;
 
@@ -199,20 +207,46 @@ int main()
 			EditBoard(board, dictionary);
 			break;
 		}
-		/*case 3: 
+		case 3: 
 		{
+			const int NUMBER_INSERTION_ATTEMPTS = 50;
+
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << " ====================================\n";
 			cout << " |         RANDOM GENERATOR         |\n";
-			cout << " ====================================\n";
+			cout << " ====================================\n\n";
 			colorMaster.setcolor(DEFAULT);
 
+			//Open dictionary
+			bool success; //true if successfully created dictionary
+			dictionary = CreateDictionary(success);
+			if (!success)
+			{
+				colorMaster.setcolor(ERROR_MESSAGE);
+				cout << "\nDictionary was not opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+				break;
+			}
+			else
+			{
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nDictionary was opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+			}
 			cout << endl;
-			board = CreateBoard();
 
-			EditBoardFreeMode(board);
+			//Generate board
+			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS); //TODO more efficient algorithm
+
+			//Show generated board
+			cout << endl;
+			board.showBoard();
+			cout << endl;
+
+			//Save board
+			askToSaveBoard(board, dictionary.getName());
 			break;
-		}*/
+		}
 		default:
 			cerr << "Should not be able to get here!";
 		}
@@ -393,10 +427,10 @@ void Options()
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Resume board\n";
 
-	/*colorMaster.setcolor(SYMBOL_COLOR);
+	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "3";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Randomly generate puzzle\n";*/
+	cout << " - Randomly generate puzzle\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
@@ -490,15 +524,15 @@ pair<int,int> askBoardSize()
 //=================================================================================================================================
 // Asks if the user wishes to save the current board. Boolean to indicate operation success or not
 
-bool askToSaveBoard(Board board, string dictName)
+bool askToSaveBoard(Board &board, string dictName)
 {
 	bool success = true;
-	char answer = YesNoQuestion("Do you wish to save the current board (Y/N) ? ");
+	char answer = YesNoQuestion("Save the current board (Y/N) ? ");
 
 	if (answer == 'Y')
 	{
 		//Check if board is finished or not
-		char answer2 = YesNoQuestion("Is the board finished (Y/N) ? ");
+		char answer2 = YesNoQuestion("Autocomplete missing cells (Y/N) ? ");
 		if (answer2 == 'Y')
 			board.fillRemainingSpots();
 
@@ -508,7 +542,7 @@ bool askToSaveBoard(Board board, string dictName)
 		if (success)
 		{
 			colorMaster.setcolor(SUCCESS);
-			cout << "\nBoard was saved successfully.\n";
+			cout << "\nBoard was saved successfully as " << fileName << ".\n";
 			colorMaster.setcolor(DEFAULT);
 		}
 		else
@@ -1063,7 +1097,7 @@ void EditBoard(Board &board, Dictionary &dict)
 				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
 				{
 					board.insertWord(word, positionInput);
-					board.InsertWordHashes(word, positionInput);
+					board.insertWordHashes(word, positionInput);
 					validInput = true;
 				}
 		} while (!validInput); //loop until valid input
@@ -1072,4 +1106,84 @@ void EditBoard(Board &board, Dictionary &dict)
 		board.showBoard();
 		cout << endl;
 	}
+}
+
+//=================================================================================================================================
+//														RANDOM GENERATOR
+//=================================================================================================================================
+
+//=================================================================================================================================
+// Verifies if a word can be inserted in a determined location, returning a bool. No messages are displayed.
+
+bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+
+	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+		return false;
+	else if (board.isWordUsed(word)) // Verify if word was already used
+		return false;
+	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
+		return false;
+	return true;
+}
+
+//=================================================================================================================================
+// Asks for the dimensions of a board and randomly fills it, returning it
+
+Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
+{
+	pair<int, int> boardSize = askBoardSize();
+	Board board(boardSize.first, boardSize.second);
+
+	board.clearBoard();
+
+	cout << "\nGenerating random puzzle...\n";
+
+	for (int i = 0; i < insertionAttempts; i++)
+	{
+		//Generate random position
+		int line = rand() % board.getVerticalSize();
+		int column = rand() % board.getHorizontalSize();
+		int dir = rand() % 2;
+		char direction = (dir == 0 ? 'H' : 'V');
+		char c_position[] = { (char) 'A' + line , (char) 'A' + column, direction, '\0' };
+		string position(c_position);
+
+		//Calculate available space
+		int availableSpace;
+		switch (direction)
+		{
+		case 'H':
+			availableSpace = board.getHorizontalSize() - column;
+			break;
+		case 'V':
+			availableSpace = board.getVerticalSize() - line;
+			break;
+		default:
+			cerr << "Invalid input!";
+		}
+
+		//Gets the words that fit the space
+		vector<string> fittingWords = dictionary.fittingWords(availableSpace); 
+
+		//Filters the words that may actually be inserted
+		vector<string> validWords;
+		for (int j = 0; j < fittingWords.size(); j++)
+		{
+			if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+				validWords.push_back(fittingWords.at(j));
+		}
+
+		if (validWords.size() == 0) //if no words can be inserted, skip iteration
+			continue;
+
+		//Perform insertion
+		int wordIndex = rand() % validWords.size();
+		board.insertWord(validWords.at(wordIndex), position);
+		board.insertWordHashes(validWords.at(wordIndex), position);
+	}
+	return board;
 }

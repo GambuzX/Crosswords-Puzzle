@@ -258,7 +258,7 @@ bool Board::removeWord(string positionInput)
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
-				RemoveWordHashes(word, position);
+				removeWordHashes(word, position);
 				reprintHashes();
 				break;
 			case 'V':
@@ -268,7 +268,7 @@ bool Board::removeWord(string positionInput)
 						board.at(startLine + i).at(startColumn) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
-				RemoveWordHashes(word, position);
+				removeWordHashes(word, position);
 				reprintHashes();
 				break;
 			default:
@@ -363,7 +363,7 @@ bool Board::removeWordOrHash(string positionInput)
 //=================================================================================================================================
 // Places hashes before and after word
 
-void Board::InsertWordHashes(string word, string positionInput)
+void Board::insertWordHashes(string word, string positionInput)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
 	int line = coords.first;
@@ -396,7 +396,7 @@ void Board::InsertWordHashes(string word, string positionInput)
 //=================================================================================================================================
 // Removes hashes associated with the word from the given position
 
-void Board::RemoveWordHashes(string word, string positionInput)
+void Board::removeWordHashes(string word, string positionInput)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(positionInput);
 	int line = coords.first;
@@ -432,7 +432,7 @@ void Board::RemoveWordHashes(string word, string positionInput)
 void Board::reprintHashes()
 {
 	for (size_t i = 0; i < usedWords.size(); i++)
-		InsertWordHashes(usedWords.at(i).second, usedWords.at(i).first);
+		insertWordHashes(usedWords.at(i).second, usedWords.at(i).first);
 }
 
 //=================================================================================================================================
@@ -749,4 +749,14 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		cerr << "Invalid direction!";
 	}
 	return true;
+}
+
+//=================================================================================================================================
+// Clears the board
+
+void Board::clearBoard()
+{
+	for (int i = 0; i < verticalSize; i++)
+		for (int j = 0; j < horizontalSize; j++)
+			board.at(i).at(j) = '.';
 }

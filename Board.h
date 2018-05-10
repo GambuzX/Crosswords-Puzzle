@@ -33,10 +33,11 @@ public:
 	void insertHash(std::string position);
 	bool removeWord(std::string position);
 	bool removeWordOrHash(std::string position);
-	void InsertWordHashes(std::string word, std::string positionInput);
-	void RemoveWordHashes(std::string word, std::string positionInput);
+	void insertWordHashes(std::string word, std::string positionInput);
+	void removeWordHashes(std::string word, std::string positionInput);
 	void reprintHashes();
 	void fillRemainingSpots();
+	void clearBoard();
 
 	bool validPositionInput(std::string);
 	bool isWordUsed(std::string word);
