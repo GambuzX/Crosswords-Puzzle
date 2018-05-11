@@ -622,6 +622,18 @@ bool Board::isWordUsed(string word)
 }
 
 //=================================================================================================================================
+// Checks if the given word is already on the board or not, in the same position.
+
+bool Board::isSameWordInDifferentPosition(string word, string position)
+{
+	vector<pair<string, string>>::iterator it;
+	for (it = usedWords.begin(); it != usedWords.end(); it++)
+		if (it->first != position && it->second == word)
+			return true;
+	return false;
+}
+
+//=================================================================================================================================
 // Checks if the word fits in the specified space. 
 
 bool Board::wordFitsSpace(string word, string positionInput)

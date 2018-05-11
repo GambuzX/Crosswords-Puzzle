@@ -20,6 +20,8 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
+//TODO allow to edit after invalid error
+
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -79,7 +81,9 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
-vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, bool &invalid);
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, vector<pair<string,string>>&);
+
+pair<string, string> newRiddle();
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
@@ -241,12 +245,13 @@ int main()
 			bruteForceInsertion(board, dictionary);
 
 			//Show generated board
-			cout << endl;
-			board.showBoard();
-			cout << endl;
+			//cout << endl;
+			//board.showBoard();
+			//cout << endl;
 
+			EditBoard(board, dictionary);
 			//Save board
-			askToSaveBoard(board, dictionary);
+			//askToSaveBoard(board, dictionary);
 			break;
 		}
 		default:
@@ -543,10 +548,10 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 			board.fillRemainingSpots();
 
 		//Search for automatically formed words
-		bool foundInvalid = false;
-		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict, foundInvalid);
+		vector<pair<string, string>> invalidWords;
+		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict, invalidWords);
 
-		if (!foundInvalid) //TODO Test this works
+		if (invalidWords.size() == 0) //TODO Test this works
 		{
 			//Save file
 			string fileName = determineBoardName();
@@ -558,7 +563,9 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 		else
 		{
 			colorMaster.setcolor(ERROR_MESSAGE);
-			cout << "\nThe final board is not valid.\n";
+			cout << "\nThe final board is not valid. The following words are repeated:";
+			for (int i = 0; i < invalidWords.size(); i++)
+				cout << endl << invalidWords.at(i).first << " - " << invalidWords.at(i).second;
 			colorMaster.setcolor(DEFAULT);
 		}
 	}
@@ -959,10 +966,10 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 //=================================================================================================================================
 // Searches the board for words that were formed automatically.
 
-vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, bool &invalid)
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, vector<pair<string, string>> &invWords)
 {
 	vector<pair<string, string>> autoWords;
-	bool foundInvalid = false;
+	vector<pair<string, string>> invalidWords;
 
 	//HORIZONTAL
 	for (int line = 0; line < board.getVerticalSize(); line++)
@@ -977,26 +984,34 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
+					string position(pos);
 					if (!board.isWordUsed(currentWord)) //if word is not used
 					{
-						char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
-						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
-					else
-						foundInvalid = true; //if already is used
+					else if (board.isSameWordInDifferentPosition(currentWord,position)) //if it is used, but in a different position -> invalid
+					{
+						invalidWords.push_back(pair<string, string>(position, currentWord));
+					}
+				}
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2)
+		{
+			char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()) , 'H', '\0' };
+			string position(pos);
 			if (!board.isWordUsed(currentWord))
 			{
-				char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()) , 'H', '\0' };
-				string position(pos);
 				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
-			else
-				foundInvalid = true;
+			else if(board.isSameWordInDifferentPosition(currentWord, position))
+			{
+				invalidWords.push_back(pair<string, string>(position, currentWord));
+			}
+		}
 	}
 
 	//VERTICAL
@@ -1012,29 +1027,36 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+					string position(pos);
 					if (!board.isWordUsed(currentWord))
 					{
-						char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
-						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
-					else
-						foundInvalid = true;
+					else if (board.isSameWordInDifferentPosition(currentWord, position))
+					{
+						invalidWords.push_back(pair<string, string>(position, currentWord));
+					}
+				}
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+		{
+			char pos[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+			string position(pos);
 			if (!board.isWordUsed(currentWord))
 			{
-				char pos[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
-				string position(pos);
 				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
-			else
-				foundInvalid = true;
+			else if (board.isSameWordInDifferentPosition(currentWord, position))
+			{
+				invalidWords.push_back(pair<string, string>(position, currentWord));
+			}
+		}
 	}
-
-	invalid = foundInvalid;
+	invWords = invalidWords;
 	return autoWords;
 }
 
@@ -1203,12 +1225,14 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 						colorMaster.setcolor(QUESTION_COLOR);
 						cout << currentRiddle.first;
 						colorMaster.setcolor(DEFAULT);
+						riddle = !riddle;
 					}
 					else
 					{
 						colorMaster.setcolor(SYMBOL_COLOR);
 						cout << currentRiddle.second;
 						colorMaster.setcolor(DEFAULT);
+						riddle = !riddle;
 					}
 					cout << endl;
 				}
@@ -1308,11 +1332,30 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 			}
 		}
 	}
-
-
-
-
 }
+
+//=================================================================================================================================
+// Returns a random pair constituted by riddle and answer
+
+pair<string, string> newRiddle()
+{
+	vector<pair<string, string>> riddleList = { 
+		{"What kind of room has no doors or windows ?", "A mushroom"}, 
+		{"What kind of tree can you carry in your hand?", "A palm"}, 
+		{"Which word in the dictionary is spelled incorrectly?", "Incorrectly"},
+		{"How many of each species did Moses take on the ark with him?", "None, Moses wasn't on the ark Noah was."},
+		{"Imagine you are in a dark room. How do you get out?", "Stop imagining"},
+		{"What invention lets you look right through a wall?", "The window"},
+	{"What is at the end of a rainbow?", "The letter W"},
+	{"The eight of us go forth not back to protect our king from a foes attack.", "Chesspawns"},
+	{"Why can't a man living in the USA be buried in Canada?", "Why should a living man be buried?"},
+	{"Why do Chinese men eat more rice than Japanese men do?", "There are more Chinese men than Japanese man"},
+	{"When will water stop running down hill?", "When it reaches the bottom"},
+	{"I have keys but no locks, I have a space but no room, You can enter, but can't go outside. What am I?", "A keyboard"}};
+
+	return riddleList.at(rand() % riddleList.size()); //return random pair
+}
+
 
 //=================================================================================================================================
 // Allows to make changes to an existing board.
@@ -1377,6 +1420,7 @@ void EditBoard(Board &board, Dictionary &dict)
 				{
 					const int NUMBER_OF_INSERTION_ATTEMPTS = 12;
 					randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
+					bruteForceInsertion(board, dict);
 					validPositionInput = true; //leave loop
 					skipLoop = true;
 				}
