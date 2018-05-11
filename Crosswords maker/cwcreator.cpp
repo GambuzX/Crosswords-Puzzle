@@ -20,9 +20,6 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
-//TODO clear screen
-//TODO algoritmo que completa board sequencialmente
-
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -82,7 +79,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
-vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary);
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, bool &invalid);
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
@@ -546,13 +543,14 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 			board.fillRemainingSpots();
 
 		//Search for automatically formed words
-		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict);
+		bool foundInvalid = false;
+		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict, foundInvalid);
 
-		//Save file
-		string fileName = determineBoardName();
-		success = board.saveBoard(fileName, dict.getName(), autoWords);
-		if (success)
+		if (!foundInvalid) //TODO Test this works
 		{
+			//Save file
+			string fileName = determineBoardName();
+			board.saveBoard(fileName, dict.getName(), autoWords);
 			colorMaster.setcolor(SUCCESS);
 			cout << "\nBoard was saved successfully as " << fileName << ".\n";
 			colorMaster.setcolor(DEFAULT);
@@ -961,9 +959,10 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 //=================================================================================================================================
 // Searches the board for words that were formed automatically.
 
-vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary)
+vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, bool &invalid)
 {
 	vector<pair<string, string>> autoWords;
+	bool foundInvalid = false;
 
 	//HORIZONTAL
 	for (int line = 0; line < board.getVerticalSize(); line++)
@@ -978,22 +977,26 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!board.isWordUsed(currentWord)) //if word does not exist
+					if (!board.isWordUsed(currentWord)) //if word is not used
 					{
 						char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
 						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
+					else
+						foundInvalid = true; //if already is used
 				currentWord = ""; //reset word
 			}
 		}
-		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!board.isWordUsed(currentWord)) //if word does not exist
+		if (currentWord.length() >= 2)
+			if (!board.isWordUsed(currentWord))
 			{
 				char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()) , 'H', '\0' };
 				string position(pos);
 				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
+			else
+				foundInvalid = true;
 	}
 
 	//VERTICAL
@@ -1009,24 +1012,29 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!board.isWordUsed(currentWord)) //if word does not exist
+					if (!board.isWordUsed(currentWord))
 					{
-						char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' }; //TODO check calculus is correct
+						char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
 						string position(pos);
 						autoWords.push_back(pair<string, string>(position, currentWord));
 					}
+					else
+						foundInvalid = true;
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!board.isWordUsed(currentWord)) //if word does not exist
+			if (!board.isWordUsed(currentWord))
 			{
 				char pos[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
 				string position(pos);
 				autoWords.push_back(pair<string, string>(position, currentWord));
 			}
+			else
+				foundInvalid = true;
 	}
 
+	invalid = foundInvalid;
 	return autoWords;
 }
 
@@ -1169,10 +1177,31 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 void bruteForceInsertion(Board &board, Dictionary &dictionary)
 {
+	const int INTERVAL_BETWEEN_DOTS = 1;
+	int currentColor = 1; //Colors go from 1 to 15, excluding black
+	int counter = 1;
 	for (int line = 0; line < board.getVerticalSize(); line++) //For all cells in the board
 	{
 		for (int column = 0; column < board.getHorizontalSize(); column++)
 		{
+			//UI DISPLAY
+			if (counter % INTERVAL_BETWEEN_DOTS == 0)
+			{
+				colorMaster.setcolor(currentColor);
+				cout << " . ";
+				colorMaster.setcolor(DEFAULT);
+				currentColor++;
+				if (currentColor >= 15)
+				{
+					currentColor = 1;
+					cout << endl;
+					//displayMessage();
+					cout << endl;
+				}
+			}
+			counter++;
+
+			//WORD INSERTION
 			if (board.getCell(line, column) == '.')
 			{
 				//========================
@@ -1218,7 +1247,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 						board.insertWord(validWords.at(wordIndex), position);
 						board.insertWordHashes(validWords.at(wordIndex), position);
 					}
-				}				
+				}
 
 				//========================
 				//   Second direction   //
