@@ -1055,6 +1055,125 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 }
 
 //=================================================================================================================================
+// Lists all the words in the board and returns a vector with them. Also signals which words are invalid, i.e., repeated.
+
+vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictionary, vector<pair<string, string>> &invWords)
+{
+	vector<pair<string, string>> boardWords;
+	vector<pair<string, string>> invalidWords;
+
+	//HORIZONTAL
+	for (int line = 0; line < board.getVerticalSize(); line++)
+	{
+		string currentWord = "";
+		for (int column = 0; column < board.getHorizontalSize(); column++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
+					string position(pos);
+					if (!wordBelongsToUsedWords(boardWords, currentWord)) //if word is not used
+					{
+						boardWords.push_back(pair<string, string>(position, currentWord));
+					}
+					else if (wordRepeatedInDifferentPosition(boardWords, currentWord, position)) //if it is used, but in a different position -> invalid
+					{
+						invalidWords.push_back(pair<string, string>(position, currentWord));
+					}
+				}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2)
+		{
+			char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()) , 'H', '\0' };
+			string position(pos);
+			if (!wordBelongsToUsedWords(boardWords, currentWord))
+			{
+				boardWords.push_back(pair<string, string>(position, currentWord));
+			}
+			else if (wordRepeatedInDifferentPosition(boardWords, currentWord, position))
+			{
+				invalidWords.push_back(pair<string, string>(position, currentWord));
+			}
+		}
+	}
+
+	//VERTICAL
+	for (int column = 0; column < board.getHorizontalSize(); column++)
+	{
+		string currentWord = "";
+		for (int line = 0; line < board.getVerticalSize(); line++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+					string position(pos);
+					if (!wordBelongsToUsedWords(boardWords, currentWord))
+					{
+						boardWords.push_back(pair<string, string>(position, currentWord));
+					}
+					else if (wordRepeatedInDifferentPosition(boardWords, currentWord, position))
+					{
+						invalidWords.push_back(pair<string, string>(position, currentWord));
+					}
+				}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+		{
+			char pos[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+			string position(pos);
+			if (!wordBelongsToUsedWords(boardWords, currentWord))
+			{
+				boardWords.push_back(pair<string, string>(position, currentWord));
+			}
+			else if (wordRepeatedInDifferentPosition(boardWords, currentWord, position))
+			{
+				invalidWords.push_back(pair<string, string>(position, currentWord));
+			}
+		}
+	}
+	invWords = invalidWords;
+	return boardWords;
+}
+
+//=================================================================================================================================
+// Indicates if a word belongs to a vector of pairs of strings (position, word).
+
+bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
+{
+	for (int i = 0; i < usedWords.size(); i++)
+		if (usedWords.at(i).second == word)
+			return true;
+	return false;
+}
+
+//=================================================================================================================================
+// Indicates if a word is repeated in a vector, i.e., if it appears more than once in different positions.
+
+bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position)
+{
+	for (int i = 0; i < usedWords.size(); i++)
+		if (usedWords.at(i).first != position && usedWords.at(i).second == word)
+			return true;
+	return false;
+}
+
+//=================================================================================================================================
 // Randomly inserts a valid word from the dictionary in the specified position.
 
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
