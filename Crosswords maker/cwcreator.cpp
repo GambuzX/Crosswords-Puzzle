@@ -22,6 +22,7 @@ using namespace std;
 
 //TODO way to remove extra remaining letters
 //TODO add automatically formed words to used words vector (idea: delete all an rebuild vector)
+//TODO More free mode -> Only check valid words in vertical and horizontal at the end
 
 //TODO Credits to me only
 //TODO Clean up code
