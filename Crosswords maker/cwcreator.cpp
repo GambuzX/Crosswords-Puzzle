@@ -20,7 +20,8 @@ Has functions to deal with the UI, user interaction and the interaction between 
 
 using namespace std;
 
-//TODO allow to edit after invalid error
+//TODO way to remove extra remaining letters
+//TODO add automatically formed words to used words vector (idea: delete all an rebuild vector)
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -243,15 +244,7 @@ int main()
 			//Generate board
 			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS);
 			bruteForceInsertion(board, dictionary);
-
-			//Show generated board
-			//cout << endl;
-			//board.showBoard();
-			//cout << endl;
-
 			EditBoard(board, dictionary);
-			//Save board
-			//askToSaveBoard(board, dictionary);
 			break;
 		}
 		default:
@@ -537,9 +530,7 @@ pair<int,int> askBoardSize()
 
 bool askToSaveBoard(Board &board, Dictionary &dict)
 {
-	bool success = true;
 	char answer = YesNoQuestion("Save the current board (Y/N) ? ");
-
 	if (answer == 'Y')
 	{
 		//Check if board is finished or not
@@ -567,9 +558,11 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 			for (int i = 0; i < invalidWords.size(); i++)
 				cout << endl << invalidWords.at(i).first << " - " << invalidWords.at(i).second;
 			colorMaster.setcolor(DEFAULT);
+			cout << endl;
+			return false;
 		}
 	}
-	return success;
+	return true;
 }
 
 //=================================================================================================================================
@@ -1155,6 +1148,9 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 			cerr << "Invalid input!";
 		}
 
+		if (availableSpace <= 2) //skip if limited space. Does not insert 2 letter words to avoid invalid boards.
+			continue;
+
 		//Try to insert some random words to increase efficiency
 		const int RANDOM_TRIES = 12;
 		bool insertedWord = false;
@@ -1196,6 +1192,8 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 //=================================================================================================================================
 // Brute force word insertion. Goes through the entire board and tries to insert words in every position.
+// To reduce time consumption, only inserts if position has a dot and, after inserting, skips one column.
+// Also tries to insert random words before going throught the entire dictionary.
 
 void bruteForceInsertion(Board &board, Dictionary &dictionary)
 {
@@ -1204,6 +1202,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 	int counter = 1;
 	bool riddle = true;
 	pair<string, string> currentRiddle;
+	vector<string> headlines = dictionary.getHeadlines(); //all words from wordList
 	for (int line = 0; line < board.getVerticalSize(); line++) //For all cells in the board
 	{
 		for (int column = 0; column < board.getHorizontalSize(); column++)
@@ -1265,8 +1264,26 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 					cerr << "Invalid input!";
 				}
 
-				if (availableSpace > 1)
+				if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters
 				{
+					//Try to insert some random words to increase efficiency
+					const int RANDOM_TRIES = 12;
+					bool insertedWord = false;
+					for (int j = 0; j < RANDOM_TRIES; j++)
+					{
+						int randomN = rand() % headlines.size();
+
+						if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+						{
+							board.insertWord(headlines.at(randomN), position);
+							board.insertWordHashes(headlines.at(randomN), position);
+							insertedWord = true;
+							break;
+						}
+					}
+					if (insertedWord) //if successfully inserted a random word, go to next iteration
+						continue;
+
 					//Gets the words that fit the space
 					vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
@@ -1308,7 +1325,25 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 					cerr << "Invalid input!";
 				}
 
-				if (availableSpace <= 1)
+				if (availableSpace <= 2)
+					continue;
+
+				//Try to insert some random words to increase efficiency
+				const int RANDOM_TRIES = 12;
+				bool insertedWord = false;
+				for (int j = 0; j < RANDOM_TRIES; j++)
+				{
+					int randomN = rand() % headlines.size();
+
+					if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+					{
+						board.insertWord(headlines.at(randomN), position);
+						board.insertWordHashes(headlines.at(randomN), position);
+						insertedWord = true;
+						break;
+					}
+				}
+				if (insertedWord) //if successfully inserted a random word, go to next iteration
 					continue;
 
 				//Gets the words that fit the space
@@ -1448,15 +1483,20 @@ void EditBoard(Board &board, Dictionary &dict)
 			{
 				bool successfulSave = askToSaveBoard(board, dict);
 				if (!successfulSave) //if there was a problem saving board, continue with the loop
-					continue;
-				break; //if successful save of the board, end loop
+				{
+					skipLoop = true;
+					stopCreating = false;
+				} 
+				else 
+					break; //if successful save of the board, end loop
 			}
 			else
 			{
 				colorMaster.setcolor(ERROR_MESSAGE);
 				cout << "\nBoard has invalid words and cannot be saved.\n\n";
 				colorMaster.setcolor(DEFAULT);
-				break;
+				skipLoop = true;
+				stopCreating = false;
 			}
 		}
 
@@ -1613,6 +1653,9 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 		default:
 			cerr << "Invalid input!";
 		}
+
+		if (availableSpace <= 2) //skip if limited space. Does not insert 2 letter words to avoid invalid boards.
+			continue;
 
 		//Try to insert some random words to increase efficiency
 		const int RANDOM_TRIES = 12;
