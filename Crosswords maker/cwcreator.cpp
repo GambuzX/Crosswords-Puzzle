@@ -84,6 +84,7 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
 vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, vector<pair<string,string>>&);
+vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictionary, vector<pair<string, string>> &invWords);
 
 pair<string, string> newRiddle();
 
@@ -92,6 +93,8 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 void bruteForceInsertion(Board &board, Dictionary &dictionary);
 void EditBoard(Board &board, Dictionary &dict);
 
+bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word);
+bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position);
 bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, string positionInput);
 Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts);
@@ -541,13 +544,15 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 
 		//Search for automatically formed words
 		vector<pair<string, string>> invalidWords;
-		vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict, invalidWords);
+		//vector<pair<string, string>> autoWords = searchAutoFormedWords(board, dict, invalidWords);
+		vector<pair<string, string>> boardWords = listAllBoardWords(board, dict, invalidWords);
 
 		if (invalidWords.size() == 0) //TODO Test this works
 		{
 			//Save file
 			string fileName = determineBoardName();
-			board.saveBoard(fileName, dict.getName(), autoWords);
+			//board.saveBoard(fileName, dict.getName(), autoWords);
+			board.saveBoard(fileName, dict.getName(), boardWords);
 			colorMaster.setcolor(SUCCESS);
 			cout << "\nBoard was saved successfully as " << fileName << ".\n";
 			colorMaster.setcolor(DEFAULT);

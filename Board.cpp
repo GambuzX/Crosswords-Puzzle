@@ -487,22 +487,33 @@ bool Board::validPositionInput(string input)
 //=================================================================================================================================
 // Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
 
-bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> autoFormedWords)
+bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> boardWords)
 {
 	//Add automatically formed words to the used words vector
-	for (size_t i = 0; i < autoFormedWords.size(); i++) //TODO assure it is working
+	/*for (size_t i = 0; i < autoFormedWords.size(); i++) //TODO assure it is working
 	{
 		insertWord(autoFormedWords.at(i).second, autoFormedWords.at(i).first);
 		insertWordHashes(autoFormedWords.at(i).second, autoFormedWords.at(i).first);
+	}*/
+
+	// Reset board
+	clearBoard();
+
+	// Add all the words in the vector to the used words vector
+	for (size_t i = 0; i < boardWords.size(); i++) //TODO assure it is working
+	{
+		insertWord(boardWords.at(i).second, boardWords.at(i).first);
+		insertWordHashes(boardWords.at(i).second, boardWords.at(i).first);
 	}
+
 
 	// Organize it well
 	ofstream file(fileName);
 	
-	//Write dictionary name
+	// Write dictionary name
 	file << dictName << endl << endl;
 
-	//Write board
+	// Write board
 	for (int i = 0; i < verticalSize; i++)
 	{
 		for (int j = 0; j < horizontalSize; j++)
@@ -790,4 +801,5 @@ void Board::clearBoard()
 	for (int i = 0; i < verticalSize; i++)
 		for (int j = 0; j < horizontalSize; j++)
 			board.at(i).at(j) = '.';
+	usedWords.clear();
 }
