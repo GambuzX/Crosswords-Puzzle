@@ -1177,9 +1177,11 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 void bruteForceInsertion(Board &board, Dictionary &dictionary)
 {
-	const int INTERVAL_BETWEEN_DOTS = 1;
+	const int INTERVAL_BETWEEN_DOTS = 2;
 	int currentColor = 1; //Colors go from 1 to 15, excluding black
 	int counter = 1;
+	bool riddle = true;
+	pair<string, string> currentRiddle;
 	for (int line = 0; line < board.getVerticalSize(); line++) //For all cells in the board
 	{
 		for (int column = 0; column < board.getHorizontalSize(); column++)
@@ -1195,7 +1197,19 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 				{
 					currentColor = 1;
 					cout << endl;
-					//displayMessage();
+					if (riddle)
+					{
+						currentRiddle = newRiddle();
+						colorMaster.setcolor(QUESTION_COLOR);
+						cout << currentRiddle.first;
+						colorMaster.setcolor(DEFAULT);
+					}
+					else
+					{
+						colorMaster.setcolor(SYMBOL_COLOR);
+						cout << currentRiddle.second;
+						colorMaster.setcolor(DEFAULT);
+					}
 					cout << endl;
 				}
 			}
