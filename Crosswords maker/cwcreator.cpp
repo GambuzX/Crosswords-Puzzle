@@ -26,6 +26,7 @@ using namespace std;
 //TODO way to remove extra remaining letters
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
 //TODO -I for info in the options
+//TODO edit mode in instructions
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -59,6 +60,14 @@ using namespace std;
 
 //=================================================================================================================================
 
+//enumeration of possible modes to edit the board
+enum EditMode
+{
+	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
+	free, //Gives the user more freedom and only checks full validity in the end
+	invalid //Invalid edit mode
+};
+
 void Introduction();
 void FullInstructions();
 void PositionInstructions();
@@ -72,6 +81,7 @@ string askBoardNumber();
 string determineBoardName();
 
 pair<int, int> askBoardSize();
+EditMode askEditMode();
 
 Dictionary CreateDictionary(bool &success);
 Dictionary CreateDictionary(string dictName, bool &success);
@@ -105,12 +115,6 @@ bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, str
 Board generateRandomBoard(Dictionary &dictionary);
 
 ColorMaster colorMaster;
-
-//enumeration of possible modes to edit the board
-enum EditMode { 
-	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
-	free //Gives the user more freedom and only checks full validity in the end
-};
 
 //=================================================================================================================================
 
@@ -178,7 +182,8 @@ int main()
 
 			cout << endl;
 			board = CreateBoard();
-			EditBoard(board, dictionary, EditMode::strict);
+			EditMode editMode = askEditMode();
+			EditBoard(board, dictionary, editMode);
 
 			break;
 		}
@@ -225,7 +230,8 @@ int main()
 				colorMaster.setcolor(DEFAULT);
 			}
 
-			EditBoard(board, dictionary);
+			EditMode editMode = askEditMode();
+			EditBoard(board, dictionary, editMode);
 			break;
 		}
 		case 3: 
@@ -259,37 +265,8 @@ int main()
 			//Generate board
 			board = generateRandomBoard(dictionary);
 			bruteForceInsertion(board, dictionary);
-			EditBoard(board, dictionary);
-			break;
-		}
-		case 4:
-		{
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << " ====================================\n";
-			cout << " |            FREE MODE             |\n";
-			cout << " ====================================\n\n";
-			colorMaster.setcolor(DEFAULT);
-
-			bool success; //true if successfully created dictionary
-			dictionary = CreateDictionary(success);
-			if (!success)
-			{
-				colorMaster.setcolor(ERROR_MESSAGE);
-				cout << "\nDictionary was not opened successfully.\n";
-				colorMaster.setcolor(DEFAULT);
-				break;
-			}
-			else
-			{
-				colorMaster.setcolor(SUCCESS);
-				cout << "\nDictionary was opened successfully.\n";
-				colorMaster.setcolor(DEFAULT);
-			}
-
-			cout << endl;
-			board = CreateBoard();
-			EditBoard(board, dictionary, EditMode::free);
-
+			EditMode editMode = askEditMode();
+			EditBoard(board, dictionary, editMode);
 			break;
 		}
 		default:
@@ -615,6 +592,40 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 		}
 	}
 	return true;
+}
+
+//=================================================================================================================================
+// Asks the user in what mode the board should be edited
+
+EditMode askEditMode()
+{
+	EditMode editMode;
+	int answer;
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+		colorMaster.setcolor(QUESTION_COLOR);
+		cout << "Do you wish to edit the board in Strict (0) or Free (1) mode? ";
+		colorMaster.setcolor(DEFAULT);
+		cin >> answer;
+	} while (answer != 0 && answer != 1);
+	
+	switch (answer)
+	{
+	case 0:
+		editMode = EditMode::strict;
+		break;
+	case 1:
+		editMode = EditMode::free;
+		break;
+	default:
+		editMode = EditMode::invalid;
+	}
+	return editMode;
 }
 
 //=================================================================================================================================
