@@ -3,6 +3,8 @@ Starting point for the Crosswords Creator program.
 Allows the user to start (or resume) the creation of a board which can be used in a crosswords game.
 Built by the interaction between user, Board and Dictionary classes.
 Has functions to deal with the UI, user interaction and the interaction between board and dictionary classes.
+
+AUTHOR: GambuzX
 */
 
 #include <iostream>
@@ -21,9 +23,8 @@ Has functions to deal with the UI, user interaction and the interaction between 
 using namespace std;
 
 //TODO way to remove extra remaining letters
-//TODO add automatically formed words to used words vector (idea: delete all an rebuild vector)
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
-//TODO brute force insertion in random complete
+//TODO use brute force insertion in random complete
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -1916,13 +1917,13 @@ bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, str
 }
 
 //=================================================================================================================================
-// Asks for the dimensions of a board and randomly fills it, returning it
+// Asks for the dimensions of a board and randomly fills it with some words, returning it. Does not complete it.
 
-Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
+Board generateRandomBoard(Dictionary &dictionary)
 {
-	//TODO put some something interactable like dots moving
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second);
+	int insertionAttempts = boardSize.first;
 
 	board.clearBoard();
 
@@ -1935,6 +1936,7 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 		int line = rand() % board.getVerticalSize();
 		int column = rand() % board.getHorizontalSize();
 		int dir = rand() % 2;
+
 		char direction = (dir == 0 ? 'H' : 'V');
 		char c_position[] = {'A' + (char) line , 'A' + (char) column, direction, '\0' };
 		string position(c_position);
@@ -1953,9 +1955,6 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 			cerr << "Invalid input!";
 		}
 
-		if (availableSpace <= 2) //skip if limited space. Does not insert 2 letter words to avoid invalid boards.
-			continue;
-
 		//Try to insert some random words to increase efficiency
 		const int RANDOM_TRIES = 12;
 		bool insertedWord = false;
@@ -1971,27 +1970,80 @@ Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts)
 				break;
 			}
 		}
-		if (insertedWord) //if successfully inserted a random word, go to next iteration
-			continue;
-		
-		//Gets the words that fit the space
-		vector<string> fittingWords = dictionary.fittingWords(availableSpace); 
-
-		//Filters the words that may actually be inserted
-		vector<string> validWords;
-		for (size_t j = 0; j < fittingWords.size(); j++)
+		if (!insertedWord) //if successfully inserted a random word, go to next iteration
 		{
-			if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
-				validWords.push_back(fittingWords.at(j));
+			//Gets the words that fit the space
+			vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+			//Filters the words that may actually be inserted
+			vector<string> validWords;
+			for (size_t j = 0; j < fittingWords.size(); j++)
+			{
+				if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+					validWords.push_back(fittingWords.at(j));
+			}
+
+			if (validWords.size() != 0) //Only attempt insertion if there are words for it
+			{
+				//Perform insertion
+				int wordIndex = rand() % validWords.size();
+				board.insertWord(validWords.at(wordIndex), position);
+				board.insertWordHashes(validWords.at(wordIndex), position);
+			}
 		}
 
-		if (validWords.size() == 0) //if no words can be inserted, skip iteration
-			continue;
+		direction = (direction == 'V' ? 'H' : 'V');
+		char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
+		position = string(c_position2);
 
-		//Perform insertion
-		int wordIndex = rand() % validWords.size();
-		board.insertWord(validWords.at(wordIndex), position);
-		board.insertWordHashes(validWords.at(wordIndex), position);
+		//Calculate available space
+		switch (direction)
+		{
+		case 'H':
+			availableSpace = board.getHorizontalSize() - column;
+			break;
+		case 'V':
+			availableSpace = board.getVerticalSize() - line;
+			break;
+		default:
+			cerr << "Invalid input!";
+		}
+
+		//Try to insert some random words to increase efficiency
+		insertedWord = false;
+		for (int j = 0; j < RANDOM_TRIES; j++)
+		{
+			int randomN = rand() % headlines.size();
+
+			if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+			{
+				board.insertWord(headlines.at(randomN), position);
+				board.insertWordHashes(headlines.at(randomN), position);
+				insertedWord = true;
+				break;
+			}
+		}
+		if (!insertedWord) //if successfully inserted a random word, go to next iteration
+		{
+			//Gets the words that fit the space
+			vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+			//Filters the words that may actually be inserted
+			vector<string> validWords;
+			for (size_t j = 0; j < fittingWords.size(); j++)
+			{
+				if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+					validWords.push_back(fittingWords.at(j));
+			}
+
+			if (validWords.size() != 0) //Only attempt insertion if there are words for it
+			{
+				//Perform insertion
+				int wordIndex = rand() % validWords.size();
+				board.insertWord(validWords.at(wordIndex), position);
+				board.insertWordHashes(validWords.at(wordIndex), position);
+			}
+		}
 	}
 	return board;
 }
