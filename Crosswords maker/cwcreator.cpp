@@ -64,7 +64,7 @@ using namespace std;
 enum EditMode
 {
 	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
-	free, //Gives the user more freedom and only checks full validity in the end
+	trustUser, //Gives the user more freedom and only checks full validity in the end
 	invalid //Invalid edit mode
 };
 
@@ -459,11 +459,6 @@ void Options()
 	cout << " - Randomly generate puzzle\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
-	cout << "4";
-	colorMaster.setcolor(DEFAULT);
-	cout << " - Create board Free Mode\n";
-
-	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Exit\n";
@@ -620,7 +615,7 @@ EditMode askEditMode()
 		editMode = EditMode::strict;
 		break;
 	case 1:
-		editMode = EditMode::free;
+		editMode = EditMode::trustUser;
 		break;
 	default:
 		editMode = EditMode::invalid;
