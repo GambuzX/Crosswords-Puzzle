@@ -22,9 +22,10 @@ AUTHOR: GambuzX
 
 using namespace std;
 
-//TODO another randomizer. Maybe dont need to fill all spots
+//TODO test another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
+//TODO -I for info in the options
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -255,6 +256,36 @@ int main()
 			EditBoard(board, dictionary);
 			break;
 		}
+		case 4:
+		{
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << " ====================================\n";
+			cout << " |            FREE MODE             |\n";
+			cout << " ====================================\n\n";
+			colorMaster.setcolor(DEFAULT);
+
+			bool success; //true if successfully created dictionary
+			dictionary = CreateDictionary(success);
+			if (!success)
+			{
+				colorMaster.setcolor(ERROR_MESSAGE);
+				cout << "\nDictionary was not opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+				break;
+			}
+			else
+			{
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nDictionary was opened successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+			}
+
+			cout << endl;
+			board = CreateBoard();
+			EditBoard(board, dictionary);
+
+			break;
+		}
 		default:
 			cerr << "Should not be able to get here!";
 		}
@@ -443,6 +474,11 @@ void Options()
 	cout << "3";
 	colorMaster.setcolor(DEFAULT);
 	cout << " - Randomly generate puzzle\n";
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "4";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Create board Free Mode\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
@@ -1787,7 +1823,10 @@ void EditBoard(Board &board, Dictionary &dict)
 				cout << "\nBoard has invalid words and cannot be saved.\n\n";
 				colorMaster.setcolor(DEFAULT);
 				skipLoop = true;
-				stopCreating = true; //same as break
+
+				char answer = YesNoQuestion("Leave (Y/N)?"); //TODO test it works
+				if (answer == 'N')
+					stopCreating = false; //continue editing
 			}
 		}
 
