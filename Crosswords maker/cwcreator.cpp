@@ -22,9 +22,9 @@ AUTHOR: GambuzX
 
 using namespace std;
 
+//TODO another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
-//TODO use brute force insertion in random complete
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -101,7 +101,7 @@ bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
 bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position);
 bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, string positionInput);
-Board generateRandomBoard(Dictionary &dictionary, int insertionAttempts);
+Board generateRandomBoard(Dictionary &dictionary);
 
 ColorMaster colorMaster;
 
@@ -250,7 +250,7 @@ int main()
 			cout << endl;
 
 			//Generate board
-			board = generateRandomBoard(dictionary, NUMBER_INSERTION_ATTEMPTS);
+			board = generateRandomBoard(dictionary);
 			bruteForceInsertion(board, dictionary);
 			EditBoard(board, dictionary);
 			break;
@@ -1673,7 +1673,7 @@ pair<string, string> newRiddle()
 		{"Imagine you are in a dark room. How do you get out?", "Stop imagining"},
 		{"What invention lets you look right through a wall?", "The window"},
 	{"What is at the end of a rainbow?", "The letter W"},
-	{"The eight of us go forth not back to protect our king from a foes attack.", "Chesspawns"},
+	{"The eight of us go forth not back to protect our king from a foes attack. Who are we?", "Chesspawns"},
 	{"Why can't a man living in the USA be buried in Canada?", "Why should a living man be buried?"},
 	{"Why do Chinese men eat more rice than Japanese men do?", "There are more Chinese men than Japanese man"},
 	{"When will water stop running down hill?", "When it reaches the bottom"},
