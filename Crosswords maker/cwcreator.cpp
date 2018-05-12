@@ -23,6 +23,7 @@ using namespace std;
 //TODO way to remove extra remaining letters
 //TODO add automatically formed words to used words vector (idea: delete all an rebuild vector)
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
+//TODO brute force insertion in random complete
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -81,6 +82,7 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
+bool testRemoval(Board &board, Dictionary &dictionary, string positionInput);
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
 
 vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &dictionary, vector<pair<string,string>>&);
@@ -917,6 +919,26 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 }
 
 //=================================================================================================================================
+// Simulates a word removal and verifies if the resulting board is valid according to the dictionary
+
+bool testRemoval(Board &board, Dictionary &dictionary, string positionInput)
+{
+	//Backup
+	std::vector<std::vector<char>> oldboard = board.getBoard();
+	std::vector<std::pair<std::string, std::string>> oldUsedWords = board.getUsedWords();
+
+	//Insert word a verify if the board is valid
+	board.removeWord(positionInput);
+	bool valid = isBoardValid(board, dictionary);
+
+	//Restore backup
+	board.setBoard(oldboard);
+	board.setUsedWords(oldUsedWords);
+
+	return valid;
+}
+
+//=================================================================================================================================
 // Helps the user by showing which words can be placed on specified location
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput)
@@ -1609,7 +1631,7 @@ void EditBoard(Board &board, Dictionary &dict)
 				cout << "\nBoard has invalid words and cannot be saved.\n\n";
 				colorMaster.setcolor(DEFAULT);
 				skipLoop = true;
-				stopCreating = false;
+				stopCreating = true; //same as break
 			}
 		}
 
