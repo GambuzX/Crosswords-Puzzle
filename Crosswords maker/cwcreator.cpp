@@ -81,6 +81,7 @@ bool askToSaveBoard(Board &board, Dictionary &dict);
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
+bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary);
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool testRemoval(Board &board, Dictionary &dictionary, string positionInput);
 bool randomInsertWord(Board &board, Dictionary &dictionary, string position);
@@ -988,6 +989,70 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 }
 
 //=================================================================================================================================
+// Verifies if there are 2 letter words repeated in the board. Assumes words found are valid.
+
+bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary) //TODO test this works
+{
+	vector<string> foundWords;
+
+	//HORIZONTAL
+	for (int line = 0; line < board.getVerticalSize(); line++)
+	{
+		string currentWord = "";
+		for (int column = 0; column < board.getHorizontalSize(); column++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() == 2) //only check if word size is 2
+					if (find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end())
+						return true;
+					else
+						foundWords.push_back(currentWord);
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() == 2) //only check if word size is 2
+			if (find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end())
+				return true;
+			else
+				foundWords.push_back(currentWord);
+	}
+
+	//VERTICAL
+	for (int column = 0; column < board.getHorizontalSize(); column++)
+	{
+		string currentWord = "";
+		for (int line = 0; line < board.getVerticalSize(); line++)
+		{
+			if (isalpha(board.getCell(line, column)))
+			{
+				currentWord += board.getCell(line, column);
+			}
+			else
+			{
+				if (currentWord.length() == 2) //only check if word size is 2
+					if (find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end())
+						return true;
+					else
+						foundWords.push_back(currentWord);
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() == 2) //only check if word size is 2
+			if (find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end())
+				return true;
+			else
+				foundWords.push_back(currentWord);
+	}
+
+	return false;
+}
+
+//=================================================================================================================================
 // Simulates an insertion and verifies if the resulting board is valid according to the dictionary
 
 bool testInsertion(Board &board, Dictionary &dictionary, string word, string positionInput)
@@ -998,13 +1063,14 @@ bool testInsertion(Board &board, Dictionary &dictionary, string word, string pos
 
 	//Insert word a verify if the board is valid
 	board.insertWord(word, positionInput);
-	bool valid = isBoardValid(board, dictionary, word, positionInput);
+	bool test1 = isBoardValid(board, dictionary, word, positionInput);
+	bool test2 = !hasTwoLetterWordsRepeated(board, dictionary);
 
 	//Restore backup
 	board.setBoard(oldboard);
 	board.setUsedWords(oldUsedWords);
 
-	return valid;
+	return test1 && test2;
 }
 
 //=================================================================================================================================
