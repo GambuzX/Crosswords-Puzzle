@@ -496,8 +496,13 @@ bool Board::saveBoard(string fileName, string dictName, vector<pair<string,strin
 		insertWordHashes(autoFormedWords.at(i).second, autoFormedWords.at(i).first);
 	}*/
 
-	// Reset board
-	clearBoard();
+	// Clear board letters and reset used words vector
+	for (int i = 0; i < verticalSize; i++)
+		for (int j = 0; j < horizontalSize; j++)
+			if (isalpha(board.at(i).at(j)))
+				board.at(i).at(j) = '.';
+	usedWords.clear();
+
 
 	// Add all the words in the vector to the used words vector
 	for (size_t i = 0; i < boardWords.size(); i++) //TODO assure it is working

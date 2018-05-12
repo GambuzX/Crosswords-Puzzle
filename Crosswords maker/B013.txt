@@ -1,0 +1,22 @@
+dictionary.txt
+
+T . V . # C . . 
+A # E N J O I N 
+L . R . A # . # 
+E . N . R # . M 
+# R A W # B . E 
+R . L # W A R N 
+E . # . . I . D 
+# P I R A T E # 
+
+BCH ENJOIN
+EBH RAW
+FEH WARN
+HBH PIRATE
+AAV TALE
+FAV RE
+ACV VERNAL
+BEV JAR
+AFV CO
+EFV BAIT
+DHV MEND

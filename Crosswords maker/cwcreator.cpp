@@ -986,11 +986,8 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 				{
 					char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
 					string position(pos);
-					if (!board.isWordUsed(currentWord)) //if word is not used
-					{
-						autoWords.push_back(pair<string, string>(position, currentWord));
-					}
-					else if (board.isSameWordInDifferentPosition(currentWord,position)) //if it is used, but in a different position -> invalid
+					autoWords.push_back(pair<string, string>(position, currentWord)); //adds all words in the board to the vector
+					if (board.isSameWordInDifferentPosition(currentWord,position)) //if it is used, but in a different position -> invalid
 					{
 						invalidWords.push_back(pair<string, string>(position, currentWord));
 					}
@@ -1002,11 +999,8 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 		{
 			char pos[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()) , 'H', '\0' };
 			string position(pos);
-			if (!board.isWordUsed(currentWord))
-			{
-				autoWords.push_back(pair<string, string>(position, currentWord));
-			}
-			else if(board.isSameWordInDifferentPosition(currentWord, position))
+			autoWords.push_back(pair<string, string>(position, currentWord));
+			if(board.isSameWordInDifferentPosition(currentWord, position))
 			{
 				invalidWords.push_back(pair<string, string>(position, currentWord));
 			}
@@ -1029,11 +1023,8 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 				{
 					char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
 					string position(pos);
-					if (!board.isWordUsed(currentWord))
-					{
-						autoWords.push_back(pair<string, string>(position, currentWord));
-					}
-					else if (board.isSameWordInDifferentPosition(currentWord, position))
+					autoWords.push_back(pair<string, string>(position, currentWord));
+					if (board.isSameWordInDifferentPosition(currentWord, position))
 					{
 						invalidWords.push_back(pair<string, string>(position, currentWord));
 					}
@@ -1045,11 +1036,8 @@ vector <pair<string, string>> searchAutoFormedWords(Board &board, Dictionary &di
 		{
 			char pos[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
 			string position(pos);
-			if (!board.isWordUsed(currentWord))
-			{
-				autoWords.push_back(pair<string, string>(position, currentWord));
-			}
-			else if (board.isSameWordInDifferentPosition(currentWord, position))
+			autoWords.push_back(pair<string, string>(position, currentWord));
+			if (board.isSameWordInDifferentPosition(currentWord, position))
 			{
 				invalidWords.push_back(pair<string, string>(position, currentWord));
 			}
