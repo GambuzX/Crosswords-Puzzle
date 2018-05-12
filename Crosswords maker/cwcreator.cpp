@@ -96,7 +96,7 @@ pair<string, string> newRiddle();
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void bruteForceInsertion(Board &board, Dictionary &dictionary);
-void EditBoard(Board &board, Dictionary &dict);
+void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
 
 bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word);
 bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position);
@@ -105,6 +105,12 @@ bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, str
 Board generateRandomBoard(Dictionary &dictionary);
 
 ColorMaster colorMaster;
+
+//enumeration of possible modes to edit the board
+enum EditMode { 
+	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
+	free //Gives the user more freedom and only checks full validity in the end
+};
 
 //=================================================================================================================================
 
@@ -172,7 +178,7 @@ int main()
 
 			cout << endl;
 			board = CreateBoard();
-			EditBoard(board, dictionary);
+			EditBoard(board, dictionary, EditMode::strict);
 
 			break;
 		}
@@ -282,7 +288,7 @@ int main()
 
 			cout << endl;
 			board = CreateBoard();
-			EditBoard(board, dictionary);
+			EditBoard(board, dictionary, EditMode::free);
 
 			break;
 		}
@@ -1722,7 +1728,7 @@ pair<string, string> newRiddle()
 //=================================================================================================================================
 // Allows to make changes to an existing board.
 
-void EditBoard(Board &board, Dictionary &dict)
+void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 {
 	cout << endl;
 	board.showBoard();
