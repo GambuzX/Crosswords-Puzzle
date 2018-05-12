@@ -599,6 +599,7 @@ bool Board::loadBoard(string boardNumber, string& dictName)
 		string position = line.substr(0, 3);
 		string word = line.substr(4); //from index 4 to the end
 		insertWord(word, position);
+		insertWordHashes(word, position); //TODO I added this late, not sure it works
 	}	
 	if (!foundDot)
 		fillRemainingSpots();

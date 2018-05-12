@@ -1487,7 +1487,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 void bruteForceInsertion(Board &board, Dictionary &dictionary)
 {
-	const int INTERVAL_BETWEEN_DOTS = 2;
+	const int INTERVAL_BETWEEN_DOTS = 1;
 	int currentColor = 1; //Colors go from 1 to 15, excluding black
 	int counter = 1;
 	bool riddle = true;
