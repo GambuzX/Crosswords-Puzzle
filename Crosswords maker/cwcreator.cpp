@@ -1666,10 +1666,19 @@ void EditBoard(Board &board, Dictionary &dict)
 			}
 			else if (word == "-") // Remove word
 			{
-				bool wordRemoved = board.removeWord(positionInput);
-				if (wordRemoved)
-					validInput = true; // exit loop
-				cout << endl;
+				if (testRemoval(board, dict, positionInput))
+				{
+					bool wordRemoved = board.removeWord(positionInput);
+					if (wordRemoved)
+						validInput = true; // exit loop
+					cout << endl;
+				}
+				else
+				{
+					colorMaster.setcolor(ERROR_MESSAGE);
+					cout << "\nRemoving that word would invalidate the board.\n\n";
+					colorMaster.setcolor(DEFAULT);
+				}
 			}
 			else if (word == "?") // Ask for help
 			{
