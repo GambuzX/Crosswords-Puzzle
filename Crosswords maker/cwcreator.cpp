@@ -28,6 +28,7 @@ using namespace std;
 //TODO -I for info in the options
 //TODO edit mode in instructions
 //TODO deal with invalid editmode
+//TODO think about word removal
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -92,6 +93,7 @@ Board ResumeBoard(string &dictName, bool &operationSuccess);
 
 bool askToSaveBoard(Board &board, Dictionary &dict);
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
+bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, string positionInput);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
 bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary);
@@ -105,6 +107,7 @@ vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictio
 pair<string, string> newRiddle();
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput);
+void helpUserFreeMode(Board &board, Dictionary &dictionary, string positionInput);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void bruteForceInsertion(Board &board, Dictionary &dictionary);
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
@@ -230,6 +233,7 @@ int main()
 				cout << "\nDictionary was opened successfully.\n";
 				colorMaster.setcolor(DEFAULT);
 			}
+			cout << endl;
 
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode);
@@ -607,7 +611,7 @@ EditMode askEditMode()
 			cin.ignore(10000, '\n');
 		}
 		colorMaster.setcolor(QUESTION_COLOR);
-		cout << "Do you wish to edit the board in Strict (0) or Free (1) mode? ";
+		cout << "\nDo you wish to edit the board in Strict (0) or Free (1) mode? ";
 		colorMaster.setcolor(DEFAULT);
 		cin >> answer;
 	} while (answer != 0 && answer != 1);
@@ -729,7 +733,7 @@ Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 }
 
 //=================================================================================================================================
-// Verifies if a word can be inserted in a determined location, informing why not if false
+// Verifies if a word can be inserted in a determined location, informing why not if false. EditMode = free.
 
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput)
 {
@@ -773,6 +777,60 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		return false;
 	}
 	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not match current board!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	return true;
+}
+
+//=================================================================================================================================
+// Verifies if a word can be inserted in a determined location, informing why not if false. EditMode = trustUser.
+
+bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	char direction = positionInput.at(2);
+
+	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou can not place a word in that location.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!dictionary.isValidHeadline(word)) // Verify word is a valid headline
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z' or the ones specified in the instructions.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!dictionary.isInWordList(word)) // Verify word belongs to the dictionary
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is not present in the dictionary!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!board.wordFitsSpace(word, positionInput)) // Verify it fits the space
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord does not fit the specified space!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (board.isWordUsed(word)) // Verify if word was already used
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (!board.matchesInterceptedPositions(word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not match current board!\n\n";
@@ -1146,7 +1204,7 @@ bool testRemoval(Board &board, Dictionary &dictionary, string positionInput)
 }
 
 //=================================================================================================================================
-// Helps the user by showing which words can be placed on specified location
+// Helps the user by showing which words can be placed on specified location. EditMode = strict.
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 {
@@ -1183,6 +1241,52 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput)
 	{
 		string currentWord = fittingWords.at(i);
 		if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput) && testInsertion(board, dictionary, currentWord, positionInput))
+		{
+			if (counter % WORDS_PER_LINE == 0) cout << endl;
+			cout << setw(WORDS_WIDTH) << currentWord;
+			counter++;
+		}
+	}
+}
+
+//=================================================================================================================================
+// Helps the user by showing which words can be placed on specified location. EditMode = trustUser.
+
+void helpUserFreeMode(Board &board, Dictionary &dictionary, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
+
+	//Calculate available space
+	int availableSpace;
+	switch (direction)
+	{
+	case 'H':
+		availableSpace = board.getHorizontalSize() - insertionPosition.second;
+		break;
+	case 'V':
+		availableSpace = board.getVerticalSize() - insertionPosition.first;
+		break;
+	default:
+		cerr << "Invalid input!";
+	}
+
+	colorMaster.setcolor(BLACK, WHITE);
+	cout << "\nWords that fit there:\n";
+	colorMaster.setcolor(WHITE, BLACK);
+
+	//Gets the words that may fit there from the dictionary
+	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+	//Displays the words that are valid insertions in the board
+	int counter = 0;
+	const int WORDS_PER_LINE = 6;
+	const int WORDS_WIDTH = 18;
+	for (size_t i = 0; i < fittingWords.size(); i++)
+	{
+		string currentWord = fittingWords.at(i);
+		if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput))
 		{
 			if (counter % WORDS_PER_LINE == 0) cout << endl;
 			cout << setw(WORDS_WIDTH) << currentWord;
@@ -1839,7 +1943,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				colorMaster.setcolor(DEFAULT);
 				skipLoop = true;
 
-				char answer = YesNoQuestion("Leave (Y/N)?"); //TODO test it works
+				char answer = YesNoQuestion("Leave (Y/N)? "); //TODO test it works
 				if (answer == 'N')
 					stopCreating = false; //continue editing
 			}
@@ -1903,7 +2007,15 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else if (word == "?") // Ask for help
 			{
-				helpUser(board, dict, positionInput);
+				switch (editMode)
+				{
+				case EditMode::strict:
+					helpUser(board, dict, positionInput);
+					break;
+				case EditMode::trustUser:
+					helpUserFreeMode(board, dict, positionInput);
+					break;
+				}
 				cout << endl;
 			}
 			else if (word == "#") // Insert an hash
