@@ -730,11 +730,11 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 }
 
 //=================================================================================================================================
-// Verifies if all words in the board in both directions are valid according to the dictionary
+// Verifies if all words in the board in both directions are valid according to the dictionary and if there are no duplicates
 
 bool isBoardValid(Board &board, Dictionary &dictionary)
 {
-	bool valid = true;
+	vector<string> foundWords;
 
 	//HORIZONTAL
 	for (int line = 0; line < board.getVerticalSize(); line++)
@@ -749,14 +749,18 @@ bool isBoardValid(Board &board, Dictionary &dictionary)
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						valid = false;
+					if (!dictionary.isInWordList(currentWord) || find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end()) //if word does not exist or is duplicate
+						return false;
+					else
+						foundWords.push_back(currentWord);
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				valid = false;
+			if (!dictionary.isInWordList(currentWord) || find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end()) //if word does not exist or is duplicate
+				return false;
+			else
+				foundWords.push_back(currentWord);
 	}
 
 	//VERTICAL
@@ -772,21 +776,25 @@ bool isBoardValid(Board &board, Dictionary &dictionary)
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
-					if (!dictionary.isInWordList(currentWord)) //if word does not exist
-						valid = false;
+					if (!dictionary.isInWordList(currentWord) || find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end()) //if word does not exist or is duplicate
+						return false;
+					else
+						foundWords.push_back(currentWord);
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
-			if (!dictionary.isInWordList(currentWord)) //if word does not exist
-				valid = false;
+			if (!dictionary.isInWordList(currentWord) || find(foundWords.begin(), foundWords.end(), currentWord) != foundWords.end()) //if word does not exist or is duplicate
+				return false;
+			else
+				foundWords.push_back(currentWord);
 	}
 
-	return valid;
+	return true;
 }
 
 //=================================================================================================================================
-// Verifies if all words in the board in both directions are valid according to the dictionary
+// Verifies if all words in the board in both directions are valid according to the dictionary and if there are no duplicates
 // However, is limited to the positions the word occupies
 
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position)
@@ -795,6 +803,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 	char dir = position.at(2);
 	int start, end;
 
+	vector<pair<string, string>> usedWords = board.getUsedWords();
 	string currentWord;
 	switch (dir)
 	{
@@ -815,14 +824,34 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 				else
 				{
 					if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					{
+						char c_position[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' }; //TODO check this works
+						string position(c_position);
+
 						if (!dictionary.isInWordList(currentWord)) //if word does not exist
 							return false;
+
+						//Check for duplicates in different positions
+						for (int i = 0; i < usedWords.size(); i++)
+							if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+								return false;
+					}
 					currentWord = ""; //reset word
 				}
 			}
 			if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			{
+				char c_position[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+				string position(c_position);
+
 				if (!dictionary.isInWordList(currentWord)) //if word does not exist
 					return false;
+
+				//Check for duplicates in different positions
+				for (int i = 0; i < usedWords.size(); i++)
+					if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+						return false;
+			}
 		}
 
 		//HORIZONTAL
@@ -836,14 +865,34 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char c_position[] = { 'A' + (char)coords.first, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
+					string position(c_position);
+
 					if (!dictionary.isInWordList(currentWord)) //if word does not exist
 						return false;
+
+					//Check for duplicates in different positions
+					for (int i = 0; i < usedWords.size(); i++)
+						if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+							return false;
+				}
 				currentWord = ""; //reset word
 			}
 		}
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+		{
+			char c_position[] = { 'A' + (char)coords.first, 'A' + (char)(board.getHorizontalSize() - currentWord.length()), 'H', '\0' };
+			string position(c_position);
+
 			if (!dictionary.isInWordList(currentWord)) //if word does not exist
 				return false;
+
+			//Check for duplicates in different positions
+			for (int i = 0; i < usedWords.size(); i++)
+				if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+					return false;
+		}
 		break;
 
 	case 'V':
@@ -863,14 +912,34 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 				else
 				{
 					if (currentWord.length() >= 2) //only check if word size is bigger than 1
+					{
+						char c_position[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
+						string position(c_position);
+
 						if (!dictionary.isInWordList(currentWord)) //if word does not exist
 							return false;
+
+						//Check for duplicates in different positions
+						for (int i = 0; i < usedWords.size(); i++)
+							if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+								return false;
+					}
 					currentWord = ""; //reset word
 				}
 			}
 			if (currentWord.length() >= 2) //only check if word size is bigger than 1
+			{
+				char c_position[] = { 'A' + (char)line, 'A' + (char)(board.getHorizontalSize() - currentWord.length()), 'H', '\0' };
+				string position(c_position);
+
 				if (!dictionary.isInWordList(currentWord)) //if word does not exist
 					return false;
+
+				//Check for duplicates in different positions
+				for (int i = 0; i < usedWords.size(); i++)
+					if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+						return false;
+			}
 		}
 
 		//VERTICAL
@@ -884,15 +953,35 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 			else
 			{
 				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char c_position[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)coords.second, 'V', '\0' };
+					string position(c_position);
+
 					if (!dictionary.isInWordList(currentWord)) //if word does not exist
 						return false;
+
+					//Check for duplicates in different positions
+					for (int i = 0; i < usedWords.size(); i++)
+						if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+							return false;
+				}
 				currentWord = ""; //reset word
 			}
 		}
 
 		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+		{
+			char c_position[] = { 'A' + (char)(board.getVerticalSize() - currentWord.length()), 'A' + (char)coords.second, 'V', '\0' };
+			string position(c_position);
+
 			if (!dictionary.isInWordList(currentWord)) //if word does not exist
 				return false;
+
+			//Check for duplicates in different positions
+			for (int i = 0; i < usedWords.size(); i++)
+				if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
+					return false;
+		}
 		break;
 	}
 	return true;
