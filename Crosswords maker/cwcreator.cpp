@@ -24,10 +24,8 @@ using namespace std;
 
 //TODO test another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
-//TODO More free mode -> Only check valid words in vertical and horizontal at the end
 //TODO -I for info in the options
 //TODO edit mode in instructions
-//TODO deal with invalid editmode
 //TODO think about word removal
 
 //TODO Credits to me only
@@ -1843,6 +1841,14 @@ pair<string, string> newRiddle()
 
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 {
+	if (editMode == EditMode::invalid)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nInvalid edit mode.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return;
+	}
+
 	cout << endl;
 	board.showBoard();
 	cout << endl;
