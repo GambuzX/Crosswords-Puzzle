@@ -73,6 +73,7 @@ void FullInstructions();
 void PositionInstructions();
 void WordInstructions();
 void Options();
+void OptionsInformation();
 
 char YesNoQuestion(string question);
 
@@ -272,6 +273,10 @@ int main()
 			EditBoard(board, dictionary, editMode);
 			break;
 		}
+		case 9:
+			OptionsInformation();
+			_getch();
+			break;
 		default:
 			cerr << "Should not be able to get here!";
 		}
@@ -307,7 +312,7 @@ void FullInstructions()
 	cout << "\nINSTRUCTIONS\n\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
-	cout << "Max size for each direction is 26.\n";
+	cout << "Max board size in each direction is 26.\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR); 
 	cout << "Dots";
@@ -451,17 +456,24 @@ void Options()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "1";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Create board\n";
+	cout << " - Create new board.\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "2";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Resume board\n";
+	cout << " - Resume existing board.\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "3";
 	colorMaster.setcolor(DEFAULT);
-	cout << " - Randomly generate puzzle\n";
+	cout << " - Randomly generate puzzle.\n";
+
+	cout << endl;
+
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << "9";
+	colorMaster.setcolor(DEFAULT);
+	cout << " - Options information.\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "0";
