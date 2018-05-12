@@ -27,6 +27,7 @@ using namespace std;
 //TODO More free mode -> Only check valid words in vertical and horizontal at the end
 //TODO -I for info in the options
 //TODO edit mode in instructions
+//TODO deal with invalid editmode
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -1875,18 +1876,29 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else if (word == "-") // Remove word
 			{
-				if (testRemoval(board, dict, positionInput))
+				switch (editMode)
 				{
+				case EditMode::strict:
+					if (testRemoval(board, dict, positionInput))
+					{
+						bool wordRemoved = board.removeWord(positionInput);
+						if (wordRemoved)
+							validInput = true; // exit loop
+						cout << endl;
+					}
+					else
+					{
+						colorMaster.setcolor(ERROR_MESSAGE);
+						cout << "\nRemoving that word would invalidate the board.\n\n";
+						colorMaster.setcolor(DEFAULT);
+					}
+					break;
+				case EditMode::trustUser:
 					bool wordRemoved = board.removeWord(positionInput);
 					if (wordRemoved)
 						validInput = true; // exit loop
 					cout << endl;
-				}
-				else
-				{
-					colorMaster.setcolor(ERROR_MESSAGE);
-					cout << "\nRemoving that word would invalidate the board.\n\n";
-					colorMaster.setcolor(DEFAULT);
+					break;
 				}
 			}
 			else if (word == "?") // Ask for help
@@ -1918,12 +1930,27 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				cout << endl;
 			}
 			else // normal word insertion
-				if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
+			{
+				switch (editMode)
 				{
-					board.insertWord(word, positionInput);
-					board.insertWordHashes(word, positionInput);
-					validInput = true;
+				case EditMode::strict:
+					if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
+					{
+						board.insertWord(word, positionInput);
+						board.insertWordHashes(word, positionInput);
+						validInput = true;
+					}
+					break;
+				case EditMode::trustUser:
+					if (canBeInsertedFreeMode(board, dict, word, positionInput)) //Check validity and output error messages if necessary
+					{
+						board.insertWord(word, positionInput);
+						board.insertWordHashes(word, positionInput);
+						validInput = true;
+					}
+					break;
 				}
+			}
 		} while (!validInput); //loop until valid input
 
 		cout << endl;
