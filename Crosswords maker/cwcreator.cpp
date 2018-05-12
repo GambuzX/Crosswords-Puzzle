@@ -357,6 +357,7 @@ void FullInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 
@@ -430,6 +431,7 @@ void WordInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 }
@@ -1892,6 +1894,11 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				helpUser(board, dict, positionInput);
 				cout << endl;
 			}
+			else if (word == "#") // Insert an hash
+			{
+				board.insertHash(positionInput);
+				validInput = true;
+			}
 			else if (word == "I") // Ask for instructions
 			{
 				WordInstructions();
@@ -1903,7 +1910,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				board.showBoard();
 				cout << endl;
 			}
-			else if (word == "R") // Show board
+			else if (word == "R") // Remove word
 			{
 				bool wordInserted = randomInsertWord(board, dict, positionInput);
 				if (wordInserted)
