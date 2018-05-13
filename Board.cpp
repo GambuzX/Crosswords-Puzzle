@@ -754,7 +754,7 @@ bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) 
 		bool intercepts = true;
 
 		if (targetDir != wordDir) //must be on the same direction
-			return false;
+			intercepts = false;
 
 		switch (targetDir)
 		{
@@ -781,9 +781,9 @@ bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) 
 }
 
 //=================================================================================================================================
-// Checks if the adjacent spaces of a given position on a direction are empty
+// Checks if the adjacent spaces of a given position on a direction are not occupied by an inserted word
 
-bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
+bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //direction the word is inserted
 {
 	int line = coordinates.first;
 	int column = coordinates.second;

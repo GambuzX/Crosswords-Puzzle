@@ -1888,7 +1888,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 //=================================================================================================================================
 // Returns a random pair constituted by riddle and answer
 
-pair<string, string> newRiddle()
+pair<string, string> newRiddle() //TODO more riddles
 {
 	vector<pair<string, string>> riddleList = { 
 		{"What kind of room has no doors or windows ?", "A mushroom"}, 
@@ -2070,7 +2070,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					else
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
-						cout << "\nRemoving that word would invalidate the board.\n\n";
+						cout << "\nRemoving that word would invalidate the board.\n";
 						validInput = true; // exit loop
 						colorMaster.setcolor(DEFAULT);
 					}
