@@ -420,7 +420,7 @@ void FullInstructions()
 	cout << "Other options: \n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display simplified instructions for this question.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
-	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word (or hash if in free mode).\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
@@ -497,7 +497,7 @@ void WordInstructions()
 	cout << "Other options: \n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "I";	colorMaster.setcolor(DEFAULT);	cout << " to display these instructions.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
-	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word (or hash if in free mode).\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
@@ -1987,7 +1987,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				else if (board.validPositionInput(positionInput))
 				{
 					pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
-					if (board.getCell(coordinates.first, coordinates.second) == '#')
+					if (board.getCell(coordinates.first, coordinates.second) == '#' && editMode == EditMode::strict)
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
 						cout << "\nYou cannot insert any word there.\n\n";
