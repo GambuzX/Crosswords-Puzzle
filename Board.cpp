@@ -751,6 +751,8 @@ bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) 
 		pair<int, int> wordCoords = calculateInsertionCoordinates(usedWords.at(i).first);
 		char wordDir = usedWords.at(i).first.at(2);
 
+		bool intercepts = true;
+
 		if (targetDir != wordDir) //must be on the same direction
 			return false;
 
@@ -758,21 +760,24 @@ bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) 
 		{
 		case 'H':
 			if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
-				return false;
+				intercepts = false;
 			if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + (int)usedWords.at(i).second.length())) //if out of the range occupied by the word
-				return false;
+				intercepts = false;
 			break;
 		case 'V':
 			if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
-				return false;
+				intercepts = false;
 			if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + (int)usedWords.at(i).second.length())) //if out of the range occupied by the word
-				return false;
+				intercepts = false;
 			break;
 		default:
 			cerr << "Invalid direction!";
 		}
+
+		if (intercepts)
+			return true;
 	}
-	return true;
+	return false;
 }
 
 //=================================================================================================================================

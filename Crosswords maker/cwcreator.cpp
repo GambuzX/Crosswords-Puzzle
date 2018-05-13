@@ -2071,6 +2071,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					{
 						colorMaster.setcolor(ERROR_MESSAGE);
 						cout << "\nRemoving that word would invalidate the board.\n\n";
+						validInput = true; // exit loop
 						colorMaster.setcolor(DEFAULT);
 					}
 					break;
