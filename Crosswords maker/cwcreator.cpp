@@ -24,8 +24,6 @@ using namespace std;
 
 //TODO test another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
-//TODO -I for info in the options
-//TODO edit mode in instructions
 //TODO think about word removal
 
 //TODO Credits to me only
@@ -127,9 +125,9 @@ int main()
 	Introduction();
 	cout << endl;
 
-	char answer = YesNoQuestion("Display full program instructions (Y/N)? ");
-	if (answer == 'Y')
-		FullInstructions();
+	//char answer = YesNoQuestion("Display full program instructions (Y/N)? ");
+	//if (answer == 'Y')
+		//FullInstructions();
 
 	while (true) //Program only ends by user input
 	{
@@ -231,7 +229,6 @@ int main()
 				cout << "\nDictionary was opened successfully.\n";
 				colorMaster.setcolor(DEFAULT);
 			}
-			cout << endl;
 
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode);
@@ -2023,7 +2020,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				colorMaster.setcolor(DEFAULT);
 				skipLoop = true;
 
-				char answer = YesNoQuestion("Leave (Y/N)? "); //TODO test it works
+				char answer = YesNoQuestion("Leave (Y/N)? ");
 				if (answer == 'N')
 					stopCreating = false; //continue editing
 			}
