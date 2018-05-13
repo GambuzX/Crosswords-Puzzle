@@ -25,6 +25,7 @@ using namespace std;
 //TODO test another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
 //TODO think about word removal
+//TODO Add + functionality?
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -2074,7 +2075,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					}
 					break;
 				case EditMode::trustUser:
-					board.removeWord(positionInput);
+					board.removeWordOrHash(positionInput);
 					validInput = true; // exit loop
 					cout << endl;
 					break;

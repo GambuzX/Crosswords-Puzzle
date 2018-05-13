@@ -707,7 +707,7 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if a word in the board intercepts determined coordinates in the board
+// Checks if a given word in the board intercepts determined coordinates in the board
 
 bool Board::wordInterceptsPosition(string targetPosition, string word, string wordPosition)
 {
@@ -741,10 +741,46 @@ bool Board::wordInterceptsPosition(string targetPosition, string word, string wo
 }
 
 //=================================================================================================================================
+// Checks if any word in the board intercepts determined coordinates in the board
+
+bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) //TODO check it works
+{
+	// position = (line, column)
+	for (size_t i = 0; i < usedWords.size(); i++)
+	{
+		pair<int, int> wordCoords = calculateInsertionCoordinates(usedWords.at(i).first);
+		char wordDir = usedWords.at(i).first.at(2);
+
+		if (targetDir != wordDir) //must be on the same direction
+			return false;
+
+		switch (targetDir)
+		{
+		case 'H':
+			if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
+				return false;
+			if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + (int)usedWords.at(i).second.length())) //if out of the range occupied by the word
+				return false;
+			break;
+		case 'V':
+			if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
+				return false;
+			if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + (int)usedWords.at(i).second.length())) //if out of the range occupied by the word
+				return false;
+			break;
+		default:
+			cerr << "Invalid direction!";
+		}
+	}
+	return true;
+}
+
+//=================================================================================================================================
 // Checks if the adjacent spaces of a given position on a direction are empty
 
 bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 {
+	//TODO also check if the positions are occupied by a word in the board in that direction
 	int line = coordinates.first;
 	int column = coordinates.second;
 
@@ -758,7 +794,7 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 		}
 		else if (line == 0) //special case: only check downwards
 		{
-			if (isalpha(board.at(line + 1).at(column)))
+			if (isalpha(board.at(line + 1).at(column)) && wordInterceptsPosition() )
 				return false;
 		}
 		else if (line == verticalSize - 1) //special case: only check upwards
