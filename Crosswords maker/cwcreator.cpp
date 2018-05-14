@@ -2162,7 +2162,10 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				switch (editMode)
 				{
 				case EditMode::strict:
-					if (testRemoval(board, dict, positionInput))
+					board.removeWord(positionInput);
+					validInput = true; // exit loop
+					cout << endl;
+					/*if (testRemoval(board, dict, positionInput))
 					{
 						board.removeWord(positionInput);
 						validInput = true; // exit loop
@@ -2174,7 +2177,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 						cout << "\nRemoving that word would invalidate the board.\n";
 						validInput = true; // exit loop
 						colorMaster.setcolor(DEFAULT);
-					}
+					}*/
 					break;
 				case EditMode::trustUser:
 					board.removeWordOrHash(positionInput);
