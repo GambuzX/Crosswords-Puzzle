@@ -500,6 +500,7 @@ void WordInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word (or hash if in free mode).\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to verify if an automatically formed word is valid.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
@@ -657,7 +658,7 @@ bool askToSaveBoard(Board &board, Dictionary &dict)
 		{
 			colorMaster.setcolor(ERROR_MESSAGE);
 			cout << "\nThe final board is not valid. The following words are repeated:";
-			for (int i = 0; i < invalidWords.size(); i++)
+			for (size_t i = 0; i < invalidWords.size(); i++)
 				cout << endl << invalidWords.at(i).first << " - " << invalidWords.at(i).second;
 			colorMaster.setcolor(DEFAULT);
 			cout << endl;
@@ -914,7 +915,7 @@ bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, st
 //=================================================================================================================================
 // Verifies if a given position on a direction has a new word that was formed automatically, with the option of inserting it if valid.
 
-bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInput)
+bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string positionInput)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
@@ -927,7 +928,7 @@ bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInpu
 	if (!isalpha(board.getCell(line, column)))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nThere is no word in that location.\n\n";
+		cout << "\nThere is no word in that location.\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -935,7 +936,7 @@ bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInpu
 	else if (board.wordInterceptsPosition(insertionPosition, direction))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nThere already exists a word in that position and direction.\n\n";
+		cout << "\nThere already exists a word in that position and direction.\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -945,28 +946,32 @@ bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInpu
 	switch (direction)
 	{
 	case 'H':
+	{
 		int currentColumn = column;
 		do
 		{
 			newWord += board.getCell(line, currentColumn);
 			currentColumn++;
-		} while (isalpha(board.getCell(line, currentColumn)));
+		} while (currentColumn < board.getHorizontalSize() && isalpha(board.getCell(line, currentColumn)));
 		break;
+	}
 	case 'V':
+	{
 		int currentLine = line;
 		do
 		{
 			newWord += board.getCell(currentLine, column);
 			currentLine++;
-		} while (isalpha(board.getCell(currentLine, column)));
+		} while (currentLine < board.getVerticalSize() && isalpha(board.getCell(currentLine, column)));
 		break;
+	}
 	}
 
 	//Verify if word is in the dictionary
 	if (!dictionary.isInWordList(newWord))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not present in the dictionary!\n\n";
+		cout << "\nWord is not present in the dictionary!\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -974,7 +979,7 @@ bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInpu
 	else if (board.isWordUsed(newWord))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is already in use!\n\n";
+		cout << "\nWord is already in use!\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -998,11 +1003,11 @@ bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInpu
 	{
 		board.insertWord(newWord, positionInput);
 		board.insertWordHashes(newWord, positionInput);
-		cout << "Word was inserted.\n\n";
+		cout << "\nWord was inserted.\n";
 
 	}
 	else
-		cout << "Word was not inserted.\n\n";
+		cout << "\nWord was not inserted.\n";
 	return true;
 }
 
@@ -1109,7 +1114,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 							return false;
 
 						//Check for duplicates in different positions
-						for (int i = 0; i < usedWords.size(); i++)
+						for (size_t i = 0; i < usedWords.size(); i++)
 							if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 								return false;
 					}
@@ -1125,7 +1130,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 					return false;
 
 				//Check for duplicates in different positions
-				for (int i = 0; i < usedWords.size(); i++)
+				for (size_t i = 0; i < usedWords.size(); i++)
 					if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 						return false;
 			}
@@ -1150,7 +1155,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 						return false;
 
 					//Check for duplicates in different positions
-					for (int i = 0; i < usedWords.size(); i++)
+					for (size_t i = 0; i < usedWords.size(); i++)
 						if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 							return false;
 				}
@@ -1166,7 +1171,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 				return false;
 
 			//Check for duplicates in different positions
-			for (int i = 0; i < usedWords.size(); i++)
+			for (size_t i = 0; i < usedWords.size(); i++)
 				if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 					return false;
 		}
@@ -1197,7 +1202,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 							return false;
 
 						//Check for duplicates in different positions
-						for (int i = 0; i < usedWords.size(); i++)
+						for (size_t i = 0; i < usedWords.size(); i++)
 							if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 								return false;
 					}
@@ -1213,7 +1218,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 					return false;
 
 				//Check for duplicates in different positions
-				for (int i = 0; i < usedWords.size(); i++)
+				for (size_t i = 0; i < usedWords.size(); i++)
 					if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 						return false;
 			}
@@ -1238,7 +1243,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 						return false;
 
 					//Check for duplicates in different positions
-					for (int i = 0; i < usedWords.size(); i++)
+					for (size_t i = 0; i < usedWords.size(); i++)
 						if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 							return false;
 				}
@@ -1255,7 +1260,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 				return false;
 
 			//Check for duplicates in different positions
-			for (int i = 0; i < usedWords.size(); i++)
+			for (size_t i = 0; i < usedWords.size(); i++)
 				if (usedWords.at(i).second == currentWord && usedWords.at(i).first != position)
 					return false;
 		}
@@ -1648,7 +1653,7 @@ vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictio
 
 bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
 {
-	for (int i = 0; i < usedWords.size(); i++)
+	for (size_t i = 0; i < usedWords.size(); i++)
 		if (usedWords.at(i).second == word)
 			return true;
 	return false;
@@ -1659,7 +1664,7 @@ bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
 
 bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position)
 {
-	for (int i = 0; i < usedWords.size(); i++)
+	for (size_t i = 0; i < usedWords.size(); i++)
 		if (usedWords.at(i).first != position && usedWords.at(i).second == word)
 			return true;
 	return false;
@@ -2190,6 +2195,11 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					break;
 				}
 				cout << endl;
+			}
+			else if (word == "+") // Checks for automatically formed words
+			{
+				bool valid = checkAndAddAutoFormedWord(board, dict, positionInput);
+				validInput = true;
 			}
 			else if (word == "#") // Insert an hash
 			{

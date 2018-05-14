@@ -302,7 +302,7 @@ bool Board::removeWordOrHash(string positionInput)
 	if (board.at(line).at(column) == '.')
 	{
 		setcolor(ERROR_MESSAGE);
-		cout << "\nThere is nothing to remove in that location!\n";
+		cout << "\nYou have not inserted any word there in the specified direction!\n";
 		setcolor(DEFAULT);
 		return false;
 	}
