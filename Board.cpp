@@ -353,7 +353,7 @@ bool Board::removeWordOrHash(string positionInput)
 		if (!foundWord)
 		{
 			setcolor(ERROR_MESSAGE);
-			cout << "\nThere is no word in the specified direction!\n";
+			cout << "\nYou have not inserted any word there in the specified direction!\n";
 			setcolor(DEFAULT);
 			return false;
 		}

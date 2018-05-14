@@ -422,6 +422,7 @@ void FullInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "B";	colorMaster.setcolor(DEFAULT);	cout << " to display the current board.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word (or hash if in free mode).\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " for a list of words that can be placed starting on the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to verify if an automatically formed word is valid.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "#";	colorMaster.setcolor(DEFAULT);	cout << " to insert an hash.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "R";	colorMaster.setcolor(DEFAULT);	cout << " to randomly insert a valid word from the dictionary.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
@@ -907,6 +908,101 @@ bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, st
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
+	return true;
+}
+
+//=================================================================================================================================
+// Verifies if a given position on a direction has a new word that was formed automatically, with the option of inserting it if valid.
+
+bool hasAutoFormedWord(Board &board, Dictionary &dictionary, string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	char direction = positionInput.at(2);
+	vector<pair<string, string>> usedWords = board.getUsedWords();
+
+	//Check if cell is an alphabetic character
+	if (!isalpha(board.getCell(line, column)))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no word in that location.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	//Verify if any already existing word intercepts that position
+	else if (board.wordInterceptsPosition(insertionPosition, direction))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere already exists a word in that position and direction.\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	
+	//Get the word in that position and direction
+	string newWord = "";
+	switch (direction)
+	{
+	case 'H':
+		int currentColumn = column;
+		do
+		{
+			newWord += board.getCell(line, currentColumn);
+			currentColumn++;
+		} while (isalpha(board.getCell(line, currentColumn)));
+		break;
+	case 'V':
+		int currentLine = line;
+		do
+		{
+			newWord += board.getCell(currentLine, column);
+			currentLine++;
+		} while (isalpha(board.getCell(currentLine, column)));
+		break;
+	}
+
+	//Verify if word is in the dictionary
+	if (!dictionary.isInWordList(newWord))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is not present in the dictionary!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	//Verify if word was already used
+	else if (board.isWordUsed(newWord))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	//Test inserting it and see if there is any error 
+	/*else if (!testInsertion(board, dictionary, newWord, positionInput))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nWord insertion is not valid!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}*/
+
+	//If it reaches here, word is new and valid
+	colorMaster.setcolor(SUCCESS);
+	cout << "\nWord is valid for insertion.\n\n";
+	colorMaster.setcolor(DEFAULT);
+
+	//Ask for insertion
+	char answer = YesNoQuestion("Insert word (Y/N)? ");
+	if (answer == 'Y')
+	{
+		board.insertWord(newWord, positionInput);
+		board.insertWordHashes(newWord, positionInput);
+		cout << "Word was inserted.\n\n";
+
+	}
+	else
+		cout << "Word was not inserted.\n\n";
 	return true;
 }
 
