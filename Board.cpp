@@ -242,7 +242,7 @@ bool Board::removeWord(string positionInput)
 	{
 		string position = it->first;
 		string word = it->second;
-		if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+		if (givenWordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
 		{
 			pair<int, int> wordPos = calculateInsertionCoordinates(position);
 			int startLine = wordPos.first;
@@ -254,7 +254,9 @@ bool Board::removeWord(string positionInput)
 			case 'H':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir)) 
+					/*if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir))
+						board.at(startLine).at(startColumn + i) = '.';*/
+					if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'H') && !existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V')) //TODO Is same word causing problem?
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -264,7 +266,9 @@ bool Board::removeWord(string positionInput)
 			case 'V':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+					/*if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+						board.at(startLine + i).at(startColumn) = '.';*/
+					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H') && !existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'V'))
 						board.at(startLine + i).at(startColumn) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -318,7 +322,7 @@ bool Board::removeWordOrHash(string positionInput)
 		{
 			string position = it->first;
 			string word = it->second;
-			if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+			if (givenWordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
 			{
 				pair<int, int> wordPos = calculateInsertionCoordinates(position);
 				int startLine = wordPos.first;
@@ -709,7 +713,7 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 //=================================================================================================================================
 // Checks if a given word in the board intercepts determined coordinates in the board
 
-bool Board::wordInterceptsPosition(string targetPosition, string word, string wordPosition)
+bool Board::givenWordInterceptsPosition(string targetPosition, string word, string wordPosition)
 {
 	// position = (line, column)
 	pair<int, int> targetCoords = calculateInsertionCoordinates(targetPosition);
@@ -743,7 +747,7 @@ bool Board::wordInterceptsPosition(string targetPosition, string word, string wo
 //=================================================================================================================================
 // Checks if any word in the board intercepts determined coordinates in the board
 
-bool Board::wordInterceptsPosition(pair<int, int> targetCoords, char targetDir) //TODO check it works
+bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char targetDir) //TODO check it works
 {
 	// position = (line, column)
 	for (size_t i = 0; i < usedWords.size(); i++)
@@ -798,18 +802,18 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //di
 		}
 		else if (line == 0) //special case: only check downwards
 		{
-			if (isalpha(board.at(line + 1).at(column)) && wordInterceptsPosition(pair<int, int>(line + 1, column), 'V'))
+			if (isalpha(board.at(line + 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line + 1, column), 'V'))
 				return false;
 		}
 		else if (line == verticalSize - 1) //special case: only check upwards
 		{
-			if (isalpha(board.at(line - 1).at(column)) && wordInterceptsPosition(pair<int, int>(line - 1, column), 'V'))
+			if (isalpha(board.at(line - 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line - 1, column), 'V'))
 				return false;
 		}
 		else
 		{
-			if ((isalpha(board.at(line + 1).at(column)) && wordInterceptsPosition(pair<int, int>(line + 1, column), 'V')) || 
-				(isalpha(board.at(line - 1).at(column)) && wordInterceptsPosition(pair<int, int>(line - 1, column), 'V'))) // check both up and down
+			if ((isalpha(board.at(line + 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line + 1, column), 'V')) || 
+				(isalpha(board.at(line - 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line - 1, column), 'V'))) // check both up and down
 				return false;
 		}
 		break;
@@ -820,18 +824,18 @@ bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //di
 		}
 		else if (column == 0) //special case: only check right
 		{
-			if (isalpha(board.at(line).at(column + 1)) && wordInterceptsPosition(pair<int, int>(line, column + 1), 'H'))
+			if (isalpha(board.at(line).at(column + 1)) && existsWordInterceptingPosition(pair<int, int>(line, column + 1), 'H'))
 				return false;
 		}
 		else if (column == (horizontalSize - 1)) //special case: only check left
 		{
-			if (isalpha(board.at(line).at(column - 1)) && wordInterceptsPosition(pair<int, int>(line, column - 1), 'H'))
+			if (isalpha(board.at(line).at(column - 1)) && existsWordInterceptingPosition(pair<int, int>(line, column - 1), 'H'))
 				return false;
 		}
 		else
 		{
-			if ((isalpha(board.at(line).at(column + 1)) && wordInterceptsPosition(pair<int, int>(line, column + 1), 'H')) || 
-				(isalpha(board.at(line).at(column - 1)) && wordInterceptsPosition(pair<int, int>(line, column - 1), 'H'))) // check both right and left
+			if ((isalpha(board.at(line).at(column + 1)) && existsWordInterceptingPosition(pair<int, int>(line, column + 1), 'H')) || 
+				(isalpha(board.at(line).at(column - 1)) && existsWordInterceptingPosition(pair<int, int>(line, column - 1), 'H'))) // check both right and left
 				return false;
 		}
 		break;

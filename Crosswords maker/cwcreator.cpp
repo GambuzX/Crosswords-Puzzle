@@ -25,7 +25,7 @@ using namespace std;
 //TODO test another randomizer. Maybe dont need to fill all spots
 //TODO way to remove extra remaining letters
 //TODO think about word removal
-//TODO Add + functionality?
+//TODO In word removal -> Assure word search for intersections looks for different words
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -125,10 +125,6 @@ int main()
 
 	Introduction();
 	cout << endl;
-
-	//char answer = YesNoQuestion("Display full program instructions (Y/N)? ");
-	//if (answer == 'Y')
-		//FullInstructions();
 
 	while (true) //Program only ends by user input
 	{
@@ -933,7 +929,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 		return false;
 	}
 	//Verify if any already existing word intercepts that position
-	else if (board.wordInterceptsPosition(insertionPosition, direction))
+	else if (board.existsWordInterceptingPosition(insertionPosition, direction))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nThere already exists a word in that position and direction.\n";

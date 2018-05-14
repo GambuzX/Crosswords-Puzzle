@@ -45,8 +45,8 @@ public:
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool hasHash(std::pair<int, int>);
 	bool wordFitsSpace(std::string word, std::string position);
-	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
-	bool wordInterceptsPosition(std::pair<int, int> targetCoords, char targetDir);
+	bool givenWordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
+	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
 	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
 
 	bool saveBoard(std::string name, std::string dictName, std::vector<std::pair<std::string, std::string>> autoFormedWords);
