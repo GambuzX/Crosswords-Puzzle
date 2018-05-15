@@ -846,6 +846,13 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
+	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou can not insert a word on top of another!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
 	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
@@ -897,6 +904,13 @@ bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, st
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is already in use!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou can not insert a word on top of another!\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -2300,6 +2314,8 @@ bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string 
 		return false;
 	else if (board.isWordUsed(word)) // Verify if word was already used
 		return false;
+	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
+		return false;
 	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
 		return false;
 	return true;
@@ -2319,6 +2335,8 @@ bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, str
 	else if (!board.wordFitsSpace(word, positionInput))
 		return false;
 	else if (board.isWordUsed(word)) // Verify if word was already used
+		return false;
+	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
 		return false;
 	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) // Verify if the insertion can be executed while keeping the board valid
 		return false;

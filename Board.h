@@ -42,6 +42,7 @@ public:
 
 	bool validPositionInput(std::string);
 	bool isWordUsed(std::string word);
+	bool isOnTopOfWord(std::string insertionWord, std::string positionInput);
 	bool isSameWordInDifferentPosition(std::string word, std::string position);
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool hasHash(std::pair<int, int>);

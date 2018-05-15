@@ -652,6 +652,35 @@ bool Board::isWordUsed(string word)
 }
 
 //=================================================================================================================================
+// Checks if the word to insert would be inserted on top of another one.
+
+bool Board::isOnTopOfWord(string insertionWord, string positionInput)
+{
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	char direction = toupper(positionInput.at(2));
+	switch (direction)
+	{
+	case 'H':
+	{
+		//For all positions occupied by the word
+		for (int column = insertionPosition.second; column < insertionPosition.second + insertionWord.length(); column++)
+			if (!isalpha(board.at(insertionPosition.first).at(column))) //One position not being a letter is enough for it not to be on top of other word
+				return false;
+		break;
+	}
+	case 'V':
+	{
+		//For all positions occupied by the word
+		for (int line = insertionPosition.first; line < insertionPosition.first + insertionWord.length(); line++)
+			if (!isalpha(board.at(line).at(insertionPosition.second))) //One position not being a letter is enough for it not to be on top of other word
+				return false;
+		break;
+	}
+	}
+	return true;
+}
+
+//=================================================================================================================================
 // Checks if the given word is already on the board or not, in the same position.
 
 bool Board::isSameWordInDifferentPosition(string word, string position)
