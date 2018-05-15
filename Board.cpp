@@ -334,18 +334,22 @@ bool Board::removeWordOrHash(string positionInput)
 				case 'H':
 					for (size_t i = 0; i < word.length(); i++)
 					{
-						if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir)) //TODO change deprecated method
+						if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V')) //TODO change deprecated method
 							board.at(startLine).at(startColumn + i) = '.';
 					}
 					usedWords.erase(it); //iterator is pointing to the element to be removed
+					removeWordHashes(word, position);
+					reprintHashes();
 					break;
 				case 'V':
 					for (size_t i = 0; i < word.length(); i++)
 					{
-						if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+						if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 							board.at(startLine + i).at(startColumn) = '.';
 					}
 					usedWords.erase(it); //iterator is pointing to the element to be removed
+					removeWordHashes(word, position);
+					reprintHashes();
 					break;
 				default:
 					cerr << "Invalid direction!";

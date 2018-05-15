@@ -23,9 +23,7 @@ AUTHOR: GambuzX
 using namespace std;
 
 //TODO test another randomizer. Maybe dont need to fill all spots
-//TODO way to remove extra remaining letters
-//TODO think about word removal
-//TODO In word removal -> Assure word search for intersections looks for different words
+//TODO limitless mode
 
 //TODO Think about connecting programs in a single one
 //TODO not allow insertion on top of words
@@ -67,6 +65,7 @@ enum EditMode
 {
 	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
 	trustUser, //Gives the user more freedom and only checks full validity in the end
+	limitless, //Gives the user even more freedom. Does not insert or remove hashes, user has all the power!
 	invalid //Invalid edit mode
 };
 
@@ -1032,7 +1031,6 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 		board.insertWord(newWord, positionInput);
 		board.insertWordHashes(newWord, positionInput);
 		cout << "\nWord was inserted. Previous words on occupied positions were removed.\n";
-
 	}
 	else
 		cout << "\nWord was not inserted.\n";
