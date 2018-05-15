@@ -921,7 +921,6 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 	int line = insertionPosition.first;
 	int column = insertionPosition.second;
 	char direction = positionInput.at(2);
-	vector<pair<string, string>> usedWords = board.getUsedWords();
 
 	//Check if cell is an alphabetic character
 	if (!isalpha(board.getCell(line, column)))
@@ -1001,6 +1000,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 	if (answer == 'Y')
 	{
 		//Remove previous words in occupied positions and direction
+		vector<pair<string, string>> usedWords = board.getUsedWords();
 		switch (direction)
 		{
 		case 'H':
@@ -1021,6 +1021,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 					if (board.givenWordInterceptsPosition(pair<int, int>((int) j, column), direction, usedWords.at(g).second, usedWords.at(g).first)) //TODO check it works
 					{
 						board.removeWordFromUsedWords((int) g);
+						usedWords.erase(usedWords.begin() + g);
 						break;
 					}
 			break;
@@ -1030,7 +1031,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 		//Insert word and hashes
 		board.insertWord(newWord, positionInput);
 		board.insertWordHashes(newWord, positionInput);
-		cout << "\nWord was inserted.\n";
+		cout << "\nWord was inserted. Previous words on occupied positions were removed.\n";
 
 	}
 	else

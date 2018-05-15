@@ -334,7 +334,7 @@ bool Board::removeWordOrHash(string positionInput)
 				case 'H':
 					for (size_t i = 0; i < word.length(); i++)
 					{
-						if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
+						if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir)) //TODO change deprecated method
 							board.at(startLine).at(startColumn + i) = '.';
 					}
 					usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -364,6 +364,12 @@ bool Board::removeWordOrHash(string positionInput)
 	}
 	return true;
 }
+
+//=================================================================================================================================
+// Removes an entry in the used words vector by index. Only erases from the vector.
+
+void Board::removeWordFromUsedWords(int index){	usedWords.erase(usedWords.begin() + index);}
+
 //=================================================================================================================================
 // Places hashes before and after word
 
