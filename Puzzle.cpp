@@ -72,7 +72,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 //=================================================================================================================================
 // Class constructor. Assigns a board, a dictionary and a player to the Puzzle. Also stores the board number
 
-Puzzle::Puzzle(Board &board, Dictionary &dict, string boardName, Player player)
+Puzzle::Puzzle(Board &board, Dictionary &dict, string boardNumber, Player player)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
@@ -82,7 +82,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, string boardName, Player player)
 	currentPlayer = player;
 	numberOfSolutionWords = solutionUsedWords.size();
 	numberOfPlayerWords = 0;
-	loadedBoardNumber = boardName.substr(1, 3);
+	loadedBoardNumber = boardNumber;
 }
 
 //=================================================================================================================================

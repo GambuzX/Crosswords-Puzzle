@@ -350,6 +350,12 @@ string askBoardNumber()
 	cout << "Board number? ";
 	colorMaster.setcolor(DEFAULT);
 	cin >> boardNumber;
+
+	if (boardNumber.length() == 1)
+		boardNumber = "00" + boardNumber;
+	else if (boardNumber.length() == 2)
+		boardNumber == "0" + boardNumber;
+
 	return boardNumber;
 }
 

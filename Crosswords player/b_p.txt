@@ -1,2 +1,0 @@
-Player name: Bdsadas; Time: 77s; Hints: 5; Wrong submissions: 0
-Player name: dsdsa; Time: 29s; Hints: 0; Wrong submissions: 0
