@@ -256,7 +256,7 @@ bool Board::removeWord(string positionInput)
 				{
 					/*if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir))
 						board.at(startLine).at(startColumn + i) = '.';*/
-					if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'H') && !existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V')) //TODO Is same word causing problem?
+					if (!existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V')) //TODO Is same word causing problem?
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -268,7 +268,7 @@ bool Board::removeWord(string positionInput)
 				{
 					/*if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
 						board.at(startLine + i).at(startColumn) = '.';*/
-					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H') && !existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'V'))
+					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 						board.at(startLine + i).at(startColumn) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed

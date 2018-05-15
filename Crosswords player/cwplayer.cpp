@@ -428,7 +428,6 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 						if (endPuzzle)
 						{
 							finishedPuzzle = true;
-							skipInsertion = true;
 							validPositionInput = true;
 						}
 					}
@@ -472,6 +471,9 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				}
 			}
 		} while (!validPositionInput); //loop until valid input
+
+		if (finishedPuzzle) //If player submitted valid board using 'S'
+			break;
 
 		if (midEnd) //If CTRL-Z, confirm if the player wishes to leave
 		{
@@ -568,7 +570,6 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				cout << endl;
 			}
 		}
-
 	} while (!finishedPuzzle);
 }
 
