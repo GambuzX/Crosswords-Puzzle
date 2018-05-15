@@ -241,8 +241,8 @@ bool Board::removeWord(string positionInput)
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
 		string position = it->first;
-		string word = it->second;
-		if (givenWordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+		string word = it->second; //TODO check below method still works
+		if (givenWordInterceptsPosition(insertionPosition, direction, word, position)) // If true, word is to be removed
 		{
 			pair<int, int> wordPos = calculateInsertionCoordinates(position);
 			int startLine = wordPos.first;
@@ -322,7 +322,7 @@ bool Board::removeWordOrHash(string positionInput)
 		{
 			string position = it->first;
 			string word = it->second;
-			if (givenWordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+			if (givenWordInterceptsPosition(insertionPosition, direction, word, position)) // If true, word is to be removed
 			{
 				pair<int, int> wordPos = calculateInsertionCoordinates(position);
 				int startLine = wordPos.first;
@@ -577,7 +577,7 @@ bool Board::loadBoard(string boardNumber, string& dictName)
 	getline(file, line);
 	while (line != "")
 	{
-		horizontalSize = (line.length() + 1) / 2; //has one extra space for each char
+		horizontalSize = ((int) line.length() + 1) / 2; //has one extra space for each char
 		if (line.find('.') != string::npos)
 			foundDot = true;
 		verticalSize++;
@@ -664,7 +664,7 @@ bool Board::wordFitsSpace(string word, string positionInput)
 	char direction = toupper(positionInput.at(2));
 
 	char dir = toupper(direction);
-	int wordSize = word.length();
+	int wordSize = (int) word.length();
 	int availableSpace;
 	switch (dir){
 	case 'H':
@@ -713,12 +713,10 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 //=================================================================================================================================
 // Checks if a given word in the board intercepts determined coordinates in the board
 
-bool Board::givenWordInterceptsPosition(string targetPosition, string word, string wordPosition)
+bool Board::givenWordInterceptsPosition(pair<int, int> targetCoords, char targetDir, string word, string wordPosition)
 {
 	// position = (line, column)
-	pair<int, int> targetCoords = calculateInsertionCoordinates(targetPosition);
 	pair<int, int> wordCoords = calculateInsertionCoordinates(wordPosition);
-	char targetDir = targetPosition.at(2);
 	char wordDir = wordPosition.at(2);
 
 	if (targetDir != wordDir) //must be on the same direction

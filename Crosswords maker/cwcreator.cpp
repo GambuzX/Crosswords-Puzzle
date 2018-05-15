@@ -27,6 +27,9 @@ using namespace std;
 //TODO think about word removal
 //TODO In word removal -> Assure word search for intersections looks for different words
 
+//TODO Think about connecting programs in a single one
+//TODO not allow insertion on top of words
+
 //TODO Credits to me only
 //TODO Clean up code
 //TODO Clear all warnings
@@ -997,6 +1000,34 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 	char answer = YesNoQuestion("Insert word (Y/N)? ");
 	if (answer == 'Y')
 	{
+		//Remove previous words in occupied positions and direction
+		switch (direction)
+		{
+		case 'H':
+		{
+			for (size_t j = column; j < column + newWord.length(); j++)
+				for (size_t g = 0; g < usedWords.size(); g++)
+					if (board.givenWordInterceptsPosition(pair<int, int>(line, (int) j), direction, usedWords.at(g).second, usedWords.at(g).first)) //TODO check it works
+					{
+						board.removeWordFromUsedWords((int) g);
+						break;
+					}
+			break;
+		}
+		case 'V':
+		{
+			for (size_t j = line; j < line + newWord.length(); j++)
+				for (size_t g = 0; g < usedWords.size(); g++)
+					if (board.givenWordInterceptsPosition(pair<int, int>((int) j, column), direction, usedWords.at(g).second, usedWords.at(g).first)) //TODO check it works
+					{
+						board.removeWordFromUsedWords((int) g);
+						break;
+					}
+			break;
+		}
+		}
+
+		//Insert word and hashes
 		board.insertWord(newWord, positionInput);
 		board.insertWordHashes(newWord, positionInput);
 		cout << "\nWord was inserted.\n";

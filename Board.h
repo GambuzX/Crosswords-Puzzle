@@ -33,6 +33,7 @@ public:
 	void insertHash(std::string position);
 	bool removeWord(std::string position);
 	bool removeWordOrHash(std::string position);
+	void removeWordFromUsedWords(int index);
 	void insertWordHashes(std::string word, std::string positionInput);
 	void removeWordHashes(std::string word, std::string positionInput);
 	void reprintHashes();
@@ -45,7 +46,7 @@ public:
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool hasHash(std::pair<int, int>);
 	bool wordFitsSpace(std::string word, std::string position);
-	bool givenWordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
+	bool givenWordInterceptsPosition(std::pair<int,int> targetPosition, char direction, std::string word, std::string wordPosition);
 	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
 	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
 
