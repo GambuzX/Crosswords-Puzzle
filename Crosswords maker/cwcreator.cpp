@@ -26,7 +26,6 @@ using namespace std;
 //TODO limitless mode
 
 //TODO Think about connecting programs in a single one
-//TODO not allow insertion on top of words
 
 //TODO Credits to me only
 //TODO Clean up code
@@ -2029,21 +2028,36 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 //=================================================================================================================================
 // Returns a random pair constituted by riddle and answer
 
-pair<string, string> newRiddle() //TODO more riddles
+pair<string, string> newRiddle()
 {
 	vector<pair<string, string>> riddleList = { 
-		{"What kind of room has no doors or windows ?", "A mushroom"}, 
-		{"What kind of tree can you carry in your hand?", "A palm"}, 
-		{"Which word in the dictionary is spelled incorrectly?", "Incorrectly"},
-		{"How many of each species did Moses take on the ark with him?", "None, Moses wasn't on the ark Noah was."},
-		{"Imagine you are in a dark room. How do you get out?", "Stop imagining"},
-		{"What invention lets you look right through a wall?", "The window"},
+	{"What kind of room has no doors or windows ?", "A mushroom"}, 
+	{"What kind of tree can you carry in your hand?", "A palm"}, 
+	{"Which word in the dictionary is spelled incorrectly?", "Incorrectly"},
+	{"How many of each species did Moses take on the ark with him?", "None, Moses wasn't on the ark Noah was."},
+	{"Imagine you are in a dark room. How do you get out?", "Stop imagining"},
+	{"What invention lets you look right through a wall?", "The window"},
 	{"What is at the end of a rainbow?", "The letter W"},
 	{"The eight of us go forth not back to protect our king from a foes attack. Who are we?", "Chesspawns"},
 	{"Why can't a man living in the USA be buried in Canada?", "Why should a living man be buried?"},
 	{"Why do Chinese men eat more rice than Japanese men do?", "There are more Chinese men than Japanese man"},
 	{"When will water stop running down hill?", "When it reaches the bottom"},
-	{"I have keys but no locks, I have a space but no room, You can enter, but can't go outside. What am I?", "A keyboard"}};
+	{"I have keys but no locks, I have a space but no room, You can enter, but can't go outside. What am I?", "A keyboard"},
+	{"Which month has 28 days?", "All of them, of course"},
+	{"What is so delicate that saying its name breaks it?", "Silence"},
+	{"What is next in this sequence? JFMAMJJASON . . .", "The letter “D.” The sequence contains the first letter of each month."},
+	{"Suproliglicatiouspenuvaliancia – how do you spell it?", "I T (it)"},
+	{"What is full of holes, but can still hold a lot of water?", "A sponge"},
+	{"What belongs to you but others use it more than you do?", "Your name"},
+	{"People buy me to eat, but never eat me. What am I?", "A plate"},
+	{"Poor people have it. Rich people need it. If you eat it you die. What is it?", "Nothing"},
+	{"What begins with T ends with T and has T in it?", "A teapot"},
+	{"What word begins and ends with an E but only has one letter?", "Envelope"},
+	{"What is something you will never see again?", "Yesterday :´("},
+	{"What are two things you cannot have for breakfast?", "Lunch and dinner"},
+	{"Which football player wears the biggest helmet?", "The one with the biggest head"},
+	{"Why couldn’t the sailors play cards?", "The captain was standing on the deck"},
+	{"What do you call a man who does not have all his fingers on one hand?", "Normal – You have fingers on both hands!"}};
 
 	return riddleList.at(rand() % riddleList.size()); //return random pair
 }
@@ -2242,7 +2256,10 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			else if (word == "+") // Checks for automatically formed words
 			{
 				bool valid = checkAndAddAutoFormedWord(board, dict, positionInput);
-				validInput = true;
+				if (valid)
+					validInput = true;
+				else //if not valid, do not end loop
+					cout << endl;
 			}
 			else if (word == "#") // Insert an hash
 			{

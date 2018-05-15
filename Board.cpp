@@ -663,7 +663,7 @@ bool Board::isOnTopOfWord(string insertionWord, string positionInput)
 	case 'H':
 	{
 		//For all positions occupied by the word
-		for (int column = insertionPosition.second; column < insertionPosition.second + insertionWord.length(); column++)
+		for (int column = insertionPosition.second; column < insertionPosition.second + (int) insertionWord.length(); column++)
 			if (!isalpha(board.at(insertionPosition.first).at(column))) //One position not being a letter is enough for it not to be on top of other word
 				return false;
 		break;
@@ -671,7 +671,7 @@ bool Board::isOnTopOfWord(string insertionWord, string positionInput)
 	case 'V':
 	{
 		//For all positions occupied by the word
-		for (int line = insertionPosition.first; line < insertionPosition.first + insertionWord.length(); line++)
+		for (int line = insertionPosition.first; line < insertionPosition.first + (int) insertionWord.length(); line++)
 			if (!isalpha(board.at(line).at(insertionPosition.second))) //One position not being a letter is enough for it not to be on top of other word
 				return false;
 		break;
