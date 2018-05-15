@@ -525,7 +525,6 @@ bool Board::saveBoard(string fileName, string dictName, vector<pair<string,strin
 		insertWordHashes(boardWords.at(i).second, boardWords.at(i).first);
 	}
 
-
 	// Organize it well
 	ofstream file(fileName);
 	

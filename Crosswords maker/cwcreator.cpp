@@ -712,13 +712,13 @@ string determineBoardName()
 	{
 		string tempName;
 		if (counter < 10)
-			tempName = "B00" + to_string(counter) + ".txt";
+			tempName = "b00" + to_string(counter) + ".txt";
 		else if (counter < 100)
-			tempName = "B0" + to_string(counter) + ".txt";
+			tempName = "b0" + to_string(counter) + ".txt";
 		else if (counter < 1000)
-			tempName = "B" + to_string(counter) + ".txt";
+			tempName = "b" + to_string(counter) + ".txt";
 		else
-			tempName = "BOverflow.txt";
+			tempName = "bOverflow.txt";
 
 		ifstream file(tempName); //opens files until it finds one that does not exist
 		if (!file.is_open())
