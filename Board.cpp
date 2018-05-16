@@ -69,10 +69,12 @@ Board::Board(int horizontalSize, int verticalSize)
 	this->horizontalSize = horizontalSize;
 	this->verticalSize = verticalSize;
 
+	//Resize board
 	board.resize(verticalSize);
 	for (size_t i = 0; i < board.size(); i++)
 		board.at(i).resize(horizontalSize);
 
+	//Set all cells to be dots
 	for (size_t i = 0; i < board.size(); i++)
 		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
@@ -125,6 +127,7 @@ void Board::showBoard()
 {
 	const int WIDTH = 2;
 
+	//First line of letter indexes
 	cout << setw(WIDTH) << " ";
 	for (size_t i = 0; i < board.at(0).size(); i++)
 	{
@@ -135,9 +138,11 @@ void Board::showBoard()
 
 	for (size_t i = 0; i < board.size(); i++)
 	{
+		//Letter index
 		setcolor(RED);
 		cout << (char)('A' + i) << " ";
 
+		//Cell content
 		for (size_t j = 0; j < board.at(i).size(); j++)
 		{
 			if (board.at(i).at(j) == '#')
@@ -228,6 +233,7 @@ bool Board::removeWord(string positionInput)
 	int column = insertionPosition.second;
 	char direction = positionInput.at(2);
 
+	//Verify there is a word there
 	if (board.at(line).at(column) == '.' || board.at(line).at(column) == '#')
 	{
 		setcolor(ERROR_MESSAGE);
@@ -236,6 +242,7 @@ bool Board::removeWord(string positionInput)
 		return false;
 	}
 
+	//Loop through all used words to find the one that intercepts the position on that direction
 	bool foundWord = false;
 	vector<pair<string, string>>::iterator it;
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
@@ -254,8 +261,7 @@ bool Board::removeWord(string positionInput)
 			case 'H':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					/*if (adjacentSpacesEmpty(pair<int,int>(startLine, startColumn + i), dir))
-						board.at(startLine).at(startColumn + i) = '.';*/
+					//If cell is not used by any other word, change it to dot ('.')
 					if (!existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V')) //TODO Is same word causing problem?
 						board.at(startLine).at(startColumn + i) = '.';
 				}
@@ -266,8 +272,6 @@ bool Board::removeWord(string positionInput)
 			case 'V':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					/*if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
-						board.at(startLine + i).at(startColumn) = '.';*/
 					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 						board.at(startLine + i).at(startColumn) = '.';
 				}
@@ -310,12 +314,15 @@ bool Board::removeWordOrHash(string positionInput)
 		setcolor(DEFAULT);
 		return false;
 	}
+
+	//If it is an hash
 	else if (board.at(line).at(column) == '#')
 	{
 		board.at(line).at(column) = '.';
 	}
 	else
 	{
+		//Loop through all used words to find the one that intercepts the position on that direction
 		bool foundWord = false;
 		vector<pair<string, string>>::iterator it;
 		for (it = usedWords.begin(); it != usedWords.end(); it++)
@@ -370,7 +377,7 @@ bool Board::removeWordOrHash(string positionInput)
 }
 
 //=================================================================================================================================
-// Removes an entry in the used words vector by index. Only erases from the vector.
+// Removes an entry in the used words vector by index. Only erases from the vector, board is unchanged.
 
 void Board::removeWordFromUsedWords(int index){	usedWords.erase(usedWords.begin() + index);}
 
@@ -441,7 +448,7 @@ void Board::removeWordHashes(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Reprints all hashes of inserted words
+// Reprints all hashes of inserted words, i.e., all words in the used words vector.
 
 void Board::reprintHashes()
 {
@@ -503,13 +510,6 @@ bool Board::validPositionInput(string input)
 
 bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> boardWords)
 {
-	//Add automatically formed words to the used words vector
-	/*for (size_t i = 0; i < autoFormedWords.size(); i++) //TODO assure it is working
-	{
-		insertWord(autoFormedWords.at(i).second, autoFormedWords.at(i).first);
-		insertWordHashes(autoFormedWords.at(i).second, autoFormedWords.at(i).first);
-	}*/
-
 	// Clear board letters and reset used words vector
 	for (int i = 0; i < verticalSize; i++)
 		for (int j = 0; j < horizontalSize; j++)
@@ -554,10 +554,11 @@ bool Board::saveBoard(string fileName, string dictName, vector<pair<string,strin
 }
 
 //=================================================================================================================================
-// Loads a board from a file and changes the dictName argument for the name of the dictionary that was used
+// Loads a board from a file and changes the dictName argument for the name of the dictionary that was used.
 
 bool Board::loadBoard(string boardNumber, string& dictName)
 {
+	// Determine file name from the board number
 	string fileName;
 	if (boardNumber.length() == 1)
 		fileName = "b00" + boardNumber + ".txt";
@@ -568,6 +569,7 @@ bool Board::loadBoard(string boardNumber, string& dictName)
 	else
 		return false;
 
+	//Open file
 	ifstream file(fileName);
 	
 	if (!file.is_open())
@@ -613,14 +615,16 @@ bool Board::loadBoard(string boardNumber, string& dictName)
 		string word = line.substr(4); //from index 4 to the end
 		insertWord(word, position);
 		insertWordHashes(word, position); //TODO I added this late, not sure it works
-	}	
+	}
+
+	//If board was completed
 	if (!foundDot)
 		fillRemainingSpots();
 	return true;
 }
 
 //=================================================================================================================================
-// Determines line and column indexes given text input
+// Returns line and column indexes given text input
 
 pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
 {
@@ -681,7 +685,7 @@ bool Board::isOnTopOfWord(string insertionWord, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if the given word is already on the board or not, in the same position.
+// Checks if the given word is already on the board or not, in another position.
 
 bool Board::isSameWordInDifferentPosition(string word, string position)
 {
@@ -728,6 +732,7 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 	char direction = toupper(positionInput.at(2));
 	int line = insertionPosition.first;
 	int column = insertionPosition.second;
+
 	switch (direction)
 	{
 	case 'H':		
@@ -749,7 +754,7 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if a given word in the board intercepts determined coordinates in the board
+// Checks if a given word in the board intercepts determined coordinates in the board.
 
 bool Board::givenWordInterceptsPosition(pair<int, int> targetCoords, char targetDir, string word, string wordPosition)
 {
@@ -781,7 +786,7 @@ bool Board::givenWordInterceptsPosition(pair<int, int> targetCoords, char target
 }
 
 //=================================================================================================================================
-// Checks if any word in the board intercepts determined coordinates in the board
+// Checks if any word in the board intercepts determined coordinates in the board.
 
 bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char targetDir) //TODO check it works
 {
@@ -821,12 +826,13 @@ bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char tar
 }
 
 //=================================================================================================================================
-// Clears the board
+// Clears the board, filling it with dots, and resets the used words vector.
 
 void Board::clearBoard()
 {
 	for (int i = 0; i < verticalSize; i++)
 		for (int j = 0; j < horizontalSize; j++)
 			board.at(i).at(j) = '.';
+
 	usedWords.clear();
 }

@@ -47,7 +47,7 @@ public:
 	void saveStats();
 
 	bool hasHash(std::string position);
-	bool isValidInsertionLocation(std::string position);
+	bool isValidInsertionLocation(std::string position); //TODO copy changed methods from board class
 	bool validPositionInput(std::string);
 	bool canBeInserted(std::string word, std::string position);
 	bool removeWord(std::string position);
