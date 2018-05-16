@@ -821,67 +821,6 @@ bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char tar
 }
 
 //=================================================================================================================================
-// Checks if the adjacent spaces of a given position on a direction are not occupied by an inserted word
-
-bool Board::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //direction the word is inserted
-{
-	int line = coordinates.first;
-	int column = coordinates.second;
-
-	switch (direction)
-	{
-	case 'H':
-		
-		if (verticalSize == 1)
-		{
-			return true;
-		}
-		else if (line == 0) //special case: only check downwards
-		{
-			if (isalpha(board.at(line + 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line + 1, column), 'V'))
-				return false;
-		}
-		else if (line == verticalSize - 1) //special case: only check upwards
-		{
-			if (isalpha(board.at(line - 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line - 1, column), 'V'))
-				return false;
-		}
-		else
-		{
-			if ((isalpha(board.at(line + 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line + 1, column), 'V')) || 
-				(isalpha(board.at(line - 1).at(column)) && existsWordInterceptingPosition(pair<int, int>(line - 1, column), 'V'))) // check both up and down
-				return false;
-		}
-		break;
-	case 'V':
-		if (horizontalSize == 1)
-		{
-			return true;
-		}
-		else if (column == 0) //special case: only check right
-		{
-			if (isalpha(board.at(line).at(column + 1)) && existsWordInterceptingPosition(pair<int, int>(line, column + 1), 'H'))
-				return false;
-		}
-		else if (column == (horizontalSize - 1)) //special case: only check left
-		{
-			if (isalpha(board.at(line).at(column - 1)) && existsWordInterceptingPosition(pair<int, int>(line, column - 1), 'H'))
-				return false;
-		}
-		else
-		{
-			if ((isalpha(board.at(line).at(column + 1)) && existsWordInterceptingPosition(pair<int, int>(line, column + 1), 'H')) || 
-				(isalpha(board.at(line).at(column - 1)) && existsWordInterceptingPosition(pair<int, int>(line, column - 1), 'H'))) // check both right and left
-				return false;
-		}
-		break;
-	default:
-		cerr << "Invalid direction!";
-	}
-	return true;
-}
-
-//=================================================================================================================================
 // Clears the board
 
 void Board::clearBoard()

@@ -1,5 +1,8 @@
 /*
 Class that represents a Board where words can be inserted / removed.
+*
+Has many methods to deal with board insertions and deletions, as well as validity tests.
+*
 The word board itself is represented as a 2D char vector.
 Also keeps track of the words in the board in a vector of pairs of strings (position, word).
 */
@@ -15,19 +18,22 @@ Also keeps track of the words in the board in a vector of pairs of strings (posi
 class Board
 {
 public:
-	//Constructors
+	// Constructors
 	Board() {};
 	Board(int horiSize, int vertSize);
 
-	//Getters
+	// Getters
 	std::vector<std::vector<char>> getBoard();
 	std::vector<std::pair<std::string, std::string>> getUsedWords();
 	int getVerticalSize();
 	int getHorizontalSize();
 	char getCell(int line, int column);
 
+	// Setters
 	void setBoard(std::vector<std::vector<char>>);
 	void setUsedWords(std::vector<std::pair<std::string, std::string>>);
+
+	// Board management
 	void showBoard();
 	void insertWord(std::string word, std::string position);
 	void insertHash(std::string position);
@@ -40,6 +46,7 @@ public:
 	void fillRemainingSpots();
 	void clearBoard();
 
+	// Validity tests
 	bool validPositionInput(std::string);
 	bool isWordUsed(std::string word);
 	bool isOnTopOfWord(std::string insertionWord, std::string positionInput);
@@ -49,21 +56,26 @@ public:
 	bool wordFitsSpace(std::string word, std::string position);
 	bool givenWordInterceptsPosition(std::pair<int,int> targetPosition, char direction, std::string word, std::string wordPosition);
 	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
-	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
 
+	// Save / Load
 	bool saveBoard(std::string name, std::string dictName, std::vector<std::pair<std::string, std::string>> autoFormedWords);
 	bool loadBoard(std::string name, std::string& dictName);
 
+	// Utility
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 
 private:
+	// The board itself
 	std::vector<std::vector<char>> board;
-	std::vector<std::pair<std::string, std::string>> usedWords; // vector that stores used words as a pair (position, word)
 
-	int horizontalSize = 0, verticalSize = 0;
+	// Vector that stores used words as a pair (position, word)
+	std::vector<std::pair<std::string, std::string>> usedWords;
 
+	// Board dimensions
+	int horizontalSize = 0, verticalSize = 0; 
+
+	// Utility
 	int mapCharToNumber(char letter);
-
 };
 
 #endif
