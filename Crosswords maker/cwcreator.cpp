@@ -1988,7 +1988,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 }
 
 //=================================================================================================================================
-// Returns a random pair constituted by riddle and answer
+// Returns a random pair constituted by riddle and answer. 
 
 pair<string, string> newRiddle()
 {
@@ -2081,6 +2081,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
+				//OPTIONS
 				if (positionInput == "I")
 				{
 					PositionInstructions();
@@ -2100,8 +2101,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					validPositionInput = true; //leave loop
 					skipLoop = true;
 				}
-				//Check validity
-				else if (board.validPositionInput(positionInput))
+				else if (board.validPositionInput(positionInput)) //Check validity					
 				{
 					pair<int, int> coordinates = board.calculateInsertionCoordinates(positionInput);
 					if (board.getCell(coordinates.first, coordinates.second) == '#' && editMode == EditMode::strict)
@@ -2118,7 +2118,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 		} while (!validPositionInput); //loop until valid input
 
-		if (stopCreating) //exit loop if CTRL-Z
+		if (stopCreating) //if CTRL-Z
 		{
 			if (isBoardValid(board, dict)) //FINAL CHECK
 			{
@@ -2151,7 +2151,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 		bool validInput = false;
 		do
 		{
-			if (skipLoop)
+			if (skipLoop) //skip to next iteration
 				break;
 
 			if (cin.fail())
@@ -2168,9 +2168,10 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			for (size_t i = 0; i < word.length(); i++)
 				word.at(i) = toupper(word.at(i));
 
-			if (word == "<") // Skip loop
+			//OPTIONS
+			if (word == "<") //Return to previous question
 			{
-				validInput = true; // Exit loop
+				validInput = true;
 				cout << endl;
 			}
 			else if (word == "-") // Remove word
@@ -2248,6 +2249,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else // normal word insertion
 			{
+				//Different behaviour depending on edit mode
 				switch (editMode)
 				{
 				case EditMode::strict:
@@ -2289,9 +2291,9 @@ bool isValidInsertion(Board &board, Dictionary &dictionary, string word, string 
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
 
-	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+	if (board.hasHash(insertionPosition))
 		return false;
-	else if (board.isWordUsed(word)) // Verify if word was already used
+	else if (board.isWordUsed(word))
 		return false;
 	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
 		return false;
@@ -2309,11 +2311,11 @@ bool isValidInsertionPlus(Board &board, Dictionary &dictionary, string word, str
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
 	char direction = positionInput.at(2);
 
-	if (board.hasHash(insertionPosition)) // Verify it the position has an hash
+	if (board.hasHash(insertionPosition))
 		return false;
 	else if (!board.wordFitsSpace(word, positionInput))
 		return false;
-	else if (board.isWordUsed(word)) // Verify if word was already used
+	else if (board.isWordUsed(word))
 		return false;
 	else if (board.isOnTopOfWord(word, positionInput)) // Verify if word would be inserted on top of another
 		return false;
@@ -2331,7 +2333,7 @@ Board generateRandomBoard(Dictionary &dictionary)
 	Board board(boardSize.first, boardSize.second);
 	int insertionAttempts = boardSize.first;
 
-	board.clearBoard();
+	board.clearBoard(); //assure board is empty
 
 	cout << "\nGenerating random puzzle...\n";
 
@@ -2342,6 +2344,10 @@ Board generateRandomBoard(Dictionary &dictionary)
 		int line = rand() % board.getVerticalSize();
 		int column = rand() % board.getHorizontalSize();
 		int dir = rand() % 2;
+
+		//========================
+		//    First direction   //
+		//========================
 
 		char direction = (dir == 0 ? 'H' : 'V');
 		char c_position[] = {'A' + (char) line , 'A' + (char) column, direction, '\0' };
@@ -2389,7 +2395,8 @@ Board generateRandomBoard(Dictionary &dictionary)
 					validWords.push_back(fittingWords.at(j));
 			}
 
-			if (validWords.size() != 0) //Only attempt insertion if there are words for it
+			//Only attempt insertion if there are words for it
+			if (validWords.size() != 0)
 			{
 				//Perform insertion
 				int wordIndex = rand() % validWords.size();
@@ -2397,6 +2404,10 @@ Board generateRandomBoard(Dictionary &dictionary)
 				board.insertWordHashes(validWords.at(wordIndex), position);
 			}
 		}
+
+		//========================
+		//   Second direction   //
+		//========================
 
 		direction = (direction == 'V' ? 'H' : 'V');
 		char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
@@ -2442,7 +2453,8 @@ Board generateRandomBoard(Dictionary &dictionary)
 					validWords.push_back(fittingWords.at(j));
 			}
 
-			if (validWords.size() != 0) //Only attempt insertion if there are words for it
+			//Only attempt insertion if there are words for it
+			if (validWords.size() != 0)
 			{
 				//Perform insertion
 				int wordIndex = rand() % validWords.size();
