@@ -1,5 +1,6 @@
 /*
-Class to implement console color changing.
+Class to implement console color changing. Its methods were provided by JAS.
+*
 AUTHOR: JAS.
 */
 
@@ -14,12 +15,14 @@ AUTHOR: JAS.
 class ColorMaster
 {
 public:
+	//Constructor
 	ColorMaster() {};
+
+	//Utility
 	void clrscr(void);
 	void gotoxy(int x, int y);
 	void setcolor(unsigned int color);
 	void setcolor(unsigned int color, unsigned int background_color);
-private:
 };
 
 #endif

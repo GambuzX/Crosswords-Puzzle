@@ -1,5 +1,5 @@
 /*
-	Implementation of Color Master Class.
+	Definition of Color Master Class methods.
 	All of the class methods are functions provided by JAS.
 	AUTHOR: JAS
 */
