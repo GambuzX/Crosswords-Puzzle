@@ -4,8 +4,8 @@
 
 using namespace std;
 
-//==========================================================================================
-// Constructor with no parameters
+//=================================================================================================================================
+// Constructor with no parameters. Sets the initial time to current time. Assures counters are at 0.
 
 Player::Player()
 {
@@ -14,8 +14,8 @@ Player::Player()
 	wrongSubmissions = 0;
 }
 
-//==========================================================================================
-// Constructor with name
+//=================================================================================================================================
+// Constructor with name as parameter. Stores name and sets the initial time to current time. Assures counters are at 0.
 
 Player::Player(string name)
 {
@@ -25,38 +25,38 @@ Player::Player(string name)
 	wrongSubmissions = 0;
 }
 
-//==========================================================================================
-// Returns player name
+//=================================================================================================================================
+// Returns the player name.
 
 std::string Player::getName() {	return name; }
 
-//==========================================================================================
-// Returns number of clues the player asked for
+//=================================================================================================================================
+// Returns number of clues the player asked for.
 
 int Player::getNumberOfClues(){	return clues;}
 
-//==========================================================================================
-// Returns number of wrong submissions
+//=================================================================================================================================
+// Returns number of wrong submissions.
 
 int Player::getNumberOfWrongSubmissions(){	return wrongSubmissions;}
 
-//==========================================================================================
-// Increments number of clues
+//=================================================================================================================================
+// Sets the initial time to current time.
+
+void Player::setInitialTime() { time(&initialTime); }
+
+//=================================================================================================================================
+// Increments number of clues.
 
 void Player::incrementNumberOfClues(){	clues++;}
 
-//==========================================================================================
-// Increments number of wrong submission
+//=================================================================================================================================
+// Increments number of wrong submission.
 
 void Player::incrementWrongSubmissions(){	wrongSubmissions++;}
 
-//==========================================================================================
-// Sets the initial time
-
-void Player::setInitialTime(){	time(&initialTime);}
-
-//==========================================================================================
-//Calculates the time in seconds it took since the player was initialized
+//=================================================================================================================================
+// Calculates the time in seconds it passed since the player was initialized, returning it.
 
 double Player::calculateTimeSpent()
 {

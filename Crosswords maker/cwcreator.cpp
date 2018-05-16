@@ -26,6 +26,7 @@ using namespace std;
 //TODO assert
 //TODO join similar functions based on enum
 //TODO remove unused functions
+//TODO same order in declarations and definitions
 
 //TODO Think about connecting programs in a single one
 

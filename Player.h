@@ -1,5 +1,6 @@
 /*
 Class that represents a Player, adapted to a Crosswords Game.
+
 Is initialized with the player name. Keeps track of the time since game started, number of extra clues asked and wrong submissions.
 */
 
@@ -21,10 +22,14 @@ public:
 	int getNumberOfClues();
 	int getNumberOfWrongSubmissions();
 
-	void incrementNumberOfClues();
-	void incrementWrongSubmissions();
+	//Setters
 	void setInitialTime();
 
+	//Incrementers
+	void incrementNumberOfClues();
+	void incrementWrongSubmissions();
+
+	//Calculate time since player was initiliazed
 	double calculateTimeSpent();
 
 private:
