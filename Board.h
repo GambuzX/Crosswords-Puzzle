@@ -33,7 +33,7 @@ public:
 	void setBoard(std::vector<std::vector<char>>);
 	void setUsedWords(std::vector<std::pair<std::string, std::string>>);
 
-	// Board management
+	// Board management and interaction
 	void showBoard();
 	void insertWord(std::string word, std::string position);
 	void insertHash(std::string position);

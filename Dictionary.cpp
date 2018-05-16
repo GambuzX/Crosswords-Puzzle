@@ -9,23 +9,28 @@
 
 using namespace std;
 
-/*Dictionary::Dictionary(std::string dictionaryName)
-{
-	this->dictionaryName = dictionaryName;
-}*/
-
 //=================================================================================================================================
-// Returns the name of the dictionary
+// Returns the name of the dictionary.
 
 string Dictionary::getName(){	return dictionaryName;}
 
 //=================================================================================================================================
-// Returns the synonym list for a given word
+// Returns a random synonym of the given word. Assumes the word is in the dictionary.
+
+string Dictionary::GetWordSynonym(string word)
+{
+	vector<string> synonyms = wordList[toUpper(word)];
+	int randomN = rand() % synonyms.size();
+	return toUpper(synonyms.at(randomN));
+}
+
+//=================================================================================================================================
+// Returns the synonym list for a given word.
 
 vector<string> Dictionary::getWordSynonyms(string word) { return wordList[word]; }
 
 //=================================================================================================================================
-// Returns the headlines in the word list
+// Returns all the headlines in the word list.
 
 vector<string> Dictionary::getHeadlines()
 { 
@@ -38,18 +43,48 @@ vector<string> Dictionary::getHeadlines()
 }
 
 //=================================================================================================================================
-// Sets the name of the dictionary
+// Returns a vector with all of the words that fit a determined space.
+
+vector<string> Dictionary::fittingWords(int availableSpace)
+{
+	vector<string> validWords;
+	map<string, vector<string>>::iterator it;
+	for (it = wordList.begin(); it != wordList.end(); it++)
+		if ((int)it->first.length() <= availableSpace)
+			validWords.push_back(it->first);
+	return validWords;
+}
+
+//=================================================================================================================================
+// Sets the name of the dictionary.
 
 void Dictionary::setName(string name){	dictionaryName = name;}
 
 //=================================================================================================================================
+// Displays the word list with its synonyms.
+
+void Dictionary::showWordList()
+{
+	map<string, vector<string>>::iterator it;
+	for (it = wordList.begin(); it != wordList.end(); it++)
+	{
+		cout << it->first << ": ";
+
+		vector<string> vec = it->second;
+		for (size_t i = 0; i < vec.size(); i++)
+			cout << vec.at(i) << "; ";
+		cout << endl;
+	}
+}
+
+//=================================================================================================================================
 // Verifies if dictionary with the name attribute exists and processes it, storing all word entries with its synonyms.
-// All words kept in uppercase.
+// All words are kept in uppercase.
 
 bool Dictionary::ProcessDictionary()
 {
+	//Open dictionary
 	ifstream dict(dictionaryName);
-
 	if (!dict.is_open())
 	{
 		return false;
@@ -57,13 +92,16 @@ bool Dictionary::ProcessDictionary()
 
 	cout << "\nProcessing dictionary...\n";
 
+	//Go through all the lines
 	string line;
 	while (getline(dict, line))
 	{
+		// Separate headline from synonyms
 		size_t endPos = line.find_first_of(':');
 		string word = toUpper( line.substr(0, endPos));
 		line.erase(0, endPos + 2);
 
+		//Go through all synonyms (except last one)
 		vector<string> synonyms;
 		string synonym;
 		while (line.find_first_of(',') != string::npos)
@@ -73,10 +111,14 @@ bool Dictionary::ProcessDictionary()
 			if (isValidSynonym(synonym))
 				synonyms.push_back(toUpper(synonym));
 			line.erase(0, endPos + 2);
-		}
-		synonym = line; //at this point only the last word remains
+		} 
+
+		// At this point only the last word remains
+		synonym = line;
 		if (isValidSynonym(synonym))
 			synonyms.push_back(toUpper(synonym));
+
+		// If it is valid according to the class standards
 		if (isValidHeadline(word))
 		{
 			pair<map<string, vector<string>>::iterator, bool> ret; //return type variable of map::insert
@@ -96,24 +138,7 @@ bool Dictionary::ProcessDictionary()
 }
 
 //=================================================================================================================================
-// Displays the word list with its synonyms
-
-void Dictionary::showWordList()
-{
-	map<string, vector<string>>::iterator it;
-	for (it = wordList.begin(); it != wordList.end(); it++)
-	{
-		cout << it->first << ": ";
-
-		vector<string> vec = it->second;
-		for (size_t i = 0; i < vec.size(); i++)
-			cout << vec.at(i) << "; ";
-		cout << endl;
-	}
-}
-
-//=================================================================================================================================
-// Checks if a given word is in the word list
+// Checks if a given word is in the word list.
 
 bool Dictionary::isInWordList(string word)
 {
@@ -123,45 +148,7 @@ bool Dictionary::isInWordList(string word)
 }
 
 //=================================================================================================================================
-// Verifies if any word matches the given one using wildcard match
-
-/*bool Dictionary::existsWildcardMatchingWord(string word)
-{
-	map<string, vector<string>>::iterator it;
-	string matchingWord = word + '*'; //Add wildcard operator
-	for (it = wordList.begin(); it != wordList.end(); it++)
-	{
-		if (wildcardMatch(it->first.c_str(), matchingWord.c_str()))
-			return true;
-	}
-	return false;
-}*/
-
-//=================================================================================================================================
-// Returns a vector with all of the words that fit a determined space
-
-vector<string> Dictionary::fittingWords(int availableSpace)
-{
-	vector<string> validWords;
-	map<string, vector<string>>::iterator it;
-	for (it = wordList.begin(); it != wordList.end(); it++)
-		if ((int) it->first.length() <= availableSpace)
-			validWords.push_back(it->first);
-	return validWords;
-}
-
-//=================================================================================================================================
-// Returns a random synonym of the given word. Assumes the word is in the dictionary
-
-string Dictionary::GetWordSynonym(string word)
-{
-	vector<string> synonyms = wordList[toUpper(word)];
-	int randomN = rand() % synonyms.size();
-	return toUpper(synonyms.at(randomN)); // returns a random synonym from the vector of synonyms
-}
-
-//=================================================================================================================================
-// Verifies the given headline is valid
+// Verifies if the given headline is valid.
 
 bool Dictionary::isValidHeadline(string word)
 {
@@ -174,7 +161,7 @@ bool Dictionary::isValidHeadline(string word)
 }
 
 //=================================================================================================================================
-// Verifies the given synonym is valid
+// Verifies if the given synonym is valid.
 
 bool Dictionary::isValidSynonym(string word)
 {
@@ -188,18 +175,7 @@ bool Dictionary::isValidSynonym(string word)
 }
 
 //=================================================================================================================================
-// Checks if a given word is in a vector of words
-
-bool Dictionary::isInVector(string word, vector<string> words)
-{
-	for (size_t i = 0; i < words.size(); i++)
-		if (words.at(i) == word)
-			return true;
-	return false;
-}
-
-//=================================================================================================================================
-// Converts given string to uppercase
+// Converts given string to uppercase.
 
 string Dictionary::toUpper(const string &word)
 {
@@ -207,4 +183,15 @@ string Dictionary::toUpper(const string &word)
 	for (size_t i = 0; i < upperWord.length(); i++)
 		upperWord.at(i) = toupper(upperWord.at(i));
 	return upperWord;
+}
+
+//=================================================================================================================================
+// Checks if a given word is in a vector of words.
+
+bool Dictionary::isInVector(string word, vector<string> words)
+{
+	for (size_t i = 0; i < words.size(); i++)
+		if (words.at(i) == word)
+			return true;
+	return false;
 }
