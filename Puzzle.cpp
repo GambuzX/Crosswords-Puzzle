@@ -70,9 +70,9 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 }
 
 //=================================================================================================================================
-// Class constructor. Assigns a board, a dictionary and a player to the Puzzle. Also stores the board number
+// Class constructor. Assigns a board, a dictionary and a player to the Puzzle. Also stores the board number.
 
-Puzzle::Puzzle(Board &board, Dictionary &dict, string boardNumber, Player player)
+Puzzle::Puzzle(Board &board, Dictionary &dict, Player player, string boardNumber)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
@@ -94,6 +94,7 @@ int Puzzle::getNumberOfSolutionWords(){	return numberOfSolutionWords;}
 // Returns number of words in the player board.
 
 int Puzzle::getNumberOfPlayerWords(){	return numberOfPlayerWords;}
+
 //=================================================================================================================================
 // Returns number of well placed words in the player board.
 
@@ -119,25 +120,25 @@ int Puzzle::calculateNumberOfCorrectWords()
 }
 
 //=================================================================================================================================
-// Changes current board.
+// Stores the board number given a board with the name format: bXXX.txt
 
-void Puzzle::setSolutionBoard(Board board)
+void Puzzle::setLoadedBoardNumber(string name) { loadedBoardNumber = name.substr(1, 3); }
+
+//=================================================================================================================================
+// Changes current player.
+
+void Puzzle::setPlayer(Player player) { currentPlayer = player; }
+
+//=================================================================================================================================
+// Changes current solution board to the one in the Board object. Also changes solution words vector and dimensions.
+
+void Puzzle::setSolutionBoard(Board &board)
 {
 	solutionBoard = board.getBoard();
 	solutionUsedWords = board.getUsedWords();
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 }
-
-//=================================================================================================================================
-// Stores the board number given a board with the name format: bXXX.txt
-
-void Puzzle::setLoadedBoardNumber(string name){	loadedBoardNumber = name.substr(1, 3);}
-
-//=================================================================================================================================
-// Changes current player.
-
-void Puzzle::setPlayer(Player player){	currentPlayer = player;}
 
 //=================================================================================================================================
 // Creates a board for the player to add words. Created from the original board by replacing letters with dots.
@@ -195,7 +196,7 @@ void Puzzle::showPlayerBoard()
 }
 
 //==================================================================================================================================
-// Shows the solution board in the console.
+// Shows the solution board with the words inserted by the player in the console.
 
 void Puzzle::showSolutionBoard()
 {
@@ -237,12 +238,13 @@ void Puzzle::showSolutionBoard()
 
 void Puzzle::buildClueList()
 {
+	clueList.clear(); //Reset previous clue list
 	for (size_t i = 0; i < solutionUsedWords.size(); i++)
 	{
 		string position = solutionUsedWords.at(i).first; //Location and direction
 		position.at(1) = tolower(position.at(1)); //Set column to be lowercase
 		string word = solutionUsedWords.at(i).second;
-		string clue = dictionary.GetWordSynonym(word);
+		string clue = dictionary.GetWordSynonym(word); //Random synonym.
 		clueList.push_back(pair<string, string>(position, clue));
 	}
 }
@@ -290,6 +292,7 @@ void Puzzle::showClueList()
 
 void Puzzle::showDifferentSynonym(std::string position)
 {
+	//Find word in that positions
 	string word;
 	for (size_t i = 0; i < solutionUsedWords.size(); i++)
 		if (toUpperString(solutionUsedWords.at(i).first) == toUpperString(position))
@@ -298,6 +301,7 @@ void Puzzle::showDifferentSynonym(std::string position)
 			break;
 		}
 
+	//Find already used synonym
 	string usedSynonym;
 	for (size_t i = 0; i < clueList.size(); i++)
 		if (toUpperString(clueList.at(i).first) == toUpperString(position))
@@ -306,7 +310,8 @@ void Puzzle::showDifferentSynonym(std::string position)
 			break;
 		}
 
-	if (dictionary.getWordSynonyms(word).size() <= 1) //if there is only one synonym, no other can be found
+	//If there is only one synonym, no other can be found
+	if (dictionary.getWordSynonyms(word).size() <= 1)
 	{
 		cout << "\nThis synonym is unique.\n";
 		colorMaster.setcolor(DEFAULT);
@@ -316,10 +321,11 @@ void Puzzle::showDifferentSynonym(std::string position)
 		cout << endl;
 		colorMaster.setcolor(DEFAULT);
 	}
+	//If there are more than one synonyms
 	else
 	{
 		string newSynonym = dictionary.GetWordSynonym(word);
-		while (toUpperString(newSynonym) == toUpperString(usedSynonym))
+		while (toUpperString(newSynonym) == toUpperString(usedSynonym)) //Find different synonym
 			newSynonym = dictionary.GetWordSynonym(word);
 
 		colorMaster.setcolor(DEFAULT);
@@ -361,6 +367,74 @@ void Puzzle::insertWord(string word, string positionInput)
 		cerr << "Invalid input!";
 	}
 	numberOfPlayerWords++;
+}
+
+//=================================================================================================================================
+// Removes an already placed word. If word removed returns true, else returns false.
+
+bool Puzzle::removeWord(std::string positionInput)
+{
+	// insertionPos = (line, column)
+	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
+	int line = insertionPosition.first;
+	int column = insertionPosition.second;
+	char direction = positionInput.at(2);
+
+	if (playerBoard.at(line).at(column) == '.' || playerBoard.at(line).at(column) == '#')
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no word in that location!\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+
+	bool foundWord = false;
+	vector<pair<string, string>>::iterator it;
+	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
+	{
+		string position = it->first;
+		string word = it->second;
+		if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
+		{
+			pair<int, int> wordPos = calculateInsertionCoordinates(position);
+			int startLine = wordPos.first;
+			int startColumn = wordPos.second;
+			char dir = position.at(2);
+
+			switch (dir)
+			{
+			case 'H':
+				for (size_t i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
+						playerBoard.at(startLine).at(startColumn + i) = '.';
+				}
+				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			case 'V':
+				for (size_t i = 0; i < word.length(); i++)
+				{
+					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+						playerBoard.at(startLine + i).at(startColumn) = '.';
+				}
+				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
+				break;
+			default:
+				cerr << "Invalid direction!";
+			}
+			foundWord = true;
+			break; //can only remove one word, stops after it
+		}
+	}
+	if (!foundWord)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no word in the specified direction!\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+	numberOfPlayerWords--;
+	return true;
 }
 
 //=================================================================================================================================
@@ -480,9 +554,8 @@ void Puzzle::saveStats()
 	file.close();
 }
 
-
 //=================================================================================================================================
-// Verifies it the specified position has an hash
+// Verifies it the specified position has an hash.
 
 bool Puzzle::hasHash(std::string position)
 {
@@ -491,7 +564,7 @@ bool Puzzle::hasHash(std::string position)
 }
 
 //=================================================================================================================================
-// Verifies the user position input is valid
+// Verifies the user position input is valid.
 
 bool Puzzle::validPositionInput(string input)
 {
@@ -529,9 +602,9 @@ bool Puzzle::validPositionInput(string input)
 }
 
 //=================================================================================================================================
-// Verifies the given word can be inserted in the specified position
+// Verifies the given word can be inserted in the specified position.
 
-bool Puzzle::canBeInserted(string word, string position)
+bool Puzzle::canBeInserted(string word, string position) //TODO check this again
 {
 	if (!isValidInsertionLocation(position)) // Verify it the position has an hash
 	{
@@ -572,74 +645,6 @@ bool Puzzle::canBeInserted(string word, string position)
 }
 
 //=================================================================================================================================
-// Removes an already placed word. If word removed returns true, else returns false.
-
-bool Puzzle::removeWord(std::string positionInput)
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = calculateInsertionCoordinates(positionInput);
-	int line = insertionPosition.first;
-	int column = insertionPosition.second;
-	char direction = positionInput.at(2);
-
-	if (playerBoard.at(line).at(column) == '.' || playerBoard.at(line).at(column) == '#')
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nThere is no word in that location!\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	bool foundWord = false;
-	vector<pair<string, string>>::iterator it;
-	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
-	{
-		string position = it->first;
-		string word = it->second;
-		if (wordInterceptsPosition(positionInput, word, position)) // If true, word is to be removed
-		{
-			pair<int, int> wordPos = calculateInsertionCoordinates(position);
-			int startLine = wordPos.first;
-			int startColumn = wordPos.second;
-			char dir = position.at(2);
-
-			switch (dir)
-			{
-			case 'H':
-				for (size_t i = 0; i < word.length(); i++)
-				{
-					if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
-						playerBoard.at(startLine).at(startColumn + i) = '.';
-				}
-				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
-				break;
-			case 'V':
-				for (size_t i = 0; i < word.length(); i++)
-				{
-					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
-						playerBoard.at(startLine + i).at(startColumn) = '.';
-				}
-				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
-				break;
-			default:
-				cerr << "Invalid direction!";
-			}
-			foundWord = true;
-			break; //can only remove one word, stops after it
-		}
-	}
-	if (!foundWord)
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nThere is no word in the specified direction!\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-	numberOfPlayerWords--;
-	return true;
-}
-
-//=================================================================================================================================
 // Checks if a given position is a position where there is a word beggining.
 
 bool Puzzle::isValidInsertionLocation(string positionInput)
@@ -655,18 +660,12 @@ bool Puzzle::isValidInsertionLocation(string positionInput)
 }
 
 //=================================================================================================================================
-// Determines line and column indexes given text input
+// Checks if the player board is equal to the solution board, i.e., if the player has won.
 
-pair<int, int> Puzzle::calculateInsertionCoordinates(string coordinates)
-{
-	pair<int, int> position;
-	position.first = mapCharToNumber(coordinates.at(0)); //line
-	position.second = mapCharToNumber(coordinates.at(1)); //column
-	return position;
-}
+bool Puzzle::boardsMatch() { return playerBoard == solutionBoard; }
 
 //=================================================================================================================================
-// Converts line / columns letter to respective index
+// Converts line / columns letter to respective index.
 
 int Puzzle::mapCharToNumber(char letter)
 {
@@ -675,18 +674,7 @@ int Puzzle::mapCharToNumber(char letter)
 }
 
 //=================================================================================================================================
-// Converts a string to uppercase
-
-string Puzzle::toUpperString(string word)
-{
-	string upper = word;
-	for (size_t i = 0; i < upper.length(); i++)
-		upper.at(i) = toupper(upper.at(i));
-	return upper;
-}
-
-//=================================================================================================================================
-// Verifies the given headline is valid
+// Verifies the given headline is valid.
 
 bool Puzzle::isValidHeadline(string word)
 {
@@ -699,7 +687,7 @@ bool Puzzle::isValidHeadline(string word)
 }
 
 //=================================================================================================================================
-// Checks if the word fits in the specified space, i.e., if it occupies the entire space
+// Checks if the word fits in the specified space, i.e., if it occupies the entire space.
 
 bool Puzzle::wordFitsSpace(string word, string positionInput)
 {
@@ -749,7 +737,7 @@ bool Puzzle::wordFitsSpace(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if the given word is already on the player board or not
+// Checks if the given word is already on the player board or not.
 
 bool Puzzle::isWordUsed(string word)
 {
@@ -792,7 +780,7 @@ bool Puzzle::matchesInterceptedPositions(string word, string positionInput)
 }
 
 //=================================================================================================================================
-// Checks if a word in the board intercepts determined coordinates in the board
+// Checks if a word in the board intercepts determined coordinates in the board.
 
 bool Puzzle::wordInterceptsPosition(string targetPosition, string word, string wordPosition)
 {
@@ -828,7 +816,7 @@ bool Puzzle::wordInterceptsPosition(string targetPosition, string word, string w
 //=================================================================================================================================
 // Checks if the adjacent spaces of a given position on a direction are empty
 
-bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
+bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //TODO change this
 {
 	int line = coordinates.first;
 	int column = coordinates.second;
@@ -876,6 +864,23 @@ bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction)
 }
 
 //=================================================================================================================================
-// Checks if the player board is equal to the solution board, i.e., if the player has won
+// Determines line and column indexes given text input
 
-bool Puzzle::boardsMatch(){	return playerBoard == solutionBoard;}
+pair<int, int> Puzzle::calculateInsertionCoordinates(string coordinates)
+{
+	pair<int, int> position;
+	position.first = mapCharToNumber(coordinates.at(0)); //line
+	position.second = mapCharToNumber(coordinates.at(1)); //column
+	return position;
+}
+
+//=================================================================================================================================
+// Converts a string to uppercase.
+
+string Puzzle::toUpperString(string word)
+{
+	string upper = word;
+	for (size_t i = 0; i < upper.length(); i++)
+		upper.at(i) = toupper(upper.at(i));
+	return upper;
+}
