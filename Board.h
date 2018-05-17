@@ -46,24 +46,23 @@ public:
 	void fillRemainingSpots();
 	void clearBoard();
 
+	// Utility
+	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
+
 	// Validity tests
 	bool validPositionInput(std::string);
 	bool isWordUsed(std::string word);
 	bool isOnTopOfWord(std::string insertionWord, std::string positionInput);
 	bool isSameWordInDifferentPosition(std::string word, std::string position);
+	bool wordFitsSpace(std::string word, std::string position);
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool hasHash(std::pair<int, int>);
-	bool wordFitsSpace(std::string word, std::string position);
 	bool givenWordInterceptsPosition(std::pair<int,int> targetPosition, char direction, std::string word, std::string wordPosition);
 	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
 
 	// Save / Load
 	bool saveBoard(std::string name, std::string dictName, std::vector<std::pair<std::string, std::string>> autoFormedWords);
 	bool loadBoard(std::string name, std::string& dictName);
-
-	// Utility
-	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
-
 private:
 	// The board itself
 	std::vector<std::vector<char>> board;

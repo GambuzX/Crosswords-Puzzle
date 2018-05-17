@@ -81,11 +81,6 @@ Board::Board(int horizontalSize, int verticalSize)
 }
 
 //=================================================================================================================================
-// Checks if a given position has an hash ('#')
-
-bool Board::hasHash(pair<int,int> position){	return board.at(position.first).at(position.second) == '#';}
-
-//=================================================================================================================================
 // Returns the current board
 
 vector<vector<char>> Board::getBoard(){	return board;}
@@ -96,6 +91,21 @@ vector<vector<char>> Board::getBoard(){	return board;}
 vector<pair<string, string>> Board::getUsedWords(){	return usedWords;}
 
 //=================================================================================================================================
+// Returns board vertical size
+
+int Board::getVerticalSize() { return verticalSize; }
+
+//=================================================================================================================================
+// Returns board horizontal size
+
+int Board::getHorizontalSize() { return horizontalSize; }
+
+//=================================================================================================================================
+// Returns a cell of the board
+
+char Board::getCell(int line, int column) { return board.at(line).at(column); }
+
+//=================================================================================================================================
 // Changes current board to the specified one
 
 void Board::setBoard(vector<vector<char>> newBoard){	board = newBoard;}
@@ -104,21 +114,6 @@ void Board::setBoard(vector<vector<char>> newBoard){	board = newBoard;}
 // Changes current used words vector to the specified one
 
 void Board::setUsedWords(vector<pair<string, string>> newUsedWords){	usedWords = newUsedWords;}
-
-//=================================================================================================================================
-// Returns board vertical size
-
-int Board::getVerticalSize(){	return verticalSize;}
-
-//=================================================================================================================================
-// Returns board horizontal size
-
-int Board::getHorizontalSize(){	return horizontalSize;}
-
-//=================================================================================================================================
-// Returns a cell of the board
-
-char Board::getCell(int line, int column){	return board.at(line).at(column);}
 
 //=================================================================================================================================
 // Shows current board on the console
@@ -468,6 +463,29 @@ void Board::fillRemainingSpots()
 }
 
 //=================================================================================================================================
+// Clears the board, filling it with dots, and resets the used words vector.
+
+void Board::clearBoard()
+{
+	for (int i = 0; i < verticalSize; i++)
+		for (int j = 0; j < horizontalSize; j++)
+			board.at(i).at(j) = '.';
+
+	usedWords.clear();
+}
+
+//=================================================================================================================================
+// Returns line and column indexes given text input
+
+pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
+{
+	pair<int, int> position;
+	position.first = mapCharToNumber(coordinates.at(0)); //line
+	position.second = mapCharToNumber(coordinates.at(1)); //column
+	return position;
+}
+
+//=================================================================================================================================
 // Verifies the user position input is valid, i.e., respects the format LCD (line, column, direction)
 
 bool Board::validPositionInput(string input)
@@ -503,144 +521,6 @@ bool Board::validPositionInput(string input)
 	}
 	else
 		return true;
-}
-
-//=================================================================================================================================
-// Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
-
-bool Board::saveBoard(string fileName, string dictName, vector<pair<string,string>> boardWords)
-{
-	// Clear board letters and reset used words vector
-	for (int i = 0; i < verticalSize; i++)
-		for (int j = 0; j < horizontalSize; j++)
-			if (isalpha(board.at(i).at(j)))
-				board.at(i).at(j) = '.';
-	usedWords.clear();
-
-
-	// Add all the words in the vector to the used words vector
-	for (size_t i = 0; i < boardWords.size(); i++) //TODO assure it is working
-	{
-		insertWord(boardWords.at(i).second, boardWords.at(i).first);
-		insertWordHashes(boardWords.at(i).second, boardWords.at(i).first);
-	}
-
-	// Organize it well
-	ofstream file(fileName);
-	
-	// Write dictionary name
-	file << dictName << endl << endl;
-
-	// Write board
-	for (int i = 0; i < verticalSize; i++)
-	{
-		for (int j = 0; j < horizontalSize; j++)
-		{
-			file << board.at(i).at(j) << " ";
-		}
-		file << endl;
-	}
-	file << endl;
-
-	//Write used words
-	vector<pair<string, string>>::iterator it;
-	for (it = usedWords.begin(); it != usedWords.end(); it++)
-	{
-		file << it->first << " " << it->second << endl;
-	}
-
-	file.close();
-	return true;
-}
-
-//=================================================================================================================================
-// Loads a board from a file and changes the dictName argument for the name of the dictionary that was used.
-
-bool Board::loadBoard(string boardNumber, string& dictName)
-{
-	// Determine file name from the board number
-	string fileName;
-	if (boardNumber.length() == 1)
-		fileName = "b00" + boardNumber + ".txt";
-	else if (boardNumber.length() == 2)
-		fileName = "b0" + boardNumber + ".txt";
-	else if (boardNumber.length() == 3)
-		fileName = "b" + boardNumber + ".txt";
-	else
-		return false;
-
-	//Open file
-	ifstream file(fileName);
-	
-	if (!file.is_open())
-		return false;
-
-	//SETTING DICTIONARY
-	getline(file, dictName);
-
-	string line;
-	getline(file, line); // empty line
-
-	//SETTING HORIZONTAL AND VERTICAL SIZES
-	int verticalSize = 0;
-	int horizontalSize = 0;
-	bool foundDot = false; //Bool to check whether or not the board was finished
-	getline(file, line);
-	while (line != "")
-	{
-		horizontalSize = ((int) line.length() + 1) / 2; //has one extra space for each char
-		if (line.find('.') != string::npos)
-			foundDot = true;
-		verticalSize++;
-		getline(file, line);
-	}
-	this->horizontalSize = horizontalSize;
-	this->verticalSize = verticalSize;
-
-	//RESIZE BOARD
-	board.resize(verticalSize);
-	for (int i = 0; i < verticalSize; i++)
-		board.at(i).resize(horizontalSize);
-
-	//INITIALIZE WITH DOTS
-	for (size_t i = 0; i < board.size(); i++)
-		for (size_t j = 0; j < board.at(i).size(); j++)
-			board.at(i).at(j) = '.';
-
-	//INSERT WORDS THAT WERE ON THE BOARD
-	usedWords.clear();
-	while (getline(file, line))
-	{
-		string position = line.substr(0, 3);
-		string word = line.substr(4); //from index 4 to the end
-		insertWord(word, position);
-		insertWordHashes(word, position); //TODO I added this late, not sure it works
-	}
-
-	//If board was completed
-	if (!foundDot)
-		fillRemainingSpots();
-	return true;
-}
-
-//=================================================================================================================================
-// Returns line and column indexes given text input
-
-pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
-{
-	pair<int, int> position;
-	position.first = mapCharToNumber(coordinates.at(0)); //line
-	position.second = mapCharToNumber(coordinates.at(1)); //column
-	return position;
-}
-
-//=================================================================================================================================
-// Converts line / columns letter to respective index.
-
-int Board::mapCharToNumber(char letter)
-{
-	char upper = toupper(letter);
-	return ((int) upper - (int) 'A');
 }
 
 //=================================================================================================================================
@@ -754,6 +634,11 @@ bool Board::matchesInterceptedPositions(string word, string positionInput)
 }
 
 //=================================================================================================================================
+// Checks if a given position has an hash ('#')
+
+bool Board::hasHash(pair<int, int> position) { return board.at(position.first).at(position.second) == '#'; }
+
+//=================================================================================================================================
 // Checks if a given word in the board intercepts determined coordinates in the board.
 
 bool Board::givenWordInterceptsPosition(pair<int, int> targetCoords, char targetDir, string word, string wordPosition)
@@ -826,13 +711,128 @@ bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char tar
 }
 
 //=================================================================================================================================
-// Clears the board, filling it with dots, and resets the used words vector.
+// Saves the board to a file. Returns a boolean indicating whether or not the operation was successfull
 
-void Board::clearBoard()
+bool Board::saveBoard(string fileName, string dictName, vector<pair<string, string>> boardWords)
 {
+	// Clear board letters and reset used words vector
 	for (int i = 0; i < verticalSize; i++)
 		for (int j = 0; j < horizontalSize; j++)
+			if (isalpha(board.at(i).at(j)))
+				board.at(i).at(j) = '.';
+	usedWords.clear();
+
+
+	// Add all the words in the vector to the used words vector
+	for (size_t i = 0; i < boardWords.size(); i++) //TODO assure it is working
+	{
+		insertWord(boardWords.at(i).second, boardWords.at(i).first);
+		insertWordHashes(boardWords.at(i).second, boardWords.at(i).first);
+	}
+
+	// Organize it well
+	ofstream file(fileName);
+
+	// Write dictionary name
+	file << dictName << endl << endl;
+
+	// Write board
+	for (int i = 0; i < verticalSize; i++)
+	{
+		for (int j = 0; j < horizontalSize; j++)
+		{
+			file << board.at(i).at(j) << " ";
+		}
+		file << endl;
+	}
+	file << endl;
+
+	//Write used words
+	vector<pair<string, string>>::iterator it;
+	for (it = usedWords.begin(); it != usedWords.end(); it++)
+	{
+		file << it->first << " " << it->second << endl;
+	}
+
+	file.close();
+	return true;
+}
+
+//=================================================================================================================================
+// Loads a board from a file and changes the dictName argument for the name of the dictionary that was used.
+
+bool Board::loadBoard(string boardNumber, string& dictName)
+{
+	// Determine file name from the board number
+	string fileName;
+	if (boardNumber.length() == 1)
+		fileName = "b00" + boardNumber + ".txt";
+	else if (boardNumber.length() == 2)
+		fileName = "b0" + boardNumber + ".txt";
+	else if (boardNumber.length() == 3)
+		fileName = "b" + boardNumber + ".txt";
+	else
+		return false;
+
+	//Open file
+	ifstream file(fileName);
+
+	if (!file.is_open())
+		return false;
+
+	//SETTING DICTIONARY
+	getline(file, dictName);
+
+	string line;
+	getline(file, line); // empty line
+
+						 //SETTING HORIZONTAL AND VERTICAL SIZES
+	int verticalSize = 0;
+	int horizontalSize = 0;
+	bool foundDot = false; //Bool to check whether or not the board was finished
+	getline(file, line);
+	while (line != "")
+	{
+		horizontalSize = ((int)line.length() + 1) / 2; //has one extra space for each char
+		if (line.find('.') != string::npos)
+			foundDot = true;
+		verticalSize++;
+		getline(file, line);
+	}
+	this->horizontalSize = horizontalSize;
+	this->verticalSize = verticalSize;
+
+	//RESIZE BOARD
+	board.resize(verticalSize);
+	for (int i = 0; i < verticalSize; i++)
+		board.at(i).resize(horizontalSize);
+
+	//INITIALIZE WITH DOTS
+	for (size_t i = 0; i < board.size(); i++)
+		for (size_t j = 0; j < board.at(i).size(); j++)
 			board.at(i).at(j) = '.';
 
+	//INSERT WORDS THAT WERE ON THE BOARD
 	usedWords.clear();
+	while (getline(file, line))
+	{
+		string position = line.substr(0, 3);
+		string word = line.substr(4); //from index 4 to the end
+		insertWord(word, position);
+		insertWordHashes(word, position); //TODO I added this late, not sure it works
+	}
+
+	//If board was completed
+	if (!foundDot)
+		fillRemainingSpots();
+	return true;
+}
+
+//=================================================================================================================================
+// Converts line / columns letter to respective index.
+
+int Board::mapCharToNumber(char letter)
+{
+	char upper = toupper(letter);
+	return ((int)upper - (int) 'A');
 }
