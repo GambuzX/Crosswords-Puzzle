@@ -477,6 +477,71 @@ void Board::clearBoard()
 //=================================================================================================================================
 // Returns line and column indexes given text input
 
+string Board::determineAvailableSpaceWildcard(string position) //TODO assure it works
+{
+	pair<int, int> coords = calculateInsertionCoordinates(position);
+	char dir = position.at(2);
+	string wildcard = "";
+
+	if (board.at(coords.first).at(coords.second) == '#') //Nothing matches
+		return wildcard;
+
+	//Add letters and '?'
+	switch (dir)
+	{
+	case 'H':
+	{
+		int currentColumn = coords.second;
+		do
+		{
+			if (isalpha(board.at(coords.first).at(currentColumn)))
+				wildcard += board.at(coords.first).at(currentColumn); //add letter
+			else
+				wildcard += "?"; //add question marks for every cell that is not a letter
+			currentColumn++;
+		} while (board.at(coords.first).at(currentColumn) != '#' && currentColumn < horizontalSize);
+		break;
+	}
+	case 'V':
+	{
+		int currentLine = coords.first;
+		do
+		{
+			if (isalpha(board.at(currentLine).at(coords.second)))
+				wildcard += board.at(currentLine).at(coords.second); //add letter
+			else
+				wildcard += "?"; //add question marks for every cell that is not a letter
+			currentLine++;
+		} while (board.at(currentLine).at(coords.second) != '#' && currentLine < verticalSize);
+		break;
+	}
+	}
+
+	//Go through the end of the wildcard and substitute last '?' for '*'
+	int currentIndex = (int)wildcard.length() - 1;
+	while (wildcard.at(currentIndex) == '?')
+	{
+		//special case
+		if (wildcard.length() == 1)
+		{
+			wildcard.at(currentIndex) = '*';
+			break;
+		}
+		//if next element is '?'
+		else if (wildcard.at(currentIndex - 1) == '?')
+			wildcard.pop_back(); //delete last element
+		//if next element is not '?'
+		else
+			wildcard.at(currentIndex) = '*';
+		currentIndex--;
+	}
+
+	return wildcard;
+}
+
+//=================================================================================================================================
+// Returns line and column indexes given text input
+
 pair<int, int> Board::calculateInsertionCoordinates(string coordinates)
 {
 	pair<int, int> position;
