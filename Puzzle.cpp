@@ -616,6 +616,14 @@ bool Puzzle::canBeInserted(string word, string position) //TODO check this again
 		return false;
 	}
 
+	else if (hasWordInPosition(position))
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nYou have already inserted a word there!\n\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+
 	// Verify word is valid
 	else if (!isValidHeadline(word))
 	{
@@ -754,6 +762,18 @@ bool Puzzle::isWordUsed(string word)
 	vector<pair<string, string>>::iterator it;
 	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
 		if (it->second == word)
+			return true;
+	return false;
+}
+
+//=================================================================================================================================
+// Checks if the user has already inserted a word in the specified position
+
+bool Puzzle::hasWordInPosition(string position)
+{
+	vector<pair<string, string>>::iterator it;
+	for (it = playerUsedWords.begin(); it != playerUsedWords.end(); it++)
+		if (it->first == position)
 			return true;
 	return false;
 }

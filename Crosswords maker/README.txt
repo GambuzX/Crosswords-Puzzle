@@ -12,3 +12,5 @@ Many options
 2nd
 
 Keeps track of wrong submissions
+
+TALK ABOUT DEALING WITH ODD CASES

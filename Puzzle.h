@@ -81,6 +81,7 @@ private:
 	bool isValidHeadline(std::string);
 	bool wordFitsSpace(std::string word, std::string position);
 	bool isWordUsed(std::string word);
+	bool hasWordInPosition(std::string position);
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
 	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
