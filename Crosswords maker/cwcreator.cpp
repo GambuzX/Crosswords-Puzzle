@@ -27,6 +27,7 @@ using namespace std;
 //TODO join similar functions based on enum
 //TODO remove unused functions
 //TODO same order in declarations and definitions
+//TODO ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 
 //TODO Think about connecting programs in a single one
 
