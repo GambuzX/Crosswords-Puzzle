@@ -23,9 +23,6 @@ AUTHOR: GambuzX
 using namespace std;
 
 //TODO test another randomizer. Maybe dont need to fill all spots
-//TODO assert
-//TODO join similar functions based on enum
-//TODO remove unused functions
 
 //TODO Think about connecting programs in a single one
 
@@ -988,7 +985,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 		{
 			for (size_t j = column; j < column + newWord.length(); j++)
 				for (size_t g = 0; g < usedWords.size(); g++)
-					if (board.givenWordInterceptsPosition(pair<int, int>(line, (int) j), direction, usedWords.at(g).second, usedWords.at(g).first)) //TODO check it works
+					if (board.givenWordInterceptsPosition(pair<int, int>(line, (int) j), direction, usedWords.at(g).second, usedWords.at(g).first))
 					{
 						board.removeWordFromUsedWords((int) g);
 						break;
@@ -999,7 +996,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 		{
 			for (size_t j = line; j < line + newWord.length(); j++)
 				for (size_t g = 0; g < usedWords.size(); g++)
-					if (board.givenWordInterceptsPosition(pair<int, int>((int) j, column), direction, usedWords.at(g).second, usedWords.at(g).first)) //TODO check it works
+					if (board.givenWordInterceptsPosition(pair<int, int>((int) j, column), direction, usedWords.at(g).second, usedWords.at(g).first))
 					{
 						board.removeWordFromUsedWords((int) g);
 						usedWords.erase(usedWords.begin() + g);
@@ -1124,7 +1121,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 				{
 					if (currentWord.length() >= 2) //only check if word size is bigger than 1
 					{
-						char c_position[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' }; //TODO check this works
+						char c_position[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
 						string position(c_position);
 
 						if (!dictionary.isInWordList(currentWord)) //if word does not exist
@@ -1560,7 +1557,7 @@ vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictio
 //=================================================================================================================================
 // Indicates if a word belongs to a vector of pairs of strings (position, word).
 
-bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word) //TODO add to board?
+bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
 {
 	for (size_t i = 0; i < usedWords.size(); i++)
 		if (usedWords.at(i).second == word)
@@ -1571,7 +1568,7 @@ bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word)
 //=================================================================================================================================
 // Indicates if a word is repeated in a vector, i.e., if it appears more than once in different positions.
 
-bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position) //TODO add to board?
+bool wordRepeatedInDifferentPosition(vector<pair<string, string>> usedWords, string word, string position)
 {
 	for (size_t i = 0; i < usedWords.size(); i++)
 		if (usedWords.at(i).first != position && usedWords.at(i).second == word)
@@ -2096,19 +2093,6 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 					board.removeWord(positionInput);
 					validInput = true; // exit loop
 					cout << endl;
-					/*if (testRemoval(board, dict, positionInput))
-					{
-						board.removeWord(positionInput);
-						validInput = true; // exit loop
-						cout << endl;
-					}
-					else
-					{
-						colorMaster.setcolor(ERROR_MESSAGE);
-						cout << "\nRemoving that word would invalidate the board.\n";
-						validInput = true; // exit loop
-						colorMaster.setcolor(DEFAULT);
-					}*/
 					break;
 				case EditMode::trustUser:
 					board.removeWordOrHash(positionInput);

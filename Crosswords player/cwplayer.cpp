@@ -21,7 +21,6 @@ Has functions to deal with the UI and user interaction.
 using namespace std;
 
 //TODO test everything
-//TODO clean up code
 
 //=================================================================================================================================
 //COLOR CODES:
@@ -436,7 +435,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 //=================================================================================================================================
 // Allows the user to solve the current puzzle.
 
-void solveCurrentPuzzle(Puzzle &puzzle) //TODO Can I insert in middle of other words?
+void solveCurrentPuzzle(Puzzle &puzzle)
 {
 	puzzle.showPlayerBoard();
 	puzzle.showClueList();

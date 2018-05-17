@@ -243,7 +243,7 @@ bool Board::removeWord(string positionInput)
 	for (it = usedWords.begin(); it != usedWords.end(); it++)
 	{
 		string position = it->first;
-		string word = it->second; //TODO check below method still works
+		string word = it->second;
 		if (givenWordInterceptsPosition(insertionPosition, direction, word, position)) // If true, word is to be removed
 		{
 			pair<int, int> wordPos = calculateInsertionCoordinates(position);
@@ -257,7 +257,7 @@ bool Board::removeWord(string positionInput)
 				for (size_t i = 0; i < word.length(); i++)
 				{
 					//If cell is not used by any other word, change it to dot ('.')
-					if (!existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V')) //TODO Is same word causing problem?
+					if (!existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V'))
 						board.at(startLine).at(startColumn + i) = '.';
 				}
 				usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -336,7 +336,7 @@ bool Board::removeWordOrHash(string positionInput)
 				case 'H':
 					for (size_t i = 0; i < word.length(); i++)
 					{
-						if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V')) //TODO change deprecated method
+						if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V'))
 							board.at(startLine).at(startColumn + i) = '.';
 					}
 					usedWords.erase(it); //iterator is pointing to the element to be removed
@@ -673,7 +673,7 @@ bool Board::givenWordInterceptsPosition(pair<int, int> targetCoords, char target
 //=================================================================================================================================
 // Checks if any word in the board intercepts determined coordinates in the board.
 
-bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char targetDir) //TODO check it works
+bool Board::existsWordInterceptingPosition(pair<int, int> targetCoords, char targetDir)
 {
 	// position = (line, column)
 	for (size_t i = 0; i < usedWords.size(); i++)
@@ -724,7 +724,7 @@ bool Board::saveBoard(string fileName, string dictName, vector<pair<string, stri
 
 
 	// Add all the words in the vector to the used words vector
-	for (size_t i = 0; i < boardWords.size(); i++) //TODO assure it is working
+	for (size_t i = 0; i < boardWords.size(); i++)
 	{
 		insertWord(boardWords.at(i).second, boardWords.at(i).first);
 		insertWordHashes(boardWords.at(i).second, boardWords.at(i).first);
@@ -819,7 +819,7 @@ bool Board::loadBoard(string boardNumber, string& dictName)
 		string position = line.substr(0, 3);
 		string word = line.substr(4); //from index 4 to the end
 		insertWord(word, position);
-		insertWordHashes(word, position); //TODO I added this late, not sure it works
+		insertWordHashes(word, position);
 	}
 
 	//If board was completed
