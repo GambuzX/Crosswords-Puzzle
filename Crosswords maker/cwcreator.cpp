@@ -65,7 +65,7 @@ enum EditMode
 {
 	strict, //Does many tests before allowing insertion, not allowing the board to ever be invalid while editing
 	trustUser, //Gives the user more freedom and only checks full validity in the end
-	limitless, //Gives the user even more freedom. Does not insert or remove hashes, user has all the power!
+	limitless, //Gives the user even more freedom. Does not insert or remove hashes, user has all the power! -> Not implemented
 	invalid //Invalid edit mode
 };
 
@@ -103,8 +103,7 @@ vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictio
 
 pair<string, string> newRiddle();
 
-void helpUser(Board &board, Dictionary &dictionary, string positionInput);
-void helpUserFreeMode(Board &board, Dictionary &dictionary, string positionInput);
+void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void bruteForceInsertion(Board &board, Dictionary &dictionary);
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
@@ -809,7 +808,8 @@ Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 }
 
 //=================================================================================================================================
-// Verifies if a word can be inserted in a determined location, informing why not if false. EditMode = free.
+// Verifies if a word can be inserted in a determined location, informing why not if false.
+// Last test varies depending on edit mode.
 
 bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput, EditMode editMode)
 {
@@ -1392,57 +1392,11 @@ bool testRemoval(Board &board, Dictionary &dictionary, string positionInput)
 }
 
 //=================================================================================================================================
-// Helps the user by showing which words can be placed on specified location.
+// Helps the user by showing which words can be placed on specified location. Behaviour changes with edit mode.
 // EditMode = strict -> Has everything in account. Words shown are will keep the board valid.
-
-void helpUser(Board &board, Dictionary &dictionary, string positionInput)
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
-	char direction = toupper(positionInput.at(2));
-
-	//Calculate available space
-	int availableSpace;
-	switch (direction)
-	{
-	case 'H':
-		availableSpace = board.getHorizontalSize() - insertionPosition.second;
-		break;
-	case 'V':
-		availableSpace = board.getVerticalSize() - insertionPosition.first;
-		break;
-	default:
-		cerr << "Invalid input!";
-	}
-
-	colorMaster.setcolor(BLACK, WHITE);
-	cout << "\nWords that fit there:\n";
-	colorMaster.setcolor(WHITE, BLACK);
-
-	//Gets the words that may fit there from the dictionary
-	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
-
-	//Displays the words that are valid insertions in the board
-	int counter = 0;
-	const int WORDS_PER_LINE = 6;
-	const int WORDS_WIDTH = 18;
-	for (size_t i = 0; i < fittingWords.size(); i++)
-	{
-		string currentWord = fittingWords.at(i);
-		if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput) && testInsertion(board, dictionary, currentWord, positionInput))
-		{
-			if (counter % WORDS_PER_LINE == 0) cout << endl;
-			cout << setw(WORDS_WIDTH) << currentWord;
-			counter++;
-		}
-	}
-}
-
-//=================================================================================================================================
-// Helps the user by showing which words can be placed on specified location. 
 // EditMode = trustUser -> Only has in account the occupied cells and not adjacent ones.
 
-void helpUserFreeMode(Board &board, Dictionary &dictionary, string positionInput)
+void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
@@ -1470,18 +1424,39 @@ void helpUserFreeMode(Board &board, Dictionary &dictionary, string positionInput
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
 	//Displays the words that are valid insertions in the board
-	int counter = 0;
-	const int WORDS_PER_LINE = 6;
-	const int WORDS_WIDTH = 18;
-	for (size_t i = 0; i < fittingWords.size(); i++)
+	//Behaviour varies depending on edit mode
+	switch (editMode)
 	{
-		string currentWord = fittingWords.at(i);
-		if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput))
+	case EditMode::strict:
+		int counter = 0;
+		const int WORDS_PER_LINE = 6;
+		const int WORDS_WIDTH = 18;
+		for (size_t i = 0; i < fittingWords.size(); i++)
 		{
-			if (counter % WORDS_PER_LINE == 0) cout << endl;
-			cout << setw(WORDS_WIDTH) << currentWord;
-			counter++;
+			string currentWord = fittingWords.at(i);
+			if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput) && testInsertion(board, dictionary, currentWord, positionInput))
+			{
+				if (counter % WORDS_PER_LINE == 0) cout << endl;
+				cout << setw(WORDS_WIDTH) << currentWord;
+				counter++;
+			}
 		}
+		break;
+	case EditMode::trustUser:
+		int counter = 0;
+		const int WORDS_PER_LINE = 6;
+		const int WORDS_WIDTH = 18;
+		for (size_t i = 0; i < fittingWords.size(); i++)
+		{
+			string currentWord = fittingWords.at(i);
+			if (!board.isWordUsed(currentWord) && board.matchesInterceptedPositions(currentWord, positionInput))
+			{
+				if (counter % WORDS_PER_LINE == 0) cout << endl;
+				cout << setw(WORDS_WIDTH) << currentWord;
+				counter++;
+			}
+		}
+		break;
 	}
 }
 
@@ -2144,15 +2119,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else if (word == "?") // Ask for help
 			{
-				switch (editMode)
-				{
-				case EditMode::strict:
-					helpUser(board, dict, positionInput);
-					break;
-				case EditMode::trustUser:
-					helpUserFreeMode(board, dict, positionInput);
-					break;
-				}
+				helpUser(board, dict, positionInput, editMode); //varies depending on edit mode
 				cout << endl;
 			}
 			else if (word == "+") // Checks for automatically formed words
