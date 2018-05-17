@@ -50,7 +50,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict)
 	verticalSize = board.getVerticalSize();
 	horizontalSize = board.getHorizontalSize();
 	dictionary = dict;
-	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfSolutionWords = (int) solutionUsedWords.size();
 	numberOfPlayerWords = 0;
 }
 
@@ -65,7 +65,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, Player player)
 	horizontalSize = board.getHorizontalSize();
 	dictionary = dict;
 	currentPlayer = player; 
-	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfSolutionWords = (int) solutionUsedWords.size();
 	numberOfPlayerWords = 0;
 }
 
@@ -80,7 +80,7 @@ Puzzle::Puzzle(Board &board, Dictionary &dict, Player player, string boardNumber
 	horizontalSize = board.getHorizontalSize();
 	dictionary = dict;
 	currentPlayer = player;
-	numberOfSolutionWords = solutionUsedWords.size();
+	numberOfSolutionWords = (int) solutionUsedWords.size();
 	numberOfPlayerWords = 0;
 	loadedBoardNumber = boardNumber;
 }
@@ -404,7 +404,7 @@ bool Puzzle::removeWord(std::string positionInput)
 			switch (dir)
 			{
 			case 'H':
-				for (size_t i = 0; i < word.length(); i++)
+				for (int i = 0; i < (int) word.length(); i++)
 				{
 					//If cell is not used by any other word, change it to dot ('.')
 					if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V'))
@@ -413,7 +413,7 @@ bool Puzzle::removeWord(std::string positionInput)
 				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
 				break;
 			case 'V':
-				for (size_t i = 0; i < word.length(); i++)
+				for (int i = 0; i < (int) word.length(); i++)
 				{
 					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 						playerBoard.at(startLine + i).at(startColumn) = '.';
@@ -605,7 +605,7 @@ bool Puzzle::validPositionInput(string input)
 //=================================================================================================================================
 // Verifies the given word can be inserted in the specified position.
 
-bool Puzzle::canBeInserted(string word, string position) //TODO check this again
+bool Puzzle::canBeInserted(string word, string position)
 {
 	// Verify it the position has an hash
 	if (!isValidInsertionLocation(position))
@@ -616,6 +616,7 @@ bool Puzzle::canBeInserted(string word, string position) //TODO check this again
 		return false;
 	}
 
+	// Verify if there already has been inserted a word there
 	else if (hasWordInPosition(position))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
@@ -714,7 +715,7 @@ bool Puzzle::wordFitsSpace(string word, string positionInput)
 	char direction = toupper(positionInput.at(2));
 
 	char dir = toupper(direction);
-	int wordSize = word.length();
+	int wordSize = (int) word.length();
 	int availableSpace;
 	switch (dir)
 	{
@@ -789,6 +790,7 @@ bool Puzzle::matchesInterceptedPositions(string word, string positionInput)
 	char direction = toupper(positionInput.at(2));
 	int line = insertionPosition.first;
 	int column = insertionPosition.second;
+
 	switch (direction)
 	{
 	case 'H':

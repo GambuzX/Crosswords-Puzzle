@@ -1286,7 +1286,7 @@ bool isBoardValid(Board &board, Dictionary &dictionary, string word, string posi
 //=================================================================================================================================
 // Verifies if there are 2 letter words repeated in the board. Assumes words found are valid.
 
-bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary) //TODO test this works
+bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary)
 {
 	vector<string> foundWords;
 

@@ -254,7 +254,7 @@ bool Board::removeWord(string positionInput)
 			switch (dir)
 			{
 			case 'H':
-				for (size_t i = 0; i < word.length(); i++)
+				for (int i = 0; i < (int) word.length(); i++)
 				{
 					//If cell is not used by any other word, change it to dot ('.')
 					if (!existsWordInterceptingPosition(pair<int,int>(startLine,startColumn+i),'V'))
@@ -265,7 +265,7 @@ bool Board::removeWord(string positionInput)
 				reprintHashes();
 				break;
 			case 'V':
-				for (size_t i = 0; i < word.length(); i++)
+				for (int i = 0; i < (int) word.length(); i++)
 				{
 					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 						board.at(startLine + i).at(startColumn) = '.';
@@ -334,7 +334,7 @@ bool Board::removeWordOrHash(string positionInput)
 				switch (dir)
 				{
 				case 'H':
-					for (size_t i = 0; i < word.length(); i++)
+					for (int i = 0; i < (int) word.length(); i++)
 					{
 						if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V'))
 							board.at(startLine).at(startColumn + i) = '.';
@@ -344,7 +344,7 @@ bool Board::removeWordOrHash(string positionInput)
 					reprintHashes();
 					break;
 				case 'V':
-					for (size_t i = 0; i < word.length(); i++)
+					for (int i = 0; i < (int) word.length(); i++)
 					{
 						if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 							board.at(startLine + i).at(startColumn) = '.';
