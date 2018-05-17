@@ -83,7 +83,7 @@ private:
 	bool isWordUsed(std::string word);
 	bool matchesInterceptedPositions(std::string word, std::string position);
 	bool wordInterceptsPosition(std::string targetPosition, std::string word, std::string wordPosition);
-	bool adjacentSpacesEmpty(std::pair<int, int> coordinates, char direction);
+	bool existsWordInterceptingPosition(std::pair<int, int> targetCoords, char targetDir);
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 	std::string toUpperString(std::string word);
 };

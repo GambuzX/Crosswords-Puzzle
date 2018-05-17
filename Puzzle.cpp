@@ -406,7 +406,8 @@ bool Puzzle::removeWord(std::string positionInput)
 			case 'H':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					if (adjacentSpacesEmpty(pair<int, int>(startLine, startColumn + i), dir))
+					//If cell is not used by any other word, change it to dot ('.')
+					if (!existsWordInterceptingPosition(pair<int, int>(startLine, startColumn + i), 'V'))
 						playerBoard.at(startLine).at(startColumn + i) = '.';
 				}
 				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
@@ -414,7 +415,7 @@ bool Puzzle::removeWord(std::string positionInput)
 			case 'V':
 				for (size_t i = 0; i < word.length(); i++)
 				{
-					if (adjacentSpacesEmpty(pair<int, int>(startLine + i, startColumn), dir))
+					if (!existsWordInterceptingPosition(pair<int, int>(startLine + i, startColumn), 'H'))
 						playerBoard.at(startLine + i).at(startColumn) = '.';
 				}
 				playerUsedWords.erase(it); //iterator is pointing to the element to be removed
@@ -606,35 +607,44 @@ bool Puzzle::validPositionInput(string input)
 
 bool Puzzle::canBeInserted(string word, string position) //TODO check this again
 {
-	if (!isValidInsertionLocation(position)) // Verify it the position has an hash
+	// Verify it the position has an hash
+	if (!isValidInsertionLocation(position))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nYou can not place a word in that location.\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (!isValidHeadline(word)) // Verify word is valid
+
+	// Verify word is valid
+	else if (!isValidHeadline(word))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z'.\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (!wordFitsSpace(word, position)) // Verify it fits the space
+
+	// Verify it fits the space
+	else if (!wordFitsSpace(word, position))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not fit the specified space!\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (isWordUsed(word))	// Verify if word was already used
+
+	// Verify if word was already used
+	else if (isWordUsed(word))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is already in use!\n\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
-	else if (!matchesInterceptedPositions(word, position)) // Verify if the insertion can be executed while keeping the board valid
+
+	// Verify if the insertion can be executed while keeping the board valid
+	else if (!matchesInterceptedPositions(word, position))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord does not match current board!\n\n";
@@ -814,53 +824,43 @@ bool Puzzle::wordInterceptsPosition(string targetPosition, string word, string w
 }
 
 //=================================================================================================================================
-// Checks if the adjacent spaces of a given position on a direction are empty
+// Checks if any word in the player board intercepts determined coordinates in the board.
 
-bool Puzzle::adjacentSpacesEmpty(pair<int, int> coordinates, char direction) //TODO change this
+bool Puzzle::existsWordInterceptingPosition(pair<int, int> targetCoords, char targetDir)
 {
-	int line = coordinates.first;
-	int column = coordinates.second;
-
-	switch (direction)
+	// position = (line, column)
+	for (size_t i = 0; i < playerUsedWords.size(); i++)
 	{
-	case 'H': //TODO does not work if size is 1
-		if (line == 0) //special case: only check downwards
+		pair<int, int> wordCoords = calculateInsertionCoordinates(playerUsedWords.at(i).first);
+		char wordDir = playerUsedWords.at(i).first.at(2);
+
+		bool intercepts = true;
+
+		if (targetDir != wordDir) //must be on the same direction
+			intercepts = false;
+
+		switch (targetDir)
 		{
-			if (isalpha(playerBoard.at(line + 1).at(column)))
-				return false;
+		case 'H':
+			if (targetCoords.first != wordCoords.first) //if not on the same line, can not match
+				intercepts = false;
+			if ((targetCoords.second < wordCoords.second) || (targetCoords.second > wordCoords.second + (int)playerUsedWords.at(i).second.length())) //if out of the range occupied by the word
+				intercepts = false;
+			break;
+		case 'V':
+			if (targetCoords.second != wordCoords.second) //if not on the same column, can not match
+				intercepts = false;
+			if ((targetCoords.first < wordCoords.first) || (targetCoords.first > wordCoords.first + (int)playerUsedWords.at(i).second.length())) //if out of the range occupied by the word
+				intercepts = false;
+			break;
+		default:
+			cerr << "Invalid direction!";
 		}
-		else if (line == verticalSize - 1) //special case: only check upwards
-		{
-			if (isalpha(playerBoard.at(line - 1).at(column)))
-				return false;
-		}
-		else
-		{
-			if (isalpha(playerBoard.at(line + 1).at(column)) || isalpha(playerBoard.at(line - 1).at(column))) // check both up and down
-				return false;
-		}
-		break;
-	case 'V':
-		if (column == 0) //special case: only check right
-		{
-			if (isalpha(playerBoard.at(line).at(column + 1)))
-				return false;
-		}
-		else if (column == (horizontalSize - 1)) //special case: only check left
-		{
-			if (isalpha(playerBoard.at(line).at(column - 1)))
-				return false;
-		}
-		else
-		{
-			if (isalpha(playerBoard.at(line).at(column + 1)) || isalpha(playerBoard.at(line).at(column - 1))) // check both right and left
-				return false;
-		}
-		break;
-	default:
-		cerr << "Invalid direction!";
+
+		if (intercepts)
+			return true;
 	}
-	return true;
+	return false;
 }
 
 //=================================================================================================================================
