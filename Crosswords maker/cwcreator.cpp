@@ -26,13 +26,10 @@ using namespace std;
 //TODO assert
 //TODO join similar functions based on enum
 //TODO remove unused functions
-//TODO same order in declarations and definitions
-//TODO ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 
 //TODO Think about connecting programs in a single one
 
 //TODO Credits to me only
-//TODO Clean up code
 //TODO Clear all warnings
 
 //=================================================================================================================================
