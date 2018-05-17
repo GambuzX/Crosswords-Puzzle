@@ -55,11 +55,15 @@ void Introduction();
 void FullInstructions(); 
 void PositionInstructions();
 void WordInstructions();
+
 char YesNoQuestion(string question);
+
 string askBoardNumber();
 string askPlayerName();
-void solveCurrentPuzzle(Puzzle&);
+
 bool CheckPlayerWon(Puzzle&);
+
+void solveCurrentPuzzle(Puzzle&);
 
 ColorMaster colorMaster;
 
@@ -125,7 +129,7 @@ int main()
 		Player *player = new Player(playerName);
 
 		//CREATE PUZZLE TO BE SOLVED
-		Puzzle puzzle(*board, *dictionary, boardName, *player);
+		Puzzle puzzle(*board, *dictionary, *player, boardName);
 		delete board; //board is copied to the puzzle instance, duplicate is not needed
 		delete dictionary; // same with dictionary
 		delete player; // same with player
@@ -140,6 +144,7 @@ int main()
 
 	} while (!finishedProgram);
 
+	//Program end message
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "\nThanks for playing! Hope you had fun :D\n";
 	colorMaster.setcolor(DEFAULT);
@@ -150,7 +155,7 @@ int main()
 }
 
 //=================================================================================================================================
-// Displays the introduction
+// Displays the program introduction logo.
 
 void Introduction()
 {
@@ -169,7 +174,7 @@ void Introduction()
 }
 
 //=================================================================================================================================
-// Displays the instructions
+// Displays the full program instructions
 
 void FullInstructions()
 {
@@ -268,7 +273,7 @@ void FullInstructions()
 }
 
 //=================================================================================================================================
-// Prints simplified instructions for the Position? question
+// Prints simplified instructions for the Position? question.
 
 void PositionInstructions()
 {
@@ -296,7 +301,7 @@ void PositionInstructions()
 }
 
 //=================================================================================================================================
-// Prints simplified instructions for the Word? question
+// Prints simplified instructions for the Word? question.
 
 void WordInstructions()
 {
@@ -319,7 +324,7 @@ void WordInstructions()
 }
 
 //=================================================================================================================================
-//Asks a Yes / No question and returns the answer char
+//Asks a Yes / No question and returns the answer char (Y/N).
 
 char YesNoQuestion(string question)
 {
@@ -341,7 +346,7 @@ char YesNoQuestion(string question)
 }
 
 //=================================================================================================================================
-// Asks for the number of the board
+// Asks for the number of the board.
 
 string askBoardNumber()
 {
@@ -360,7 +365,7 @@ string askBoardNumber()
 }
 
 //=================================================================================================================================
-// Asks for the name of the player
+// Asks for the name of the player.
 
 string askPlayerName()
 {
@@ -373,9 +378,65 @@ string askPlayerName()
 }
 
 //=================================================================================================================================
-// Asks the user to solve the current puzzle.
+// Checks if the player has won. Returns a bool indicating whether or not to stop editing puzzle.
 
-void solveCurrentPuzzle(Puzzle &puzzle)
+bool CheckPlayerWon(Puzzle& puzzle)
+{
+	char answer = YesNoQuestion("Submit solution (Y/N)? ");
+
+	if (answer == 'Y')
+	{
+		if (puzzle.boardsMatch()) //If the player won
+		{
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << "\nCongratulations! You have guessed all the words!\n";
+			colorMaster.setcolor(DEFAULT);
+
+			//Display player stats
+			puzzle.showPlayerStats();
+
+			//Save puzzle
+			puzzle.saveStats();
+
+			colorMaster.setcolor(SUCCESS);
+			cout << "\nPlayer stats were saved successfully.\n";
+			colorMaster.setcolor(DEFAULT);
+
+			return true;
+		}
+		else
+		{
+			puzzle.addWrongSubmission();
+			int correctWords = puzzle.calculateNumberOfCorrectWords();
+			cout << "\nYou have guessed ";
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << correctWords;
+			colorMaster.setcolor(DEFAULT);
+			cout << " words!\nTake a better look at the following:\n";
+
+			puzzle.showWrongAnswers();
+
+			//Ask if player wants to keep trying
+			char answer2 = YesNoQuestion("\nKeep playing (Y/N)? ");
+			if (answer2 == 'N')
+			{
+				//Ask if player wants to see the solutions
+				char answer3 = YesNoQuestion("\nShow solutions (Y/N)? ");
+				if (answer3 == 'Y')
+					puzzle.showSolutionBoard();
+
+				//leave
+				return true;
+			}
+		}
+	}
+	return false; //keep playing
+}
+
+//=================================================================================================================================
+// Allows the user to solve the current puzzle.
+
+void solveCurrentPuzzle(Puzzle &puzzle) //TODO Can I insert in middle of other words?
 {
 	puzzle.showPlayerBoard();
 	puzzle.showClueList();
@@ -420,6 +481,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				for (size_t i = 0; i < positionInput.length(); i++)
 					positionInput.at(i) = toupper(positionInput.at(i));
 
+				//OPTIONS
 				if (positionInput == "I")
 				{
 					PositionInstructions();
@@ -427,10 +489,10 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				}
 				else if (positionInput == "S")
 				{
-					if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
+					if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords()) //Assure board is full
 					{
 						cout << endl;
-						bool endPuzzle = CheckPlayerWon(puzzle);
+						bool endPuzzle = CheckPlayerWon(puzzle); //Verify win condition
 						if (endPuzzle)
 						{
 							finishedPuzzle = true;
@@ -517,6 +579,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			for (size_t i = 0; i < word.length(); i++)
 				word.at(i) = toupper(word.at(i));
 
+			//OPTIONS
 			if (word == "<") // Skip loop
 			{
 				validInput = true; // Exit loop
@@ -564,6 +627,7 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		puzzle.showPlayerBoard();
 		cout << endl;
 
+		//If the board is full, automatically ask if the player wants to submit it.
 		if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
 		{
 			bool endPuzzle = CheckPlayerWon(puzzle);
@@ -577,60 +641,4 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			}
 		}
 	} while (!finishedPuzzle);
-}
-
-//=================================================================================================================================
-// Checks if the player has won. Returns a bool indicating whether or not to stop editing puzzle.
-
-bool CheckPlayerWon(Puzzle& puzzle)
-{
-	char answer = YesNoQuestion("Submit solution (Y/N)? ");
-
-	if (answer == 'Y')
-	{
-		if (puzzle.boardsMatch()) //if the player won
-		{
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << "\nCongratulations! You have guessed all the words!\n";
-			colorMaster.setcolor(DEFAULT);
-
-			//display player stats
-			puzzle.showPlayerStats();
-
-			//save puzzle
-			puzzle.saveStats();
-			
-			colorMaster.setcolor(SUCCESS);
-			cout << "\nPlayer stats were saved successfully.\n";
-			colorMaster.setcolor(DEFAULT);
-
-			return true;
-		}
-		else
-		{
-			puzzle.addWrongSubmission();
-			int correctWords = puzzle.calculateNumberOfCorrectWords();
-			cout << "\nYou have guessed ";
-			colorMaster.setcolor(SYMBOL_COLOR);
-			cout << correctWords;
-			colorMaster.setcolor(DEFAULT);
-			cout << " words!\nTake a better look at the following:\n";
-
-			puzzle.showWrongAnswers();
-
-			//Ask if player wants to keep trying
-			char answer2 = YesNoQuestion("\nKeep playing (Y/N)? ");
-			if (answer2 == 'N')
-			{
-				//Ask if player wants to see the solutions
-				char answer3 = YesNoQuestion("\nShow solutions (Y/N)? ");
-				if (answer3 == 'Y')
-					puzzle.showSolutionBoard();
-
-				//leave
-				return true;
-			} 
-		}
-	}
-	return false; //keep playing
 }
