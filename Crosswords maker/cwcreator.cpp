@@ -91,8 +91,7 @@ Board CreateBoard();
 Board ResumeBoard(string &dictName, bool &operationSuccess);
 
 bool askToSaveBoard(Board &board, Dictionary &dict);
-bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput);
-bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, string positionInput);
+bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput, EditMode editmode);
 bool isBoardValid(Board &board, Dictionary &dictionary);
 bool isBoardValid(Board &board, Dictionary &dictionary, string word, string position);
 bool hasTwoLetterWordsRepeated(Board &board, Dictionary &dictionary);
@@ -812,7 +811,7 @@ Board ResumeBoard(string &dictionaryName, bool &operationSuccess)
 //=================================================================================================================================
 // Verifies if a word can be inserted in a determined location, informing why not if false. EditMode = free.
 
-bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput)
+bool canBeInserted(Board &board, Dictionary &dictionary, string word, string positionInput, EditMode editMode)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
@@ -872,89 +871,30 @@ bool canBeInserted(Board &board, Dictionary &dictionary, string word, string pos
 		return false;
 	}
 
-	// Verify if the insertion can be executed while keeping the board valid
-	else if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput)) 
+	//Last test depends on edit mode
+	if (editMode == EditMode::strict)
 	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord does not match current board!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
+		// Verify if the insertion can be executed while keeping the board valid
+		if (!board.matchesInterceptedPositions(word, positionInput) || !testInsertion(board, dictionary, word, positionInput))
+		{
+			colorMaster.setcolor(ERROR_MESSAGE);
+			cout << "\nWord does not match current board!\n\n";
+			colorMaster.setcolor(DEFAULT);
+			return false;
+		}
+	}
+	else if (editMode == EditMode::trustUser)
+	{
+		// Verify if the insertion can be executed while keeping the board valid
+		if (!board.matchesInterceptedPositions(word, positionInput))
+		{
+			colorMaster.setcolor(ERROR_MESSAGE);
+			cout << "\nWord does not match current board!\n\n";
+			colorMaster.setcolor(DEFAULT);
+			return false;
+		}
 	}
 
-	return true;
-}
-
-//=================================================================================================================================
-// Verifies if a word can be inserted in a determined location, informing why not if false. EditMode = trustUser.
-
-bool canBeInsertedFreeMode(Board &board, Dictionary &dictionary, string word, string positionInput)
-{
-	// insertionPos = (line, column)
-	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
-	char direction = positionInput.at(2);
-
-	// Verify it the position has an hash
-	if (board.hasHash(insertionPosition))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nYou can not place a word in that location.\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify word is a valid headline
-	else if (!dictionary.isValidHeadline(word))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not valid! Please only use characters from 'A' to 'Z' or the ones specified in the instructions.\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify word belongs to the dictionary
-	else if (!dictionary.isInWordList(word))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is not present in the dictionary!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify it fits the space
-	else if (!board.wordFitsSpace(word, positionInput))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord does not fit the specified space!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify if word was already used
-	else if (board.isWordUsed(word))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord is already in use!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify if word would be inserted on top of another
-	else if (board.isOnTopOfWord(word, positionInput))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nYou can not insert a word on top of another!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
-
-	// Verify if the insertion can be executed while keeping the board valid
-	else if (!board.matchesInterceptedPositions(word, positionInput))
-	{
-		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nWord does not match current board!\n\n";
-		colorMaster.setcolor(DEFAULT);
-		return false;
-	}
 	return true;
 }
 
@@ -2248,25 +2188,11 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else // normal word insertion
 			{
-				//Different behaviour depending on edit mode
-				switch (editMode)
+				if (canBeInserted(board, dict, word, positionInput, editMode)) //has in account which edit mode is beeing used
 				{
-				case EditMode::strict:
-					if (canBeInserted(board, dict, word, positionInput)) //Check validity and output error messages if necessary
-					{
-						board.insertWord(word, positionInput);
-						board.insertWordHashes(word, positionInput);
-						validInput = true;
-					}
-					break;
-				case EditMode::trustUser:
-					if (canBeInsertedFreeMode(board, dict, word, positionInput)) //Check validity and output error messages if necessary
-					{
-						board.insertWord(word, positionInput);
-						board.insertWordHashes(word, positionInput);
-						validInput = true;
-					}
-					break;
+					board.insertWord(word, positionInput);
+					board.insertWordHashes(word, positionInput);
+					validInput = true;
 				}
 			}
 		} while (!validInput); //loop until valid input
