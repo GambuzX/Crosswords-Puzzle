@@ -1417,6 +1417,10 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMo
 	cout << "\nWords that fit there:\n";
 	colorMaster.setcolor(WHITE, BLACK);
 
+	string wildcard = board.determineAvailableSpaceWildcard(positionInput);
+	vector<string> wildcardMatches = dictionary.wildcardMatchingWords(wildcard, availableSpace);
+	//TODO finish this
+
 	//Gets the words that may fit there from the dictionary
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
@@ -2242,6 +2246,9 @@ Board generateRandomBoard(Dictionary &dictionary)
 		default:
 			cerr << "Invalid input!";
 		}
+
+		//string wildcard = board.determineAvailableSpaceWildcard(position);
+		//TODO finish
 
 		//Try to insert some random words to increase efficiency
 		const int RANDOM_TRIES = 12;
