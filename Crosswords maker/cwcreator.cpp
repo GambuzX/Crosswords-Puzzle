@@ -262,9 +262,9 @@ int main()
 			cout << endl;
 
 			//GENERATE BOARD
-			board = generateRandomBoard(dictionary); //Adds some words to the board
+			//board = generateRandomBoard(dictionary); //Adds some words to the board
+			board = CreateBoard(); //Start with an empty board
 			bruteForceInsertion(board, dictionary, false, 1,1); //Fill the missing board places
-			//diagonalInsertion(board, dictionary);
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode); //Allows editing
 			break;
@@ -1635,7 +1635,7 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 //=================================================================================================================================
 // Randomly completes a board by inserting random words in random positions. Does not guarantee full board!
 
-void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts)
+void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts) //TODO check this
 {
 	//Verifies if the board is already complete or not. 
 	bool hasDot = false;
@@ -1724,6 +1724,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 //=================================================================================================================================
 // Brute force word insertion. Goes through the board, advancing cells according to the step parameters until the end.
+// Parameter 'complete' decides between speed vs completeness. If complete = true, will take longer, but board will be full.
 //
 // To reduce time consumption, only inserts if position has a dot and, after inserting, skips one column.
 //
@@ -1731,7 +1732,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 
 void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, int verticalStep = 1, int horizontalStep = 1)
 {
-	const int INTERVAL_BETWEEN_DOTS = 1;
+	int intervalBetweenDots = (complete ? 1 : 10);
 	int currentColor = 1; //Colors go from 1 to 15, excluding black
 	int counter = 1;
 	bool riddle = true;
@@ -1742,7 +1743,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 		for (int column = 0; column < board.getHorizontalSize(); column+= horizontalStep) //Skip 2 columns at a time
 		{
 			//UI DISPLAY
-			if (counter % INTERVAL_BETWEEN_DOTS == 0)
+			if (counter % intervalBetweenDots == 0)
 			{
 				colorMaster.setcolor(currentColor);
 				cout << " . ";
@@ -1821,7 +1822,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 								break;
 							}
 						}
-						if (insertedWord) //if successfully inserted a random word, go to next iteration
+						if (insertedWord && complete) //if successfully inserted a random word, go to next iteration
 							continue;
 					}
 
