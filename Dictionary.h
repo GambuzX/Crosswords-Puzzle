@@ -25,6 +25,7 @@ public:
 	std::vector<std::string> getWordSynonyms(std::string word);
 	std::vector<std::string> getHeadlines();
 	std::vector<std::string> fittingWords(int availableSpace);
+	std::vector<std::string> wildcardMatchingWords(std::string wildcard, int availableSpace);
 
 	// Setters
 	void setName(std::string);
@@ -47,6 +48,7 @@ private:
 	// Utility
 	std::string toUpper(const std::string &word);
 	bool isInVector(std::string, std::vector<std::string>);
+	bool wildcardMatch(const char *str, const char *strWild);
 };
 
 #endif
