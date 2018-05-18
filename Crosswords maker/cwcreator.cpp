@@ -262,9 +262,20 @@ int main()
 			cout << endl;
 
 			//GENERATE BOARD
-			//board = generateRandomBoard(dictionary); //Adds some words to the board
-			board = CreateBoard(); //Start with an empty board
-			bruteForceInsertion(board, dictionary, false, 1,1); //Fill the missing board places
+			char answer = YesNoQuestion("Do you wish to perform an extensive word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
+			cout << endl;
+
+			if (answer == 'Y')
+			{
+				board = generateRandomBoard(dictionary);
+				bruteForceInsertion(board, dictionary, true, 1, 1); //Fill the missing board places
+			}
+			else if (answer == 'N')
+			{
+				board = CreateBoard(); //Start with an empty board
+				bruteForceInsertion(board, dictionary, false, 1, 1); //Fill the missing board places
+			}
+
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode); //Allows editing
 			break;
