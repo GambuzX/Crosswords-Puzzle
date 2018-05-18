@@ -338,8 +338,9 @@ void FullInstructions()
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "3 - Randomly generate puzzle.\n";
 	colorMaster.setcolor(DEFAULT);
-	cout << "Creates a new puzzle and performs some random word insertions, not completely filling it.\n";
-	cout << "You will have the option to perform a more thorough word insertion.\nNote that depending on the board size this operation may take a while.\n";
+	cout << "Creates a new puzzle and randomly fills it. \n";
+	cout << "You will have the option to choose between a faster but less extensive insertion, or a longer complete insertion.\n";
+	cout << "Note that depending on the board size this operation may take a long time.\n";
 
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << "9 - Instructions.\n";
@@ -1815,7 +1816,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 					//Gets the words that fit the space
 					vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
-					const int DECISION_BOUNDARY = 50; //TODO test values
+					const int DECISION_BOUNDARY = 25;
 					if (fittingWords.size() > DECISION_BOUNDARY)
 					{
 						//Try to insert some random words to increase efficiency
@@ -1884,7 +1885,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 				//Gets the words that fit the space
 				vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
-				const int DECISION_BOUNDARY = 50; //TODO test values
+				const int DECISION_BOUNDARY = 25;
 				if (fittingWords.size() > DECISION_BOUNDARY)
 				{
 					//Try to insert some random words to increase efficiency
@@ -2038,8 +2039,18 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				else if (positionInput == "R")
 				{
 					const int NUMBER_OF_INSERTION_ATTEMPTS = 12;
-					randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
-					bruteForceInsertion(board, dict, true);
+					char answer = YesNoQuestion("Do you wish to perform an extensive word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
+
+					if (answer == 'Y')
+					{
+						randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
+						bruteForceInsertion(board, dict, true, 1, 1); //Fill the missing board places
+					}
+					else if (answer == 'N')
+					{
+						bruteForceInsertion(board, dict, false, 1, 1); //Fill the missing board places
+					}
+
 					validPositionInput = true; //leave loop
 					skipLoop = true;
 				}
