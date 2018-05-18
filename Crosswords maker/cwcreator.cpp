@@ -102,8 +102,7 @@ pair<string, string> newRiddle();
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
-void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep, int horizontalStep);
-void diagonalInsertion(Board &board, Dictionary &dictionary);
+void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, int verticalStep, int horizontalStep);
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
 
 bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word);
@@ -264,7 +263,7 @@ int main()
 
 			//GENERATE BOARD
 			board = generateRandomBoard(dictionary); //Adds some words to the board
-			bruteForceInsertion(board, dictionary,1,5); //Fill the missing board places
+			bruteForceInsertion(board, dictionary, false, 1,1); //Fill the missing board places
 			//diagonalInsertion(board, dictionary);
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode); //Allows editing
@@ -1730,7 +1729,7 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 //
 // Also tries to insert a predetermined number of random words before going throught the entire dictionary.
 
-void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep = 1, int horizontalStep = 1)
+void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, int verticalStep = 1, int horizontalStep = 1)
 {
 	const int INTERVAL_BETWEEN_DOTS = 1;
 	int currentColor = 1; //Colors go from 1 to 15, excluding black
@@ -1801,41 +1800,48 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep 
 
 				if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters
 				{
-					//Try to insert some random words to increase efficiency
-					const int RANDOM_TRIES = 12;
-					bool insertedWord = false;
-					for (int j = 0; j < RANDOM_TRIES; j++)
-					{
-						int randomN = rand() % headlines.size();
-
-						if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
-						{
-							board.insertWord(headlines.at(randomN), position);
-							board.insertWordHashes(headlines.at(randomN), position);
-							insertedWord = true;
-							break;
-						}
-					}
-					if (insertedWord) //if successfully inserted a random word, go to next iteration
-						continue;
-
 					//Gets the words that fit the space
 					vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
-					//Filters the words that may actually be inserted
-					vector<string> validWords;
-					for (size_t j = 0; j < fittingWords.size(); j++)
+					const int DECISION_BOUNDARY = 50; //TODO test values
+					if (fittingWords.size() > DECISION_BOUNDARY)
 					{
-						if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
-							validWords.push_back(fittingWords.at(j));
+						//Try to insert some random words to increase efficiency
+						const int RANDOM_TRIES = 12;
+						bool insertedWord = false;
+						for (int j = 0; j < RANDOM_TRIES; j++)
+						{
+							int randomN = rand() % fittingWords.size();
+
+							if (isValidInsertionPlus(board, dictionary, fittingWords.at(randomN), position))
+							{
+								board.insertWord(fittingWords.at(randomN), position);
+								board.insertWordHashes(fittingWords.at(randomN), position);
+								insertedWord = true;
+								break;
+							}
+						}
+						if (insertedWord) //if successfully inserted a random word, go to next iteration
+							continue;
 					}
 
-					if (validWords.size() != 0) //if no words can be inserted, skip iteration
+					if (complete) //Only if user really wants a full board. Will take longer
 					{
-						//Perform insertion
-						int wordIndex = rand() % validWords.size();
-						board.insertWord(validWords.at(wordIndex), position);
-						board.insertWordHashes(validWords.at(wordIndex), position);
+						//Filters the words that may actually be inserted
+						vector<string> validWords;
+						for (size_t j = 0; j < fittingWords.size(); j++)
+						{
+							if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+								validWords.push_back(fittingWords.at(j));
+						}
+
+						if (validWords.size() != 0) //if no words can be inserted, skip iteration
+						{
+							//Perform insertion
+							int wordIndex = rand() % validWords.size();
+							board.insertWord(validWords.at(wordIndex), position);
+							board.insertWordHashes(validWords.at(wordIndex), position);
+						}
 					}
 				}
 
@@ -1863,215 +1869,49 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep 
 				if (availableSpace <= 2)
 					continue;
 
-				//Try to insert some random words to increase efficiency
-				const int RANDOM_TRIES = 12;
-				bool insertedWord = false;
-				for (int j = 0; j < RANDOM_TRIES; j++)
-				{
-					int randomN = rand() % headlines.size();
-
-					if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
-					{
-						board.insertWord(headlines.at(randomN), position);
-						board.insertWordHashes(headlines.at(randomN), position);
-						insertedWord = true;
-						break;
-					}
-				}
-				if (insertedWord) //if successfully inserted a random word, go to next iteration
-					continue;
-
 				//Gets the words that fit the space
 				vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
-				//Filters the words that may actually be inserted
-				vector<string> validWords;
-				for (size_t j = 0; j < fittingWords.size(); j++)
+				const int DECISION_BOUNDARY = 50; //TODO test values
+				if (fittingWords.size() > DECISION_BOUNDARY)
 				{
-					if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
-						validWords.push_back(fittingWords.at(j));
-				}
-
-				if (validWords.size() != 0) //if no words can be inserted, skip iteration
-				{
-					//Perform insertion
-					int wordIndex = rand() % validWords.size();
-					board.insertWord(validWords.at(wordIndex), position);
-					board.insertWordHashes(validWords.at(wordIndex), position);
-				}
-			}
-		}
-	}
-}
-
-//=================================================================================================================================
-
-void diagonalInsertion(Board &board, Dictionary &dictionary)
-{
-	const int INTERVAL_BETWEEN_DOTS = 1;
-	int currentColor = 1; //Colors go from 1 to 15, excluding black
-	int counter = 1;
-	bool riddle = true;
-	pair<string, string> currentRiddle;
-	vector<string> headlines = dictionary.getHeadlines(); //all words from wordList
-	for (int line = 0, column = 0; line < board.getVerticalSize(), column < board.getHorizontalSize(); line++, column++) //Go through a diagonal
-	{
-		//UI DISPLAY
-		if (counter % INTERVAL_BETWEEN_DOTS == 0)
-		{
-			colorMaster.setcolor(currentColor);
-			cout << " . ";
-			colorMaster.setcolor(DEFAULT);
-			currentColor++;
-			if (currentColor >= 15)
-			{
-				currentColor = 1;
-				cout << endl;
-				if (riddle)
-				{
-					currentRiddle = newRiddle();
-					colorMaster.setcolor(QUESTION_COLOR);
-					cout << currentRiddle.first;
-					colorMaster.setcolor(DEFAULT);
-					riddle = !riddle;
-				}
-				else
-				{
-					colorMaster.setcolor(SYMBOL_COLOR);
-					cout << currentRiddle.second;
-					colorMaster.setcolor(DEFAULT);
-					riddle = !riddle;
-				}
-				cout << endl;
-			}
-		}
-		counter++;
-
-		//WORD INSERTION
-		if (board.getCell(line, column) == '.')
-		{
-			//========================
-			//    First direction   //
-			//========================
-
-			int dir = rand() % 2;
-			char direction = (dir == 0 ? 'H' : 'V');
-			char c_position[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
-			string position(c_position);
-
-			//Calculate available space
-			int availableSpace;
-			switch (direction)
-			{
-			case 'H':
-				availableSpace = board.getHorizontalSize() - column;
-				break;
-			case 'V':
-				availableSpace = board.getVerticalSize() - line;
-				break;
-			default:
-				cerr << "Invalid input!";
-			}
-
-			if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters
-			{
-				//Try to insert some random words to increase efficiency
-				const int RANDOM_TRIES = 5;
-				bool insertedWord = false;
-				for (int j = 0; j < RANDOM_TRIES; j++)
-				{
-					int randomN = rand() % headlines.size();
-
-					if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+					//Try to insert some random words to increase efficiency
+					const int RANDOM_TRIES = 12;
+					bool insertedWord = false;
+					for (int j = 0; j < RANDOM_TRIES; j++)
 					{
-						board.insertWord(headlines.at(randomN), position);
-						board.insertWordHashes(headlines.at(randomN), position);
-						insertedWord = true;
-						break;
+						int randomN = rand() % fittingWords.size();
+
+						if (isValidInsertionPlus(board, dictionary, fittingWords.at(randomN), position))
+						{
+							board.insertWord(fittingWords.at(randomN), position);
+							board.insertWordHashes(fittingWords.at(randomN), position);
+							insertedWord = true;
+							break;
+						}
+					}
+					if (insertedWord) //if successfully inserted a random word, go to next iteration
+						continue;
+				}
+
+				if (complete) //Only if user really wants a full board. Will take longer
+				{
+					//Filters the words that may actually be inserted
+					vector<string> validWords;
+					for (size_t j = 0; j < fittingWords.size(); j++)
+					{
+						if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+							validWords.push_back(fittingWords.at(j));
+					}
+
+					if (validWords.size() != 0) //if no words can be inserted, skip iteration
+					{
+						//Perform insertion
+						int wordIndex = rand() % validWords.size();
+						board.insertWord(validWords.at(wordIndex), position);
+						board.insertWordHashes(validWords.at(wordIndex), position);
 					}
 				}
-				if (insertedWord) //if successfully inserted a random word, go to next iteration
-					continue;
-
-				//Gets the words that fit the space
-				vector<string> fittingWords = dictionary.fittingWords(availableSpace);
-
-				//Filters the words that may actually be inserted
-				vector<string> validWords;
-				for (size_t j = 0; j < fittingWords.size(); j++)
-				{
-					if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
-						validWords.push_back(fittingWords.at(j));
-				}
-
-				if (validWords.size() != 0) //if no words can be inserted, skip iteration
-				{
-					//Perform insertion
-					int wordIndex = rand() % validWords.size();
-					board.insertWord(validWords.at(wordIndex), position);
-					board.insertWordHashes(validWords.at(wordIndex), position);
-				}
-			}
-
-			//========================
-			//   Second direction   //
-			//========================
-
-			direction = (direction == 'V' ? 'H' : 'V');
-			char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
-			position = string(c_position2);
-
-			//Calculate available space
-			switch (direction)
-			{
-			case 'H':
-				availableSpace = board.getHorizontalSize() - column;
-				break;
-			case 'V':
-				availableSpace = board.getVerticalSize() - line;
-				break;
-			default:
-				cerr << "Invalid input!";
-			}
-
-			if (availableSpace <= 2)
-				continue;
-
-			//Try to insert some random words to increase efficiency
-			const int RANDOM_TRIES = 5;
-			bool insertedWord = false;
-			for (int j = 0; j < RANDOM_TRIES; j++)
-			{
-				int randomN = rand() % headlines.size();
-
-				if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
-				{
-					board.insertWord(headlines.at(randomN), position);
-					board.insertWordHashes(headlines.at(randomN), position);
-					insertedWord = true;
-					break;
-				}
-			}
-			if (insertedWord) //if successfully inserted a random word, go to next iteration
-				continue;
-
-			//Gets the words that fit the space
-			vector<string> fittingWords = dictionary.fittingWords(availableSpace);
-
-			//Filters the words that may actually be inserted
-			vector<string> validWords;
-			for (size_t j = 0; j < fittingWords.size(); j++)
-			{
-				if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
-					validWords.push_back(fittingWords.at(j));
-			}
-
-			if (validWords.size() != 0) //if no words can be inserted, skip iteration
-			{
-				//Perform insertion
-				int wordIndex = rand() % validWords.size();
-				board.insertWord(validWords.at(wordIndex), position);
-				board.insertWordHashes(validWords.at(wordIndex), position);
 			}
 		}
 	}
@@ -2105,10 +1945,10 @@ pair<string, string> newRiddle()
 	{"Poor people have it. Rich people need it. If you eat it you die. What is it?", "Nothing."},
 	{"What begins with T ends with T and has T in it?", "A teapot."},
 	{"What word begins and ends with an E but only has one letter?", "Envelope."},
-	{"What is something you will never see again?", "Yesterday :´("},
+	{"What is something you will never see again?", "Yesterday :'("},
 	{"What are two things you cannot have for breakfast?", "Lunch and dinner."},
 	{"Which football player wears the biggest helmet?", "The one with the biggest head."},
-	{"Why couldn’t the sailors play cards?", "The captain was standing on the deck."},
+	{"Why couldn't the sailors play cards?", "The captain was standing on the deck."},
 	{"What do you call a man who does not have all his fingers on one hand?", "Normal – You have fingers on both hands!"}};
 
 	return riddleList.at(rand() % riddleList.size()); //return random pair
@@ -2187,7 +2027,7 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				{
 					const int NUMBER_OF_INSERTION_ATTEMPTS = 12;
 					randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
-					bruteForceInsertion(board, dict);
+					bruteForceInsertion(board, dict, true);
 					validPositionInput = true; //leave loop
 					skipLoop = true;
 				}
@@ -2386,7 +2226,7 @@ Board generateRandomBoard(Dictionary &dictionary)
 {
 	pair<int, int> boardSize = askBoardSize();
 	Board board(boardSize.first, boardSize.second);
-	int insertionAttempts = boardSize.first;
+	int insertionAttempts = 12;
 
 	board.clearBoard(); //assure board is empty
 
