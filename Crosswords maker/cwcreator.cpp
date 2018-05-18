@@ -102,7 +102,8 @@ pair<string, string> newRiddle();
 
 void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
-void bruteForceInsertion(Board &board, Dictionary &dictionary);
+void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep, int horizontalStep);
+void diagonalInsertion(Board &board, Dictionary &dictionary);
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
 
 bool wordBelongsToUsedWords(vector<pair<string, string>> usedWords, string word);
@@ -263,7 +264,8 @@ int main()
 
 			//GENERATE BOARD
 			board = generateRandomBoard(dictionary); //Adds some words to the board
-			bruteForceInsertion(board, dictionary); //Fill the missing board places
+			bruteForceInsertion(board, dictionary,1,5); //Fill the missing board places
+			//diagonalInsertion(board, dictionary);
 			EditMode editMode = askEditMode();
 			EditBoard(board, dictionary, editMode); //Allows editing
 			break;
@@ -1722,13 +1724,13 @@ void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAtte
 }
 
 //=================================================================================================================================
-// Brute force word insertion. Goes through the entire board and tries to insert words in every position.
+// Brute force word insertion. Goes through the board, advancing cells according to the step parameters until the end.
 //
 // To reduce time consumption, only inserts if position has a dot and, after inserting, skips one column.
 //
 // Also tries to insert a predetermined number of random words before going throught the entire dictionary.
 
-void bruteForceInsertion(Board &board, Dictionary &dictionary)
+void bruteForceInsertion(Board &board, Dictionary &dictionary, int verticalStep = 1, int horizontalStep = 1)
 {
 	const int INTERVAL_BETWEEN_DOTS = 1;
 	int currentColor = 1; //Colors go from 1 to 15, excluding black
@@ -1736,9 +1738,9 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 	bool riddle = true;
 	pair<string, string> currentRiddle;
 	vector<string> headlines = dictionary.getHeadlines(); //all words from wordList
-	for (int line = 0; line < board.getVerticalSize(); line++) //For all cells in the board
+	for (int line = 0; line < board.getVerticalSize(); line+= verticalStep) //Go through the board cells
 	{
-		for (int column = 0; column < board.getHorizontalSize(); column++)
+		for (int column = 0; column < board.getHorizontalSize(); column+= horizontalStep) //Skip 2 columns at a time
 		{
 			//UI DISPLAY
 			if (counter % INTERVAL_BETWEEN_DOTS == 0)
@@ -1897,6 +1899,179 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary)
 					board.insertWord(validWords.at(wordIndex), position);
 					board.insertWordHashes(validWords.at(wordIndex), position);
 				}
+			}
+		}
+	}
+}
+
+//=================================================================================================================================
+
+void diagonalInsertion(Board &board, Dictionary &dictionary)
+{
+	const int INTERVAL_BETWEEN_DOTS = 1;
+	int currentColor = 1; //Colors go from 1 to 15, excluding black
+	int counter = 1;
+	bool riddle = true;
+	pair<string, string> currentRiddle;
+	vector<string> headlines = dictionary.getHeadlines(); //all words from wordList
+	for (int line = 0, column = 0; line < board.getVerticalSize(), column < board.getHorizontalSize(); line++, column++) //Go through a diagonal
+	{
+		//UI DISPLAY
+		if (counter % INTERVAL_BETWEEN_DOTS == 0)
+		{
+			colorMaster.setcolor(currentColor);
+			cout << " . ";
+			colorMaster.setcolor(DEFAULT);
+			currentColor++;
+			if (currentColor >= 15)
+			{
+				currentColor = 1;
+				cout << endl;
+				if (riddle)
+				{
+					currentRiddle = newRiddle();
+					colorMaster.setcolor(QUESTION_COLOR);
+					cout << currentRiddle.first;
+					colorMaster.setcolor(DEFAULT);
+					riddle = !riddle;
+				}
+				else
+				{
+					colorMaster.setcolor(SYMBOL_COLOR);
+					cout << currentRiddle.second;
+					colorMaster.setcolor(DEFAULT);
+					riddle = !riddle;
+				}
+				cout << endl;
+			}
+		}
+		counter++;
+
+		//WORD INSERTION
+		if (board.getCell(line, column) == '.')
+		{
+			//========================
+			//    First direction   //
+			//========================
+
+			int dir = rand() % 2;
+			char direction = (dir == 0 ? 'H' : 'V');
+			char c_position[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
+			string position(c_position);
+
+			//Calculate available space
+			int availableSpace;
+			switch (direction)
+			{
+			case 'H':
+				availableSpace = board.getHorizontalSize() - column;
+				break;
+			case 'V':
+				availableSpace = board.getVerticalSize() - line;
+				break;
+			default:
+				cerr << "Invalid input!";
+			}
+
+			if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters
+			{
+				//Try to insert some random words to increase efficiency
+				const int RANDOM_TRIES = 5;
+				bool insertedWord = false;
+				for (int j = 0; j < RANDOM_TRIES; j++)
+				{
+					int randomN = rand() % headlines.size();
+
+					if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+					{
+						board.insertWord(headlines.at(randomN), position);
+						board.insertWordHashes(headlines.at(randomN), position);
+						insertedWord = true;
+						break;
+					}
+				}
+				if (insertedWord) //if successfully inserted a random word, go to next iteration
+					continue;
+
+				//Gets the words that fit the space
+				vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+				//Filters the words that may actually be inserted
+				vector<string> validWords;
+				for (size_t j = 0; j < fittingWords.size(); j++)
+				{
+					if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+						validWords.push_back(fittingWords.at(j));
+				}
+
+				if (validWords.size() != 0) //if no words can be inserted, skip iteration
+				{
+					//Perform insertion
+					int wordIndex = rand() % validWords.size();
+					board.insertWord(validWords.at(wordIndex), position);
+					board.insertWordHashes(validWords.at(wordIndex), position);
+				}
+			}
+
+			//========================
+			//   Second direction   //
+			//========================
+
+			direction = (direction == 'V' ? 'H' : 'V');
+			char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
+			position = string(c_position2);
+
+			//Calculate available space
+			switch (direction)
+			{
+			case 'H':
+				availableSpace = board.getHorizontalSize() - column;
+				break;
+			case 'V':
+				availableSpace = board.getVerticalSize() - line;
+				break;
+			default:
+				cerr << "Invalid input!";
+			}
+
+			if (availableSpace <= 2)
+				continue;
+
+			//Try to insert some random words to increase efficiency
+			const int RANDOM_TRIES = 5;
+			bool insertedWord = false;
+			for (int j = 0; j < RANDOM_TRIES; j++)
+			{
+				int randomN = rand() % headlines.size();
+
+				if (isValidInsertionPlus(board, dictionary, headlines.at(randomN), position))
+				{
+					board.insertWord(headlines.at(randomN), position);
+					board.insertWordHashes(headlines.at(randomN), position);
+					insertedWord = true;
+					break;
+				}
+			}
+			if (insertedWord) //if successfully inserted a random word, go to next iteration
+				continue;
+
+			//Gets the words that fit the space
+			vector<string> fittingWords = dictionary.fittingWords(availableSpace);
+
+			//Filters the words that may actually be inserted
+			vector<string> validWords;
+			for (size_t j = 0; j < fittingWords.size(); j++)
+			{
+				if (isValidInsertion(board, dictionary, fittingWords.at(j), position)) //Checks if word can be inserted
+					validWords.push_back(fittingWords.at(j));
+			}
+
+			if (validWords.size() != 0) //if no words can be inserted, skip iteration
+			{
+				//Perform insertion
+				int wordIndex = rand() % validWords.size();
+				board.insertWord(validWords.at(wordIndex), position);
+				board.insertWordHashes(validWords.at(wordIndex), position);
 			}
 		}
 	}
