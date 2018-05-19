@@ -1638,7 +1638,6 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 	{
 		//Try to insert some random words to increase efficiency
 		const int RANDOM_TRIES = 12;
-		bool insertedWord = false;
 		for (int j = 0; j < RANDOM_TRIES; j++)
 		{
 			int randomN = rand() % fittingWords.size();
@@ -1664,7 +1663,7 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 	if (validWords.size() == 0)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nNo word in the dictionary can be inserted there.\n";
+		cout << "\nNo word in the dictionary can be inserted there.";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
@@ -2208,9 +2207,8 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else if (word == "R") // Remove word
 			{
-				bool wordInserted = randomInsertWord(board, dict, positionInput);
-				if (wordInserted)
-					validInput = true;
+				randomInsertWord(board, dict, positionInput);
+				validInput = true; //If it does not insert, is because there is no word. Also skips step.
 				cout << endl;
 			}
 			else // normal word insertion
