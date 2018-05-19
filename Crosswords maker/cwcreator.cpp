@@ -1411,6 +1411,7 @@ bool helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMo
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
 	char direction = toupper(positionInput.at(2));
+	bool foundWords = false;
 
 	//Calculate available space
 	int availableSpace;
@@ -1450,6 +1451,7 @@ bool helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMo
 				if (counter % WORDS_PER_LINE == 0) cout << endl;
 				cout << setw(WORDS_WIDTH) << currentWord;
 				counter++;
+				foundWords = true;
 			}
 		}
 		break;
@@ -1467,13 +1469,20 @@ bool helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMo
 				if (counter % WORDS_PER_LINE == 0) cout << endl;
 				cout << setw(WORDS_WIDTH) << currentWord;
 				counter++;
+				foundWords = true;
 			}
 		}
 		break;
 	}
 	}
-	if (fittingWords.size() == 0)
+	
+	if (!foundWords)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere are no words that fit there!.";
+		colorMaster.setcolor(DEFAULT);
 		return false;
+	}
 	else
 		return true;
 }
@@ -2168,7 +2177,9 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 			}
 			else if (word == "?") // Ask for help
 			{
-				helpUser(board, dict, positionInput, editMode); //varies depending on edit mode
+				bool foundWords = helpUser(board, dict, positionInput, editMode); //varies depending on edit mode
+				if (!foundWords)
+					validInput = true;
 				cout << endl;
 			}
 			else if (word == "+") // Checks for automatically formed words
