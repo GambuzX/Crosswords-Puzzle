@@ -1,3 +1,9 @@
+/*
+Definitions of the dictionary class.
+
+AUTHOR: Mario Gil.
+*/
+
 #include "Dictionary.h"
 #include <iostream>
 #include <string>

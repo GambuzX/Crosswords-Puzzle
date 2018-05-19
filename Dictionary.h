@@ -3,6 +3,8 @@ Class that represents a dictionary.
 *
 To use it, associate the name of the dictionary and process it. The dictionary file lines must be in the format [Headline]: [synonym1], [synonym2], ... [synonymN].
 This will create a word list with all the headlines and synonyms, allowing you to use all the remaining methods.
+
+AUTHOR: Mario Gil.
 */
 
 #ifndef DICTIONARY_H

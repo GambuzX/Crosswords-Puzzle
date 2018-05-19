@@ -1,3 +1,9 @@
+/*
+Definitions of the puzzle class.
+
+AUTHOR: Mario Gil.
+*/
+
 #include "Puzzle.h"
 #include "Board.h"
 #include "ColorMaster.h"

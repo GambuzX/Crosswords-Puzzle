@@ -1,3 +1,5 @@
+The project may be found at: https://github.com/GambuzX/Crosswords-Puzzle
+
 -------------------------------------------
 |                GENERAL                  |
 -------------------------------------------
@@ -5,10 +7,13 @@ A class named ColorMaster was created from the functions provided by JAS to deal
 
 In the second program, the Puzzle class represents the game being played, managing the interaction between player, dictionary and board.
 
+A simple interface to connect the two programs was developed. In order for it to work, 
+the executables must be under the same folder and the names should be CrosswordsMaker.exe and CrosswordsPlayer.exe for the first and 
+second programs, respectively.
+
 -------------------------------------------
 |               CWCREATOR                 |
 -------------------------------------------
-
 The program is finished and runs without any problems, all the objectives were accomplished.
 Besides what was asked to do in the project specifications, the program has many other features.
 There are also some options that were adapted, according to my understanding, to better interact with the user.
@@ -67,7 +72,6 @@ the randomly created board. The user may opt for a faster and less extensive ope
 -------------------------------------------
 |               CWPLAYER                  |
 -------------------------------------------
-
 The program is finished and runs without any problems, all the objectives were accomplished.
 Besides what was asked to do in the project specifications, the program has many other features.
 There are also some options that were adapted, according to my understanding, to better interact with the user.

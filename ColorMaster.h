@@ -1,7 +1,7 @@
 /*
 Class to implement console color changing. Its methods were provided by JAS.
 *
-AUTHOR: JAS.
+AUTHORS: JAS, Mario Gil.
 */
 
 #ifndef COLOR_MASTER_H

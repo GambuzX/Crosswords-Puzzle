@@ -1,3 +1,9 @@
+/*
+	Definitions of the board class.
+
+	AUTHOR: Mario Gil.
+*/
+
 #include "Board.h"
 #include "Dictionary.h"
 
