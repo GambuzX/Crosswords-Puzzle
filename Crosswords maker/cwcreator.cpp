@@ -4,7 +4,7 @@ Allows the user to start (or resume) the creation of a board which can be used i
 Built by the interaction between user, Board and Dictionary classes.
 Has functions to deal with the UI, user interaction and the interaction between board and dictionary classes.
 
-AUTHOR: GambuzX
+AUTHOR: Mario Gil
 */
 
 #include <iostream>
@@ -21,8 +21,6 @@ AUTHOR: GambuzX
 #include "Board.h"
 
 using namespace std;
-
-//TODO Think about connecting programs in a single one
 
 //TODO Credits to me only
 //TODO Clear all warnings
@@ -265,13 +263,14 @@ int main()
 
 			if (answer == 'Y')
 			{
-				board = generateRandomBoard(dictionary);
-				bruteForceInsertion(board, dictionary, true, 1, 1); //Fill the missing board places
+				board = CreateBoard(); //Start with an empty board
+				bruteForceInsertion(board, dictionary, false, 1, 1); //Light BTF insertion first to fill board
+				bruteForceInsertion(board, dictionary, true, 1, 1); //Complete BTF insertion to complete board
 			}
 			else if (answer == 'N')
 			{
 				board = CreateBoard(); //Start with an empty board
-				bruteForceInsertion(board, dictionary, false, 1, 1); //Fill the missing board places
+				bruteForceInsertion(board, dictionary, false, 1, 1); //Light BTF insertion first to fill board
 			}
 
 			EditMode editMode = askEditMode();
@@ -999,6 +998,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 					if (board.givenWordInterceptsPosition(pair<int, int>(line, (int) j), direction, usedWords.at(g).second, usedWords.at(g).first))
 					{
 						board.removeWordFromUsedWords((int) g);
+						usedWords.erase(usedWords.begin() + g);
 						break;
 					}
 			break;
@@ -1618,6 +1618,25 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 	//Gets the words that fit the space
 	vector<string> fittingWords = dictionary.fittingWords(availableSpace);
 
+	const int DECISION_BOUNDARY = 25;
+	if (fittingWords.size() > DECISION_BOUNDARY)
+	{
+		//Try to insert some random words to increase efficiency
+		const int RANDOM_TRIES = 12;
+		bool insertedWord = false;
+		for (int j = 0; j < RANDOM_TRIES; j++)
+		{
+			int randomN = rand() % fittingWords.size();
+
+			if (isValidInsertionPlus(board, dictionary, fittingWords.at(randomN), position))
+			{
+				board.insertWord(fittingWords.at(randomN), position);
+				board.insertWordHashes(fittingWords.at(randomN), position);
+				return true;
+			}
+		}
+	}
+
 	//Filters the words that may actually be inserted
 	vector<string> validWords;
 	for (size_t j = 0; j < fittingWords.size(); j++)
@@ -2041,12 +2060,12 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 
 					if (answer == 'Y')
 					{
-						randomCompleteBoard(board, dict, NUMBER_OF_INSERTION_ATTEMPTS);
-						bruteForceInsertion(board, dict, true, 1, 1); //Fill the missing board places
+						bruteForceInsertion(board, dict, false, 1, 1); //Light BTF insertion first to fill board
+						bruteForceInsertion(board, dict, true, 1, 1); //Complete BTF insertion to complete board
 					}
 					else if (answer == 'N')
 					{
-						bruteForceInsertion(board, dict, false, 1, 1); //Fill the missing board places
+						bruteForceInsertion(board, dict, false, 1, 1); //Light BTF insertion first to fill board
 					}
 
 					validPositionInput = true; //leave loop
