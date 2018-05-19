@@ -22,8 +22,6 @@ AUTHOR: GambuzX
 
 using namespace std;
 
-//TODO test another randomizer. Maybe dont need to fill all spots
-
 //TODO Think about connecting programs in a single one
 
 //TODO Credits to me only
@@ -1647,7 +1645,7 @@ bool randomInsertWord(Board &board, Dictionary &dictionary, string position)
 //=================================================================================================================================
 // Randomly completes a board by inserting random words in random positions. Does not guarantee full board!
 
-void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts) //TODO check this
+void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts)
 {
 	//Verifies if the board is already complete or not. 
 	bool hasDot = false;

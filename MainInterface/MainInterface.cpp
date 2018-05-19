@@ -1,3 +1,9 @@
+/*
+Interface to connect the 2 programs, cwcreator and cwplayer.
+
+AUTHOR: Carolina
+*/
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -82,7 +88,6 @@ void setcolor(unsigned int color, unsigned int background_color)
 
 int interfaceMaker()
 {
-	int option; //input option chosen by the user
 	cout << endl << endl << endl;
 	setcolor(11);
 	cout << "      ____ _____  _____    __   __ __    __  _____  _____ _____   __    " << endl;
@@ -244,9 +249,20 @@ int interfaceMaker()
 
 	gotoxy(4, 47);
 	setcolor(11);
-	cout << endl << "  Option? ";
-	cin >> option;
-	cout << endl;
+	int option; //input option chosen by the user
+	do
+	{
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+
+		cout << "\n  Option? ";
+		cin >> option;
+		cout << endl;
+
+	} while (cin.fail() || (option != 1 && option != 2 && option != 3));
 
 
 	return option;
@@ -266,7 +282,7 @@ void optionExecution(int option)
 		break;
 	case 2:
 		clrscr();
-		system("start Crosswords\ player.exe");
+		system("start CrosswordsPlayer.exe");
 		break;
 	case 3:
 		break;
