@@ -96,7 +96,7 @@ vector <pair<string, string>> listAllBoardWords(Board &board, Dictionary &dictio
 
 pair<string, string> newRiddle();
 
-void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode);
+bool helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode);
 void randomCompleteBoard(Board &board, Dictionary &dictionary, int insertionAttempts);
 void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, int verticalStep, int horizontalStep);
 void EditBoard(Board &board, Dictionary &dict, EditMode editMode);
@@ -1403,8 +1403,10 @@ bool testRemoval(Board &board, Dictionary &dictionary, string positionInput)
 // Helps the user by showing which words can be placed on specified location. Behaviour changes with edit mode.
 // EditMode = strict -> Has everything in account. Words shown are will keep the board valid.
 // EditMode = trustUser -> Only has in account the occupied cells and not adjacent ones.
+//
+// Returns a boolean indicating whether or not there are words to be inserted there.
 
-void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode)
+bool helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMode editMode)
 {
 	// insertionPos = (line, column)
 	pair<int, int> insertionPosition = board.calculateInsertionCoordinates(positionInput);
@@ -1470,6 +1472,10 @@ void helpUser(Board &board, Dictionary &dictionary, string positionInput, EditMo
 		break;
 	}
 	}
+	if (fittingWords.size() == 0)
+		return false;
+	else
+		return true;
 }
 
 //=================================================================================================================================
