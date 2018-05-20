@@ -291,16 +291,6 @@ int optionExecution(int option)
 		validOption = false;
 	}
 
-	if (!validOption)
-	{
-		clrscr();
-		setcolor(13);
-		cerr << endl << "  ---------------------------------------- \n";
-		cerr << " | Oops! Invalid option input. Try again! | \n";
-		cerr << "  ---------------------------------------- ";
-		optionExecution(interfaceMaker());
-	}
-
 	return option;
 }
 
@@ -308,6 +298,8 @@ int optionExecution(int option)
 
 int main()
 {
+	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
+
 	int option;
 	do
 	{

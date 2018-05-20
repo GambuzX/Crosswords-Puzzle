@@ -7,9 +7,9 @@ A class named ColorMaster was created from the functions provided by JAS to deal
 
 In the second program, the Puzzle class represents the game being played, managing the interaction between player, dictionary and board.
 
-A simple interface to connect the two programs was developed. In order for it to work, 
-the executables must be under the same folder and the names should be CrosswordsMaker.exe and CrosswordsPlayer.exe for the first and 
-second programs, respectively.
+A simple interface to connect the two programs was developed. In order for it to work, the executables must be under the same folder 
+and the names should be CrosswordsMaker.exe and CrosswordsPlayer.exe for the first and second programs, respectively.
+The dictionary file to use must also be in the same folder.
 
 -------------------------------------------
 |               CWCREATOR                 |
