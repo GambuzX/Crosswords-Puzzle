@@ -23,8 +23,6 @@ AUTHOR: Mario Gil.
 using namespace std;
 
 //TODO test everything
-//TODO show answer on click
-//TODO player answer asked
 //TODO Update readme
 
 //=================================================================================================================================

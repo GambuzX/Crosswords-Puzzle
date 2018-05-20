@@ -549,6 +549,12 @@ void Puzzle::showPlayerStats()
 	colorMaster.setcolor(DEFAULT);
 	cout << endl;
 
+	cout << "Number of solutions: ";
+	colorMaster.setcolor(SYMBOL_COLOR);
+	cout << currentPlayer.getNumberOfSolutions();
+	colorMaster.setcolor(DEFAULT);
+	cout << endl;
+
 	cout << "Number of wrong submissions: ";
 	colorMaster.setcolor(SYMBOL_COLOR);
 	cout << currentPlayer.getNumberOfWrongSubmissions();
@@ -637,8 +643,11 @@ void Puzzle::saveStats(bool finishedGame)
 	string fileName = "b" + loadedBoardNumber + "_p.txt";
 	ofstream file(fileName, ios::app);
 
-	file << "Player name: " << currentPlayer.getName() << "; Time: " << currentPlayer.calculateTimeSpent();
-	file << "s; Hints: " << currentPlayer.getNumberOfClues() << "; Wrong submissions: " << currentPlayer.getNumberOfWrongSubmissions();
+	file << "Player name: " << currentPlayer.getName();
+	file << "; Time: " << currentPlayer.calculateTimeSpent();
+	file << "s; Hints: " << currentPlayer.getNumberOfClues();
+	file << "; Solutions: " << currentPlayer.getNumberOfSolutions();
+	file << "; Wrong submissions: " << currentPlayer.getNumberOfWrongSubmissions();
 	file << "; Finished: ";
 	if (finishedGame)
 		file << "Yes";
