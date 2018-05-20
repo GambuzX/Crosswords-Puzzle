@@ -1,7 +1,5 @@
 /*
 Definitions of the dictionary class.
-
-AUTHOR: Mario Gil.
 */
 
 #include "Dictionary.h"

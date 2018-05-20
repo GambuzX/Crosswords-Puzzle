@@ -1,7 +1,5 @@
 /*
 Definitions of the player class.
-
-AUTHOR: Mario Gil.
 */
 
 #include "Player.h"

@@ -1,8 +1,6 @@
 /*
 Interface to connect the 2 programs, cwcreator and cwplayer.
 Executables names must be CrosswordsCreator.exe and CrosswordsPlayer.exe respectively.
-
-AUTHORS: Carolina, Mario Gil.
 */
 
 #include <iostream>

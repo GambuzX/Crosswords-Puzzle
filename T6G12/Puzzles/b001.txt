@@ -1,0 +1,24 @@
+dictionary.txt
+
+S T A M P # # # # # 
+# # # # E X C E S S 
+A C T O R # # # # # 
+# # # # F I N I S H 
+N O B L E # # # # # 
+# # # # C O M M O N 
+C H E A T # # # # # 
+# # # # I G N O R E 
+O U T D O # # # # # 
+# # # # N A T U R E 
+
+AAH STAMP
+BEH EXCESS
+CAH ACTOR
+DEH FINISH
+EAH NOBLE
+FEH COMMON
+GAH CHEAT
+HEH IGNORE
+IAH OUTDO
+JEH NATURE
+AEV PERFECTION

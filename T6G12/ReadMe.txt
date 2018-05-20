@@ -102,7 +102,7 @@ NEW FEATURES:
 
 - Number of solutions asked for, number of wrong submissions and if the player finished or not are also kept as statistics.
 
-- If player wrongly submits a board, the incorrect words are shown to the user.
+- If player wrongly submits a board, the incorrect words are shown to the user, separated by horizontal and vertical.
 
 - If player decides to stop playing, he may decide to see the solutions.
 

@@ -1,7 +1,5 @@
 /*
 Definitions of the puzzle class.
-
-AUTHOR: Mario Gil.
 */
 
 #include "Puzzle.h"
