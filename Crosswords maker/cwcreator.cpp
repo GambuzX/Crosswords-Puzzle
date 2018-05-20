@@ -22,8 +22,6 @@ AUTHOR: Mario Gil.
 
 using namespace std;
 
-//TODO random board generation more messages
-
 //TODO Credits to me only
 //TODO Clear all warnings
 
@@ -260,18 +258,22 @@ int main()
 			cout << endl;
 
 			//GENERATE BOARD
-			char answer = YesNoQuestion("Do you wish to perform an extensive word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
+			char answer = YesNoQuestion("Do you wish to perform a thorough word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
 			cout << endl;
 
 			if (answer == 'Y')
 			{
 				board = CreateBoard(); //Start with an empty board
+
+				cout << "\nPerforming an initial word insertion...\n";
 				bruteForceInsertion(board, dictionary, false, 1, 1); //Light BTF insertion first to fill board
+				cout << "\nPerforming a thorough word insertion...\n";
 				bruteForceInsertion(board, dictionary, true, 1, 1); //Complete BTF insertion to complete board
 			}
 			else if (answer == 'N')
 			{
 				board = CreateBoard(); //Start with an empty board
+				cout << "\nRandomly inserting words...\n";
 				bruteForceInsertion(board, dictionary, false, 1, 1); //Light BTF insertion first to fill board
 			}
 
@@ -2072,15 +2074,18 @@ void EditBoard(Board &board, Dictionary &dict, EditMode editMode)
 				else if (positionInput == "R")
 				{
 					const int NUMBER_OF_INSERTION_ATTEMPTS = 12;
-					char answer = YesNoQuestion("Do you wish to perform an extensive word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
+					char answer = YesNoQuestion("Do you wish to perform a thorough word insertion?\nThe board will become full, but if the board area exceeds 150 units this may take a long time (Y/N)? ");
 
 					if (answer == 'Y')
 					{
+						cout << "\nPerforming an initial word insertion...\n";
 						bruteForceInsertion(board, dict, false, 1, 1); //Light BTF insertion first to fill board
+						cout << "\nPerforming a thorough word insertion...\n";
 						bruteForceInsertion(board, dict, true, 1, 1); //Complete BTF insertion to complete board
 					}
 					else if (answer == 'N')
 					{
+						cout << "\nRandomly inserting words...\n";
 						bruteForceInsertion(board, dict, false, 1, 1); //Light BTF insertion first to fill board
 					}
 
