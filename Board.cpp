@@ -481,9 +481,11 @@ void Board::clearBoard()
 }
 
 //=================================================================================================================================
-// Returns line and column indexes given text input
+// Determines the wildcard corresponding to a given position's available space. 
+//
+// It should work, but it is not used and was not tested.
 
-string Board::determineAvailableSpaceWildcard(string position) //TODO assure it works
+/*string Board::determineAvailableSpaceWildcard(string position)
 {
 	pair<int, int> coords = calculateInsertionCoordinates(position);
 	char dir = position.at(2);
@@ -543,7 +545,7 @@ string Board::determineAvailableSpaceWildcard(string position) //TODO assure it 
 	}
 
 	return wildcard;
-}
+}*/
 
 //=================================================================================================================================
 // Returns line and column indexes given text input

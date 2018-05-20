@@ -47,7 +47,7 @@ public:
 	void clearBoard();
 
 	// Utility
-	std::string determineAvailableSpaceWildcard(std::string position);
+	//std::string determineAvailableSpaceWildcard(std::string position);
 	std::pair<int, int> calculateInsertionCoordinates(std::string coordinates);
 
 	// Validity tests

@@ -964,8 +964,17 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 	}
 	}
 
+	//Verify if a new word was formed. If its length is 1 it is not a word.
+	if (newWord.length() == 1)
+	{
+		colorMaster.setcolor(ERROR_MESSAGE);
+		cout << "\nThere is no new word there!\n";
+		colorMaster.setcolor(DEFAULT);
+		return false;
+	}
+
 	//Verify if word is in the dictionary
-	if (!dictionary.isInWordList(newWord))
+	else if (!dictionary.isInWordList(newWord))
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
 		cout << "\nWord is not present in the dictionary!\n";
