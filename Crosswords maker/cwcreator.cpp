@@ -968,7 +968,7 @@ bool checkAndAddAutoFormedWord(Board &board, Dictionary &dictionary, string posi
 	if (newWord.length() == 1)
 	{
 		colorMaster.setcolor(ERROR_MESSAGE);
-		cout << "\nThere is no new word there!\n";
+		cout << "\nThere is no automatically formed word there!\n";
 		colorMaster.setcolor(DEFAULT);
 		return false;
 	}
