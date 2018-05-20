@@ -428,6 +428,11 @@ bool CheckPlayerWon(Puzzle& puzzle)
 
 				//leave
 				puzzle.saveStats(false);
+
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nPlayer stats were saved successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+
 				return true;
 			}
 		}
@@ -551,6 +556,11 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 			if (answer == 'Y')
 			{
 				puzzle.saveStats(false);
+
+				colorMaster.setcolor(SUCCESS);
+				cout << "\nPlayer stats were saved successfully.\n";
+				colorMaster.setcolor(DEFAULT);
+
 				break;
 			}
 			else
