@@ -38,17 +38,21 @@ dictionary used. A good amount of time was taken in order to test all cases.
 - There is a new mode that allows the user to generate a random board, without needing to do anything. There will be the option to change
 the randomly created board. The user may opt for a faster and less extensive operation, or for a slower and extensive board generation.
 
-- During the random board generation, in order to keep the user interested, there is a system that displays riddles and its answers afterwards.
+- During the random board generation, in order to keep the user interested, there is a system that displays riddles and its 
+answers afterwards.
 
 - There are 2 different modes to edit the board after it has been created / resumed, strict and free.
 
-	Strict mode: Before inserting any word a full validity test is made, not allowing the board to ever be invalid, even during word 
-	insertion. 
+	Strict mode: Before inserting any word a strict validity test is made, almost never allowing the board to be invalid, even 
+	during word insertion. 
+	The only exception found of an invalid board during program execution is if there are automatically formed words that are valid 
+	but repeated. The program will allow insertion, but in the end the board will not be available to save, unless changen by the
+	user.
 
-	Free mode: You may insert any word as long as it exits, has not been used and fits the specified cells. Words intersected are not
+	Free mode: You may insert any word as long as it exists, has not been used and fits the specified cells. Words intersected are not
  	taken in account, it is the user that has to have it in account. 
 
-	Note that you may only save the board if is fully valid, in both modes.
+	Note that you may only save the board if it is fully valid, regardless of the mode.
 
 - You may ask for full program instructions during the options menu.
 
