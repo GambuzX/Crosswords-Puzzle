@@ -17,6 +17,7 @@ Player::Player()
 {
 	time(&initialTime); //sets initial time
 	clues = 0;
+	solutions = 0;
 	wrongSubmissions = 0;
 }
 
@@ -28,6 +29,7 @@ Player::Player(string name)
 	this->name = name;
 	time(&initialTime); //sets initial time
 	clues = 0;
+	solutions = 0;
 	wrongSubmissions = 0;
 }
 
@@ -40,6 +42,11 @@ std::string Player::getName() {	return name; }
 // Returns number of clues the player asked for.
 
 int Player::getNumberOfClues(){	return clues;}
+
+//=================================================================================================================================
+// Returns number of solutions the player asked for.
+
+int Player::getNumberOfSolutions() { return solutions; }
 
 //=================================================================================================================================
 // Returns number of wrong submissions.
@@ -55,6 +62,11 @@ void Player::setInitialTime() { time(&initialTime); }
 // Increments number of clues.
 
 void Player::incrementNumberOfClues(){	clues++;}
+
+//=================================================================================================================================
+// Increments number of solutions.
+
+void Player::incrementNumberOfSolutions() { solutions++; }
 
 //=================================================================================================================================
 // Increments number of wrong submission.

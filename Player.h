@@ -22,6 +22,7 @@ public:
 	// Getters
 	std::string getName();
 	int getNumberOfClues();
+	int getNumberOfSolutions();
 	int getNumberOfWrongSubmissions();
 
 	//Setters
@@ -29,6 +30,7 @@ public:
 
 	//Incrementers
 	void incrementNumberOfClues();
+	void incrementNumberOfSolutions();
 	void incrementWrongSubmissions();
 
 	//Calculate time since player was initiliazed
@@ -41,7 +43,7 @@ private:
 
 	double timeSpent;
 
-	int clues = 0, wrongSubmissions = 0;
+	int clues = 0, solutions = 0, wrongSubmissions = 0;
 };
 
 

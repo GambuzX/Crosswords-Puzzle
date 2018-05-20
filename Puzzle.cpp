@@ -250,6 +250,7 @@ void Puzzle::showSolution(string position)
 			colorMaster.setcolor(SYMBOL_COLOR);
 			cout << endl << solutionUsedWords.at(i).second << endl;
 			colorMaster.setcolor(DEFAULT);
+			currentPlayer.incrementNumberOfSolutions();
 		}
 }
 
