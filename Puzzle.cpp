@@ -547,13 +547,71 @@ void Puzzle::showPlayerStats()
 void Puzzle::addWrongSubmission(){	currentPlayer.incrementWrongSubmissions();}
 
 //=================================================================================================================================
-// Goes throught the entire board and finds all the words inserted in it. Resets the board and readds all words.
+// Goes throught the entire board and finds all the words inserted in it. Resets the board and readds all words to the used words vector.
 
 void Puzzle::reAddAllWords()
 {
+	vector<pair<string, string>> boardWords;
 
+	//HORIZONTAL
+	for (int line = 0; line < verticalSize; line++)
+	{
+		string currentWord = "";
+		for (int column = 0; column < horizontalSize; column++)
+		{
+			if (isalpha(playerBoard.at(line).at(column)))
+			{
+				currentWord += playerBoard.at(line).at(column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)line, 'A' + (char)(column - currentWord.length()), 'H', '\0' };
+					string position(pos);					
+					boardWords.push_back(pair<string, string>(position, currentWord));
+				}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2)
+		{
+			char pos[] = { 'A' + (char)line, 'A' + (char)(horizontalSize - currentWord.length()) , 'H', '\0' };
+			string position(pos);
+			boardWords.push_back(pair<string, string>(position, currentWord));
+		}
+	}
 
+	//VERTICAL
+	for (int column = 0; column < horizontalSize; column++)
+	{
+		string currentWord = "";
+		for (int line = 0; line < verticalSize; line++)
+		{
+			if (isalpha(playerBoard.at(line).at(column)))
+			{
+				currentWord += playerBoard.at(line).at(column);
+			}
+			else
+			{
+				if (currentWord.length() >= 2) //only check if word size is bigger than 1
+				{
+					char pos[] = { 'A' + (char)(line - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+					string position(pos);
+					boardWords.push_back(pair<string, string>(position, currentWord));
+				}
+				currentWord = ""; //reset word
+			}
+		}
+		if (currentWord.length() >= 2) //only check if word size is bigger than 1
+		{
+			char pos[] = { 'A' + (char)(verticalSize - currentWord.length()), 'A' + (char)column, 'V', '\0' };
+			string position(pos);
+			boardWords.push_back(pair<string, string>(position, currentWord));
+		}
+	}
 
+	playerUsedWords = boardWords;
 }
 
 //=================================================================================================================================
