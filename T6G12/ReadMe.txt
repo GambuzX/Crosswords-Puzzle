@@ -100,7 +100,7 @@ NEW FEATURES:
 
 - After player ends the game, his statistics are shown in the console before being saved in a file.
 
-- Number of wrong submissions by the player and if he finished or not statistics are also kept.
+- Number of solutions asked for, number of wrong submissions and if the player finished or not are also kept as statistics.
 
 - If player wrongly submits a board, the incorrect words are shown to the user.
 
@@ -119,4 +119,5 @@ NEW FEATURES:
 	- - : removes a word in the board.
 	- ? : displays the initial clue list.
 	- + : shows an extra hint for the word in the specified position.
+	- * : shows the solution word in the specified position.
 	- < : returns back to the Position question.
