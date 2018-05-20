@@ -240,6 +240,20 @@ void Puzzle::showSolutionBoard()
 }
 
 //=================================================================================================================================
+// Shows the solution for the specified position.
+
+void Puzzle::showSolution(string position)
+{
+	for (int i = 0; i < solutionUsedWords.size(); i++)
+		if (solutionUsedWords.at(i).first == position)
+		{
+			colorMaster.setcolor(SYMBOL_COLOR);
+			cout << endl << solutionUsedWords.at(i).second << endl;
+			colorMaster.setcolor(DEFAULT);
+		}
+}
+
+//=================================================================================================================================
 // Builds an initial list of clues selected randomly from the list of available clues for each word.
 
 void Puzzle::buildClueList()

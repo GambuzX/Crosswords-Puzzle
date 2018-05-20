@@ -42,6 +42,7 @@ public:
 	void createPlayerBoard();
 	void showPlayerBoard();
 	void showSolutionBoard();
+	void showSolution(std::string position);
 	void buildClueList();
 	void showClueList();
 	void showDifferentSynonym(std::string);

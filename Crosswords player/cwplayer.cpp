@@ -24,6 +24,8 @@ using namespace std;
 
 //TODO test everything
 //TODO show answer on click
+//TODO player answer asked
+//TODO Update readme
 
 //=================================================================================================================================
 //COLOR CODES:
@@ -237,6 +239,7 @@ void FullInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to ask for an hint about the word in the specified position.\n";
+	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "*";	colorMaster.setcolor(DEFAULT);	cout << " to ask for the solution in the specified position.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 
 	cout << "\nWhen there are no more empty spaces to fill, you will be prompted to ";
@@ -322,6 +325,7 @@ void WordInstructions()
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "-";	colorMaster.setcolor(DEFAULT);	cout << " to remove a previously placed word.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "?";	colorMaster.setcolor(DEFAULT);	cout << " to display the initial clue list.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "+";	colorMaster.setcolor(DEFAULT);	cout << " to ask for an hint about the word in the specified position.\n";
+		cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "*";	colorMaster.setcolor(DEFAULT);	cout << " to ask for the solution in the specified position.\n";
 	cout << "- ";	colorMaster.setcolor(SYMBOL_COLOR);	cout << "<";	colorMaster.setcolor(DEFAULT);	cout << " to return to the Position question.\n";
 }
 
@@ -614,17 +618,27 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				puzzle.showClueList();
 				cout << endl;
 			}
-			else if (word == "+") // Ask for help
+			else if (word == "+") // Ask for different synonym
 			{
 				puzzle.showDifferentSynonym(positionInput);
 				cout << endl;
 			}
-			else if (word == "I") // Ask for help
+			else if (word == "*") // Ask for solution
+			{
+				char answer = YesNoQuestion("Are you sure you want to see the solution (Y/N)? ");
+
+				if (answer == 'Y')
+				{
+					puzzle.showSolution(positionInput);
+				}
+				cout << endl;
+			}
+			else if (word == "I") // Show simplified instructions
 			{
 				WordInstructions();
 				cout << endl;
 			}
-			else if (word == "B") // Ask for help
+			else if (word == "B") // Show board
 			{
 				cout << endl;
 				puzzle.showPlayerBoard();
