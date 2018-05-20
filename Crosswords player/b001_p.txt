@@ -1,3 +1,1 @@
-Player name: Gil; Time: 358s; Hints: 23; Wrong submissions: 0; Finished: Yes
-Player name: Test; Time: 68s; Hints: 0; Wrong submissions: 2; Finished: No
-Player name: test2; Time: 87s; Hints: 7; Solutions: 6; Wrong submissions: 0; Finished: Yes
+Player name: TEST; Time: 87s; Hints: 7; Solutions: 6; Wrong submissions: 0; Finished: Yes

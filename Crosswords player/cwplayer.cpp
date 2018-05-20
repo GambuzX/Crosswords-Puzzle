@@ -95,6 +95,7 @@ int main()
 			colorMaster.setcolor(ERROR_MESSAGE);
 			cout << "\nCould not locate board file.\n";
 			colorMaster.setcolor(DEFAULT);
+			_getch();
 			exit(1);
 		}
 		else
@@ -113,6 +114,7 @@ int main()
 			colorMaster.setcolor(ERROR_MESSAGE);
 			cout << "\nCould not locate dictionary with that name.\n";
 			colorMaster.setcolor(DEFAULT);
+			_getch();
 			exit(1);
 		}
 		else

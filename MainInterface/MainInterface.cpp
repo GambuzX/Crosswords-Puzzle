@@ -272,7 +272,7 @@ int interfaceMaker()
 //================================================================================================
 //EXECUTES THE CHOSEN OPTION BY THE USER
 
-void optionExecution(int option)
+int optionExecution(int option)
 {
 	bool validOption = true;
 	switch (option)
@@ -300,12 +300,19 @@ void optionExecution(int option)
 		cerr << "  ---------------------------------------- ";
 		optionExecution(interfaceMaker());
 	}
+
+	return option;
 }
 
 //=====================================================================================================
 
 int main()
 {
-	optionExecution(interfaceMaker());
+	int option;
+	do
+	{
+		option = optionExecution(interfaceMaker());
+	} while (option != 3);
+
 	return 0;
 }
