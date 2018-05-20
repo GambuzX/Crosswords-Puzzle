@@ -90,6 +90,8 @@ the input is well formated, slowing down the process. The program interprets cor
 
 - '?' option displays the initial clue list and not a new clue. To display a new clue, user should use '+'.
 
+- The stats are saved even if the player does not complete the board. This is to allow to measure the level of difficulty of each puzzle.
+
 
 NEW FEATURES:
 (list may or may not be full, there are a lot of things)
@@ -99,8 +101,6 @@ NEW FEATURES:
 - After player ends the game, his statistics are shown in the console before being saved in a file.
 
 - Number of wrong submissions by the player and if he finished or not statistics are also kept.
-
-- The stats are saved even if the player does not complete the board. This is to allow to measure the level of difficulty of each puzzle.
 
 - If player wrongly submits a board, the incorrect words are shown to the user.
 

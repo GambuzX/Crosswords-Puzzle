@@ -1855,7 +1855,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 					cerr << "Invalid input!";
 				}
 
-				if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters
+				if (availableSpace > 2) //does not insert 2 letter words to avoid repeated letters and program taking too long
 				{
 					//Gets the words that fit the space
 					vector<string> fittingWords = dictionary.fittingWords(availableSpace);
@@ -1863,7 +1863,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 					const int DECISION_BOUNDARY = 25;
 					if (fittingWords.size() > DECISION_BOUNDARY)
 					{
-						//Try to insert some random words to increase efficiency
+						//Try to insert some random words to increase efficiency in cases where all spaces are empty
 						const int RANDOM_TRIES = 12;
 						bool insertedWord = false;
 						for (int j = 0; j < RANDOM_TRIES; j++)
@@ -1906,7 +1906,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 				//   Second direction   //
 				//========================
 
-				direction = (direction == 'V'? 'H' : 'V');
+				direction = (direction == 'V'? 'H' : 'V'); //Oposite direction than before
 				char c_position2[] = { 'A' + (char)line , 'A' + (char)column, direction, '\0' };
 				position = string(c_position2);
 
@@ -1932,7 +1932,7 @@ void bruteForceInsertion(Board &board, Dictionary &dictionary, bool complete, in
 				const int DECISION_BOUNDARY = 25;
 				if (fittingWords.size() > DECISION_BOUNDARY)
 				{
-					//Try to insert some random words to increase efficiency
+					//Try to insert some random words to increase efficiency in cases where all spaces are empty
 					const int RANDOM_TRIES = 12;
 					bool insertedWord = false;
 					for (int j = 0; j < RANDOM_TRIES; j++)
