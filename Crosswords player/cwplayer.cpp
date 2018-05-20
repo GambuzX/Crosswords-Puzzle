@@ -397,7 +397,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 			puzzle.showPlayerStats();
 
 			//Save puzzle
-			puzzle.saveStats();
+			puzzle.saveStats(true);
 
 			colorMaster.setcolor(SUCCESS);
 			cout << "\nPlayer stats were saved successfully.\n";
@@ -427,6 +427,7 @@ bool CheckPlayerWon(Puzzle& puzzle)
 					puzzle.showSolutionBoard();
 
 				//leave
+				puzzle.saveStats(false);
 				return true;
 			}
 		}
@@ -548,7 +549,10 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		{
 			char answer = YesNoQuestion("\nIf you leave all your progress will be lost. Proceed (Y/N)? ");
 			if (answer == 'Y')
+			{
+				puzzle.saveStats(false);
 				break;
+			}
 			else
 			{
 				skipInsertion = true;

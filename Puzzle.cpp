@@ -547,17 +547,21 @@ void Puzzle::showPlayerStats()
 void Puzzle::addWrongSubmission(){	currentPlayer.incrementWrongSubmissions();}
 
 //=================================================================================================================================
-// Saves the player stats to a file on the format bXXX_p.txt.
+// Saves the player stats to a file on the format bXXX_p.txt. The bool indicates whether the player won or not.
 
-void Puzzle::saveStats()
+void Puzzle::saveStats(bool finishedGame)
 {
 	string fileName = "b" + loadedBoardNumber + "_p.txt";
 	ofstream file(fileName, ios::app);
 
 	file << "Player name: " << currentPlayer.getName() << "; Time: " << currentPlayer.calculateTimeSpent();
 	file << "s; Hints: " << currentPlayer.getNumberOfClues() << "; Wrong submissions: " << currentPlayer.getNumberOfWrongSubmissions();
+	file << "; Finished: ";
+	if (finishedGame)
+		file << "Yes";
+	else
+		file << "No";
 	file << endl;
-
 	file.close();
 }
 

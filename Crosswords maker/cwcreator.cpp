@@ -1995,7 +1995,7 @@ pair<string, string> newRiddle()
 	{"What are two things you cannot have for breakfast?", "Lunch and dinner."},
 	{"Which football player wears the biggest helmet?", "The one with the biggest head."},
 	{"Why couldn't the sailors play cards?", "The captain was standing on the deck."},
-	{"What do you call a man who does not have all his fingers on one hand?", "Normal – You have fingers on both hands!"}};
+	{"What do you call a man who does not have all his fingers on one hand?", "Normal - You have fingers on both hands!"}};
 
 	return riddleList.at(rand() % riddleList.size()); //return random pair
 }

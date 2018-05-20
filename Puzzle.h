@@ -50,7 +50,7 @@ public:
 	void showWrongAnswers();
 	void showPlayerStats();
 	void addWrongSubmission();
-	void saveStats();
+	void saveStats(bool finishedGame);
 
 	// Validity tests
 	bool hasHash(std::string position);

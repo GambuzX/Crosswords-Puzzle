@@ -92,9 +92,11 @@ NEW FEATURES:
 
 - You may ask for full program instructions during the options menu.
 
-- Number of wrong submissions by the player is kept as a statistic.
+- Number of wrong submissions by the player and if he finished or not statistics are also kept.
 
 - After player ends the game, his statistics are shown in the console before being saved in a file.
+
+- The stats are saved even if the player does not complete the board. There 
 
 - If player wrongly submits a board, the incorrect words are shown to the user.
 
