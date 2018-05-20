@@ -1,65 +1,25 @@
 dictionary.txt
 
-P # A # E # E X P O R T # A # B U O Y # 
-R # F # N # # # # # # # # F # # # # # A 
-E # F # S # I # A P P R O A C H # W # U 
-F # E # H # N # # # A # # R # # # I # G 
-A # C # R # D # M # L # C # C # # T # U 
-T # T # I # O # O # L # A # O # # N # S 
-O # # E N A M O R # # A P P L Y # E # T 
-R # G # E # I # B # M # R # L # # S # # 
-Y # R # # # T # I # A L I K E # # S # I 
-# N A U S E A # D # N # C # C # C # # N 
-S # N # # # B # # E N L I S T # O # # D 
-T # T # A # L # A # E # O # E # M # # E 
-U # # # M # E # B # R # U # D # M # # L 
-D # B # B # # C O # I # S # # K E N # I 
-Y # A # A # V # D # S # # L # # N # # B 
-# S N U G # E # E # M # J O Y # C # # L 
-B # I # I # N # # S # S # Y # R E # # E 
-L # S # O # I # S E P A R A T E # V # # 
-O # H # U # A # # L # K # L # E # I # # 
-W # # # S # L # S L E E P # S L E E T Y 
+# # # # # # # # # # # # 
+# # # # # W E A L T H # 
+# # # # # I # # # # # # 
+S I L E N T # # # # # # 
+# # # # # C L I M A X # 
+T R E N C H # # # # # # 
+# # # # # C O U R A G E 
+L E A D E R # # # # # # 
+# # # # # A T T A C K # 
+# P R O O F # # # # # # 
+# # # # # T O R T U R E 
+# # # # # # # # # # # # 
 
-AGH EXPORT
-APH BUOY
-CIH APPROACH
-GDH ENAMOR
-GLH APPLY
-IKH ALIKE
-JBH NAUSEA
-KJH ENLIST
-NHH CO
-NPH KEN
-PBH SNUG
-PMH JOY
-QPH RE
-RIH SEPARATE
-TIH SLEEP
-TOH SLEETY
-AAV PREFATORY
-KAV STUDY
-QAV BLOW
-ACV AFFECT
-HCV GRANT
-NCV BANISH
-AEV ENSHRINE
-LEV AMBAGIOUS
-CGV INDOMITABLE
-OGV VENIAL
-EIV MORBID
-LIV ABODE
-QJV SELL
-CKV PALL
-HKV MANNERISM
-QLV SAKE
-EMV CAPRICIOUS
-ANV AFAR
-ONV LOYAL
-EOV COLLECTED
-QPV REEL
-JQV COMMENCE
-CRV WITNESS
-RRV VIE
-BTV AUGUST
-ITV INDELIBLE
+BFH WEALTH
+DAH SILENT
+EFH CLIMAX
+FAH TRENCH
+GFH COURAGE
+HAH LEADER
+IFH ATTACK
+JBH PROOF
+KFH TORTURE
+BFV WITCHCRAFT

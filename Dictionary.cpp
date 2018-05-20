@@ -192,6 +192,8 @@ bool Dictionary::isValidSynonym(string word)
 		if ((word.at(i) < 'A' || word.at(i) > 'Z') && word.at(i) != ' ' && word.at(i) != '-' && word.at(i) != '\'')
 			return false;
 	}
+	if (word == " " || word == "")
+		return false;
 	return true;
 }
 
