@@ -1,0 +1,2 @@
+Player name: Tets; Time: 20s; Hints: 0; Wrong submissions: 0; Finished: Yes
+Player name: dasa; Time: 22s; Hints: 0; Wrong submissions: 0; Finished: Yes
