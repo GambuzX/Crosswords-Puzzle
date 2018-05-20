@@ -1,0 +1,2 @@
+Player name: Gil; Time: 358s; Hints: 23; Wrong submissions: 0; Finished: Yes
+Player name: Test; Time: 68s; Hints: 0; Wrong submissions: 2; Finished: No

@@ -23,6 +23,7 @@ AUTHOR: Mario Gil.
 using namespace std;
 
 //TODO test everything
+//TODO show answer on click
 
 //=================================================================================================================================
 //COLOR CODES:
