@@ -644,8 +644,9 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 		cout << endl;
 
 		//If the board is full, automatically ask if the player wants to submit it.
-		if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords())
+		if (puzzle.playerBoardFull())
 		{
+			puzzle.reAddAllWords();
 			bool endPuzzle = CheckPlayerWon(puzzle);
 			if (endPuzzle)
 				finishedPuzzle = true;
