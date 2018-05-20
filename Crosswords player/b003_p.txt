@@ -1,3 +1,0 @@
-Player name: Real try; Time: 171s; Hints: 12; Wrong submissions: 0; Finished: Yes
-Player name: Test1; Time: 46s; Hints: 0; Wrong submissions: 0; Finished: Yes
-Player name: adsa; Time: 105s; Hints: 0; Wrong submissions: 1; Finished: No

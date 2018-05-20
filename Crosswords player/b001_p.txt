@@ -1,7 +1,0 @@
-Player name: TEST; Time: 87s; Hints: 7; Solutions: 6; Wrong submissions: 0; Finished: Yes
-Player name: joao; Time: 245s; Hints: 5; Solutions: 8; Wrong submissions: 0; Finished: Yes
-Player name: TEST 2; Time: 186s; Hints: 16; Solutions: 2; Wrong submissions: 1; Finished: Yes
-Player name: Gil; Time: 43s; Hints: 0; Solutions: 0; Wrong submissions: 0; Finished: Yes
-Player name: Instant leave; Time: 2s; Hints: 0; Solutions: 0; Wrong submissions: 0; Finished: No
-Player name: 1 Solution, 2 Hints; Time: 13s; Hints: 2; Solutions: 1; Wrong submissions: 0; Finished: No
-Player name: TEST3; Time: 68s; Hints: 15; Solutions: 14; Wrong submissions: 0; Finished: No

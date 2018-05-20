@@ -1,3 +1,0 @@
-Player name: Gil; Time: 605s; Hints: 10; Wrong submissions: 0; Finished: Yes
-Player name: IncompleteExample; Time: 16s; Hints: 3; Wrong submissions: 0; Finished: No
-Player name: Test; Time: 24s; Hints: 0; Wrong submissions: 0; Finished: No
