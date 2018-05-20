@@ -496,8 +496,9 @@ void solveCurrentPuzzle(Puzzle &puzzle)
 				}
 				else if (positionInput == "S")
 				{
-					if (puzzle.getNumberOfPlayerWords() == puzzle.getNumberOfSolutionWords()) //Assure board is full
+					if (puzzle.playerBoardFull())
 					{
+						puzzle.reAddAllWords();
 						cout << endl;
 						bool endPuzzle = CheckPlayerWon(puzzle); //Verify win condition
 						if (endPuzzle)

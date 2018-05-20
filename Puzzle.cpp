@@ -547,6 +547,16 @@ void Puzzle::showPlayerStats()
 void Puzzle::addWrongSubmission(){	currentPlayer.incrementWrongSubmissions();}
 
 //=================================================================================================================================
+// Goes throught the entire board and finds all the words inserted in it. Resets the board and readds all words.
+
+void Puzzle::reAddAllWords()
+{
+
+
+
+}
+
+//=================================================================================================================================
 // Saves the player stats to a file on the format bXXX_p.txt. The bool indicates whether the player won or not.
 
 void Puzzle::saveStats(bool finishedGame)
@@ -686,6 +696,18 @@ bool Puzzle::isValidInsertionLocation(string positionInput)
 		if (toUpperString(it->first) == toUpperString(positionInput))
 			return true;
 	return false;
+}
+
+//=================================================================================================================================
+// Checks if the player board is full, i.e., if there are no dots in it.
+
+bool Puzzle::playerBoardFull() 
+{ 
+	for (int i = 0; i < verticalSize; i++)
+		for (int j = 0; j < horizontalSize; j++)
+			if (playerBoard.at(i).at(j) == '.')
+				return false;
+	return true;
 }
 
 //=================================================================================================================================

@@ -50,13 +50,15 @@ public:
 	void showWrongAnswers();
 	void showPlayerStats();
 	void addWrongSubmission();
+	void reAddAllWords();
 	void saveStats(bool finishedGame);
 
 	// Validity tests
 	bool hasHash(std::string position);
 	bool validPositionInput(std::string);
 	bool canBeInserted(std::string word, std::string position);
-	bool isValidInsertionLocation(std::string position); //TODO copy changed methods from board class
+	bool isValidInsertionLocation(std::string position);
+	bool playerBoardFull();
 	bool boardsMatch();
 
 private:
