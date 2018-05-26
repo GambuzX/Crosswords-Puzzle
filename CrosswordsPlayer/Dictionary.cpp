@@ -138,7 +138,7 @@ bool Dictionary::ProcessDictionary()
 			synonyms.push_back(toUpper(synonym));
 
 		// If it is valid according to the class standards
-		if (isValidHeadline(word))
+		if (isValidHeadline(word) && (int) synonyms.size() > 0)
 		{
 			pair<map<string, vector<string>>::iterator, bool> ret; //return type variable of map::insert
 			ret = wordList.insert(pair<string, vector<string>>(word, synonyms));
