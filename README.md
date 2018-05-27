@@ -20,9 +20,9 @@ More detailed intructions are included inside the program. All the needed files 
 
 ***
 
-The second program (CrosswordsPlayer folder), loads a puzzle that was created in the first program and allows the user to **solve** it. 
+The second program (CrosswordsPlayer folder) loads a puzzle that was created in the first program and allows the user to **solve** it. 
 
-You will be given synonyms as hints for the words in the puzzle, and there are multiple options regarding input. 
+You will be given synonyms as hints for the words in the puzzle and there are multiple options regarding input. 
 
 As in the first program more detailed instructions can be seen when running it. All the needed files are inside the folder.
 
