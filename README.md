@@ -2,7 +2,7 @@
 
 This repository contains two different programs that interact with each other, allowing to both create and solve a Crosswords Puzzle.
 
-Note that both programs **must use a dictionary** with synonyms as a means to validate words. The dictionary entries must be in the following format for it to work:
+Note that **both programs must use a dictionary** with synonyms as a means to validate words. The dictionary entries must be in the following format for it to work:
 
 * [Word] : [List of synonyms separated by comma]
 
@@ -24,6 +24,6 @@ The second program (CrosswordsPlayer folder), loads a puzzle that was created in
 
 You will be given synonyms as hints for the words in the puzzle, and there are multiple options regarding input. 
 
-As in the first program, more detailed instructions can be seen when running it. All the needed files are inside the folder.
+As in the first program more detailed instructions can be seen when running it. All the needed files are inside the folder.
 
 ### Have fun creating and playing Crosswords! :D
