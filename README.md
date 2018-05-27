@@ -6,6 +6,8 @@ Note that **both programs must use a dictionary** with synonyms as a means to va
 
 * [Word] : [List of synonyms separated by comma]
 
+Check **dictionary.txt** on this repository for an example.
+
 ***
 
 The first program (CrosswordsCreator folder), as the name suggests, is the one to **create** the puzzle.
