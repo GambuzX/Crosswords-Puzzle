@@ -1,4 +1,4 @@
-# Crosswords Puzzle
+# Crosswords Puzzle :game_die:
 
 This repository contains two different programs that interact with each other, allowing to both create and solve a Crosswords Puzzle.
 
